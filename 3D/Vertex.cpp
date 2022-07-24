@@ -168,16 +168,6 @@ void Ver2::Initialize(XMFLOAT3 size)
 		{{-size.x / 2,-size.y / 2,-size.z / 2},{},{0.5f,0.0f} },	//9
 		{{ size.x / 2,-size.y / 2,-size.z / 2},{},{0.0f,1.0f} },	//10 
 		{{			0,-size.y / 2, size.z / 2},{},{1.0f,1.0f} },	//11 
-
-		{{0          , size.y / 2,          0},{},{0.5f,0.0f} },	//0
-		{{ size.x / 2,-size.y / 2,-size.z / 2},{},{0.0f,1.0f} },	//2 
-		{{-size.x / 2,-size.y / 2,-size.z / 2},{},{1.0f,1.0f} },	//1 {{0          , size.y / 2,          0},{},{0.5f,0.0f} },	//0
-		{{ size.x / 2,-size.y / 2,-size.z / 2},{},{0.0f,1.0f} },	//2 
-		{{-size.x / 2,-size.y / 2,-size.z / 2},{},{1.0f,1.0f} },	//1 {{0          , size.y / 2,          0},{},{0.5f,0.0f} },	//0
-		{{ size.x / 2,-size.y / 2,-size.z / 2},{},{0.0f,1.0f} },	//2 
-		{{-size.x / 2,-size.y / 2,-size.z / 2},{},{1.0f,1.0f} },	//1 {{0          , size.y / 2,          0},{},{0.5f,0.0f} },	//0
-		{{ size.x / 2,-size.y / 2,-size.z / 2},{},{0.0f,1.0f} },	//2 
-		{{-size.x / 2,-size.y / 2,-size.z / 2},{},{1.0f,1.0f} },	//1 
 	};
 	//インデックスデータ
 	unsigned short in[] =
@@ -186,11 +176,7 @@ void Ver2::Initialize(XMFLOAT3 size)
 		0,1,2,	//三角形1つ目
 		3,4,5,	//三角形2つ目
 		6,7,8,
-		9,10,11,
-		12,13,14,
-		15,16,17,
-		18,19,20,
-		21,22,23,
+		9,10,11
 	};
 
 	//頂点座標、uv座標、インデックスデータを代入
@@ -268,4 +254,13 @@ void Ver2::Initialize(XMFLOAT3 size)
 	{
 		inputLayout[i] = inputLayout_[i];
 	}
+}
+
+Ver3* Ver3::GetInstance()
+{
+	return nullptr;
+}
+
+void Ver3::Initialize(XMFLOAT3 size)
+{
 }

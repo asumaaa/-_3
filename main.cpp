@@ -76,13 +76,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	);
 
 	//読み込む画像の数
-	const size_t metadataCount = 3;
+	const size_t metadataCount = 1;
 	//画像
 	Texture texture[metadataCount];
 	//初期化
-	texture[0].Initialize(L"Resources/texture.jpg", dx, 0);
-	texture[1].Initialize(L"Resources/texture2.jpg", dx, 1);
-	texture[2].Initialize(L"Resources/texture3.jpg", dx, 2);
+	texture[0].Initialize(dx, 0);
 
 
 	//3Dオブジェクトの数
@@ -193,12 +191,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		triangle->Update();
 
 		//seikinを描画
-		texture[2].Draw();
+		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
+		texture[0].Draw();
 		DrawObject3d(&object3ds[0], dx->GetCommandList(), square->vertBuff.vbView, square->indexBuff.ibView, _countof(square->vertex->indices));
-
-		//hikakinを描画
-		texture[1].Draw();
-		DrawObject3d(&object3ds[1], dx->GetCommandList(), triangle->vertBuff.vbView, triangle->indexBuff.ibView, _countof(triangle->vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から

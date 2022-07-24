@@ -9,6 +9,7 @@
 #include "assert.h"
 #include "DirectXTex.h"
 #include "wrl.h"
+#include "math.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -43,6 +44,19 @@ class Ver2
 {
 public:
 	static Ver2* GetInstance();
+	void Initialize(XMFLOAT3 size);
+public:
+	Vertex vertices[12];
+	unsigned short indices[12];
+	UINT sizeVB;
+	UINT sizeIB;
+	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番
+};
+
+class Ver3
+{
+public:
+	static Ver3* GetInstance();
 	void Initialize(XMFLOAT3 size);
 public:
 	Vertex vertices[12];

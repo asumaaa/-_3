@@ -13,54 +13,75 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\input">
+      <UniqueIdentifier>{8d522037-c593-46d4-9d79-0c6cb5aac088}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\input">
+      <UniqueIdentifier>{fc6f8760-dd69-4402-b410-35c1c0d0db11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3D">
+      <UniqueIdentifier>{abf82fcc-30b1-48c0-9417-b61f411602d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\3D">
+      <UniqueIdentifier>{699e4752-a5bc-4263-9475-32e35025bd02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base">
+      <UniqueIdentifier>{4a642e32-07b6-4c64-b231-31c1d87366af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\base">
+      <UniqueIdentifier>{a59de0ba-25bc-4cf6-bdd5-f9188df8dde6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="object3D.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="WinApp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXIni.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="input\input.cpp">
+      <Filter>ソース ファイル\input</Filter>
     </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\IndexBuff.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Masage.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\VertBuff.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\Vertex.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\Shader.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="VertBuff.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\Pipe.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="IndexBuff.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\RootSig.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="base\DirectXIni.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="base\WinApp.cpp">
+      <Filter>ソース ファイル\base</Filter>
     </ClCompile>
-    <ClCompile Include="Depth.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\object3D.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="RootSig.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\Square2.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Square2.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="3D\Triangle.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Triangle.cpp">
+    <ClCompile Include="3D\Depth.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Masage.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Texture.cpp">
+      <Filter>ソース ファイル\base</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,49 +89,52 @@
     <ClInclude Include="main.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="object3D.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="input\input.h">
+      <Filter>ヘッダー ファイル\input</Filter>
     </ClInclude>
-    <ClInclude Include="WinApp.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\IndexBuff.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXIni.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\VertBuff.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\Vertex.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Masage.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\Shader.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\Pipe.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\RootSig.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="VertBuff.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="base\DirectXIni.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="IndexBuff.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="base\WinApp.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\object3D.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\Square2.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Depth.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\Triangle.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="RootSig.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="3D\Depth.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Square2.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="base\Masage.h">
+      <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
-    <ClInclude Include="Triangle.h">
+    <ClInclude Include="base\Texture.h">
+      <Filter>ヘッダー ファイル\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

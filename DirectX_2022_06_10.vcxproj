@@ -118,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(projectDir)input;$(projectDir);$(projectDir)3D;$(projectDir)base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,6 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(projectDir)input;$(projectDir);$(projectDir)3D;$(projectDir)base;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,40 +143,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Depth.cpp" />
-    <ClCompile Include="DirectXIni.cpp" />
-    <ClCompile Include="IndexBuff.cpp" />
-    <ClCompile Include="input.cpp" />
+    <ClCompile Include="3D\Depth.cpp" />
+    <ClCompile Include="3D\IndexBuff.cpp" />
+    <ClCompile Include="3D\object3D.cpp" />
+    <ClCompile Include="3D\Pipe.cpp" />
+    <ClCompile Include="3D\RootSig.cpp" />
+    <ClCompile Include="3D\Shader.cpp" />
+    <ClCompile Include="3D\Square2.cpp" />
+    <ClCompile Include="3D\Triangle.cpp" />
+    <ClCompile Include="3D\VertBuff.cpp" />
+    <ClCompile Include="3D\Vertex.cpp" />
+    <ClCompile Include="base\DirectXIni.cpp" />
+    <ClCompile Include="base\Masage.cpp" />
+    <ClCompile Include="base\Texture.cpp" />
+    <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="input\input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Masage.cpp" />
-    <ClCompile Include="object3D.cpp" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="RootSig.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Square2.cpp" />
-    <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Triangle.cpp" />
-    <ClCompile Include="VertBuff.cpp" />
-    <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="WinApp.cpp" />
+    <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Depth.h" />
-    <ClInclude Include="DirectXIni.h" />
-    <ClInclude Include="IndexBuff.h" />
-    <ClInclude Include="input.h" />
+    <ClInclude Include="3D\Depth.h" />
+    <ClInclude Include="3D\IndexBuff.h" />
+    <ClInclude Include="3D\object3D.h" />
+    <ClInclude Include="3D\Pipe.h" />
+    <ClInclude Include="3D\RootSig.h" />
+    <ClInclude Include="3D\Shader.h" />
+    <ClInclude Include="3D\Square2.h" />
+    <ClInclude Include="3D\Triangle.h" />
+    <ClInclude Include="3D\VertBuff.h" />
+    <ClInclude Include="3D\Vertex.h" />
+    <ClInclude Include="base\DirectXIni.h" />
+    <ClInclude Include="base\Masage.h" />
+    <ClInclude Include="base\Texture.h" />
+    <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="input\input.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="Masage.h" />
-    <ClInclude Include="object3D.h" />
-    <ClInclude Include="Pipe.h" />
-    <ClInclude Include="RootSig.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Square2.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Triangle.h" />
-    <ClInclude Include="VertBuff.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="WinApp.h" />
+    <ClInclude Include="Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">
