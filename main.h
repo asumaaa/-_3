@@ -12,6 +12,7 @@
 #include "RootSig.h"
 #include "Square2.h"
 #include "Triangle.h"
+#include "Sphere.h"
 
 #include "string"
 #include "DirectXMath.h"

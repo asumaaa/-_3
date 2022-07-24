@@ -29,6 +29,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	triangle = Triangle::GetInstance();
 	triangle->Initialize(XMFLOAT3(10.0f,10.0f,10.0f),dx);
 
+	Sphere* sphere = nullptr;
+	sphere = Sphere::GetInstance();
+	sphere->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx);
+
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResorceDesc{};
 	depthResorceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -190,10 +194,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		square->Update();
 		triangle->Update();
 
-		//seikinを描画
+		//円を描画
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();
-		DrawObject3d(&object3ds[0], dx->GetCommandList(), square->vertBuff.vbView, square->indexBuff.ibView, _countof(square->vertex->indices));
+		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere->vertBuff.vbView, sphere->indexBuff.ibView, _countof(sphere->vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
