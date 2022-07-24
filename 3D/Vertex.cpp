@@ -272,26 +272,26 @@ void Ver3::Initialize(XMFLOAT3 size)
 		if (i % 4 == 0)
 		{
 			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
-			y = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
-			v[i] = { {x , y, 0}, {}, {0.0f,1.0f} };
+			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
+			v[i] = { {x , 0, z}, {}, {0.0f,1.0f} };
 		}
 		if (i % 4 == 1)
 		{
 			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			y = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, y, 0}, {}, {0.0f,0.0f} };
+			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
+			v[i] = { { x, 0, z}, {}, {0.0f,0.0f} };
 		}
 		if (i % 4 == 2)
 		{
 			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
-			y = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, y, 0}, {}, {1.0f,1.0f} };
+			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
+			v[i] = { { x, 3, z}, {}, {1.0f,1.0f} };
 		}
 		if (i % 4 == 3)
 		{
 			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			y = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, y, 3}, {}, {1.0f,0.0f} };
+			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
+			v[i] = { { x, 3, z}, {}, {1.0f,0.0f} };
 		}
 	}
 
