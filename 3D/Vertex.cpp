@@ -265,38 +265,71 @@ Ver3* Ver3::GetInstance()
 void Ver3::Initialize(XMFLOAT3 size)
 {
 	//頂点データ
-	Vertex v[fine * 4];
+	Vertex v[fine  * fine* 4];
 	float x, y, z;
-	for (int i = 0; i < fineSize * 4; i++)
+	for (int i = 0; i < fineSize * fineSize * 4; i++)
 	{
-		if (i % 4 == 0)
+		/*if (i % 4 == 0)
 		{
-			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
-			v[i] = { {x , 0, z}, {}, {0.0f,1.0f} };
+			x = cos(((float)(i / 4) * PI * 2) / fineSize) * sin(((float)(i / 4 ) * PI * 2) / fineSize) * size.x;
+			y = cos(((float)(i / 4) * PI * 2) / fineSize) * size.z;
+			z = sin(((float)(i / 4) * PI * 2) / fineSize) * sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
+			v[i] = { {x , y, z}, {}, {0.0f,1.0f} };
 		}
 		if (i % 4 == 1)
 		{
-			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, 0, z}, {}, {0.0f,0.0f} };
+			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * sin(((float)(i / 4) * PI * 2) / fineSize) * size.x;
+			y = cos(((float)(i / 4) * PI * 2) / fineSize) * size.z;
+			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
+			v[i] = { { x, y, z}, {}, {0.0f,0.0f} };
 		}
 		if (i % 4 == 2)
 		{
-			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, 3, z}, {}, {1.0f,1.0f} };
+			x = cos(((float)(i / 4) * PI * 2) / fineSize) * sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
+			y = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.z;
+			z = sin(((float)(i / 4) * PI * 2) / fineSize) * sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
+			v[i] = { { x, y, z}, {}, {1.0f,1.0f} };
 		}
 		if (i % 4 == 3)
 		{
-			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, 3, z}, {}, {1.0f,0.0f} };
+			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x ;
+			y = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.z;
+			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * sin(((float)(i / 4 + 1) * PI * 2) / fineSize) *size.y;
+			v[i] = { { x, y, z}, {}, {1.0f,0.0f} };
+		}*/
+
+		if (i % 4 == 0)
+		{
+			x = cos(((float)(i / 4) / fineSize * PI)) * sin(((float)(i / (fineSize * 4)) / fineSize)) * size.x;
+			y = cos(((float)(i / 4) / fineSize * PI)) * size.z;
+			z = sin(((float)(i / 4) / fineSize * PI)) * sin(((float)(i / (fineSize * 4)) / fineSize)) * size.y;
+			v[i] = { {x , y, z}, {}, {0.0f,1.0f} };
+		}
+		if (i % 4 == 1)
+		{
+			x = cos(((float)(i / 4 + 1) / fineSize * PI)) * sin(((float)(i / (fineSize * 4)) / fineSize)) * size.x;
+			y = cos(((float)(i / 4) / fineSize * PI)) * size.z;
+			z = sin(((float)(i / 4 + 1) / fineSize * PI)) * sin(((float)(i / (fineSize * 4)) / fineSize)) * size.y;
+			v[i] = { { x, y, z}, {}, {0.0f,0.0f} };
+		}
+		if (i % 4 == 2)
+		{
+			x = cos(((float)(i / 4) / fineSize * PI)) * sin(((float)(i / (fineSize * 4) + 1) / fineSize)) * size.x;
+			y = cos(((float)(i / 4 + 1) / fineSize * PI)) * size.z;
+			z = sin(((float)(i / 4) / fineSize * PI)) * sin(((float)(i / (fineSize * 4) + 1) / fineSize)) * size.y;
+			v[i] = { { x, y, z}, {}, {1.0f,1.0f} };
+		}
+		if (i % 4 == 3)
+		{
+			x = cos(((float)(i / 4 + 1) / fineSize * PI)) * sin(((float)(i / (fineSize * 4) + 1) / fineSize)) * size.x;
+			y = cos(((float)(i / 4 + 1) / fineSize * PI)) * size.z;
+			z = sin(((float)(i / 4 + 1) / fineSize * PI)) * sin(((float)(i / (fineSize * 4) + 1) / fineSize) ) * size.y;
+			v[i] = { { x, y, z}, {}, {1.0f,0.0f} };
 		}
 	}
 
-	unsigned short in[fine * 6];
-	for (int i = 0; i < fineSize * 6; i++)
+	unsigned short in[fine * fine * 6];
+	for (int i = 0; i < fineSize * fineSize * 6; i++)
 	{
 		double num_ = ((i / 6) * 6) * 2 / 3;
 		if (i % 6 == 0)					{ in[i] = num_; }
@@ -308,18 +341,18 @@ void Ver3::Initialize(XMFLOAT3 size)
 
 
 	//頂点座標、uv座標、インデックスデータを代入
-	for (int i = 0; i < fineSize * 4; i++)
+	for (int i = 0; i < fineSize  * fineSize* 4; i++)
 	{
 		vertices[i] = v[i];
 	}
 
-	for (int i = 0; i < fineSize * 6; i++)
+	for (int i = 0; i < fineSize  * fineSize* 6; i++)
 	{
 		indices[i] = in[i];
 	}
 
 	//法線の計算
-	for (int i = 0; i < fineSize * 6 / 3; i++)
+	for (int i = 0; i < fineSize  * fineSize* 6 / 3; i++)
 	{//三角形1つごとに計算していく
 		//三角形のインデックスを取り出して、一時的な変数に入れる
 		unsigned short indices0 = indices[i * 3 + 0];

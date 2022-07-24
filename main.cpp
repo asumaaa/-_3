@@ -21,13 +21,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Initialize(win);
 
 #pragma region •`‰æˆ—‰Šú‰»
-	Square2* square = nullptr;
+	/*Square2* square = nullptr;
 	square = Square2::GetInstance();
 	square->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f),dx);
 
 	Triangle* triangle = nullptr;
 	triangle = Triangle::GetInstance();
-	triangle->Initialize(XMFLOAT3(10.0f,10.0f,10.0f),dx);
+	triangle->Initialize(XMFLOAT3(10.0f,10.0f,10.0f),dx);*/
 
 	Sphere* sphere = nullptr;
 	sphere = Sphere::GetInstance();
@@ -191,8 +191,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		// 4. •`‰æƒRƒ}ƒ“ƒh
-		square->Update();
-		triangle->Update();
+		sphere->Update();
+		/*triangle->Update();*/
 
 		//‰~‚ð•`‰æ
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
