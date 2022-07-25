@@ -55,16 +55,16 @@ public:
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番
 };
 
-const int fine = 32;	//球体の細かさ	変数宣言用
-const float fineSize = 32;	//球体の細かさ
+const int fine = 4;	//球体の細かさ	変数宣言用
+const float fineSize = 4;	//球体の細かさ
 class Ver3
 {
 public:
 	static Ver3* GetInstance();
 	void Initialize(XMFLOAT3 size);
 public:
-	Vertex vertices[4 * 32];
-	unsigned short indices[6 * 32];
+	Vertex vertices[4 * 4 * 4];
+	unsigned short indices[6 * 4 * 4];
 	UINT sizeVB;
 	UINT sizeIB;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番

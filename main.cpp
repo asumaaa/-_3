@@ -191,8 +191,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		// 4. •`‰æƒRƒ}ƒ“ƒh
-		square->Update();
-		triangle->Update();
+		sphere->Update();
 
 		//‰~‚ð•`‰æ
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
