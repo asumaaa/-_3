@@ -64,6 +64,10 @@ void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_)
 
 void Sphere::Update()
 {
+	HRESULT result;
+	//パイプラインステート
+	result = dx->GetDevice()->CreateGraphicsPipelineState(&pipe.pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	assert(SUCCEEDED(result));
 	//ビューポート設定コマンド
 	viewport.Width = window_width;
 	viewport.Height = window_height;
