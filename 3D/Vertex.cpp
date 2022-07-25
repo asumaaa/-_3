@@ -264,63 +264,144 @@ Ver3* Ver3::GetInstance()
 
 void Ver3::Initialize(XMFLOAT3 size)
 {
+	float angleX, angleY, angleZ;
+	float oneAngle = (2.0f * PI) / fineSize;
+	angleY = 0;
 	//頂点データ
 	Vertex v[fine * fine* 4];
 	float x, y, z;
 	for (int i = 0; i < fineSize * fineSize * 4; i++)
 	{
+		if (i == 0 || i % 4 == 0)
+		{
+			angleX = (2.0f * PI) * ((float)i / (float)(fine * 4));
+			if (i == 0 || i % (fine * 4) == 0)
+			{
+				angleY = (2.0f * PI) * ((float)i / (float)(fine * fine * 4));
+			}
+
+			x = size.x * cos(angleX) * sin(angleY);
+			y = size.y * cos(angleY);
+			z = size.z * sin(angleX) * sin(angleY);
+			v[i] = { {x , y, z}, {}, {0.0f,1.0f} };
+		}
+
+		if (i == 1 || i % 4 == 1)
+		{
+			angleY -= oneAngle;
+
+			x = size.x * cos(angleX) * sin(angleY);
+			y = size.y * cos(angleY);
+			z = size.z * sin(angleX) * sin(angleY);
+			v[i] = { {x , y, z}, {}, {0.0f,0.0f} };
+		}
+		if (i == 2 || i % 4 == 2)
+		{
+			angleX += oneAngle;
+			angleY += oneAngle;
+
+			x = size.x * cos(angleX) * sin(angleY);
+			y = size.y * cos(angleY);
+			z = size.z * sin(angleX) * sin(angleY);
+			v[i] = { {x , y, z}, {}, {1.0f,1.0f} };
+		}
+		if (i == 3 || i % 4 == 3)
+		{
+			angleY -= oneAngle;
+
+			x = size.x * cos(angleX) * sin(angleY);
+			y = size.y * cos(angleY);
+			z = size.z * sin(angleX) * sin(angleY);
+			v[i] = { {x , y, z}, {}, {1.0f,0.0f} };
+		}
+		//縦
 		/*if (i % 4 == 0)
 		{
-			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
-			v[i] = { {x , 0, z}, {}, {0.0f,1.0f} };
-		}
-		if (i % 4 == 1)
-		{
-			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, 0, z}, {}, {0.0f,0.0f} };
-		}
-		if (i % 4 == 2)
-		{
-			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, 3, z}, {}, {1.0f,1.0f} };
-		}
-		if (i % 4 == 3)
-		{
-			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
-			v[i] = { { x, 3, z}, {}, {1.0f,0.0f} };
-		}*/
-		if (i % 4 == 0)
-		{
-			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
+			x = cos(((float)(i / 4) * PI * 2) / fine) * size.x;
 			y = i / (fine * 4);
-			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
+			z = sin(((float)(i / 4) * PI * 2) / fine) * size.y;
 			v[i] = { {x , y, z}, {}, {0.0f,1.0f} };
 		}
 		if (i % 4 == 1)
 		{
-			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			y = (i - 1) / (fine * 4);
-			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
+			x = cos(((float)(i / 4 + 1) * PI * 2) / fine) * size.x;
+			y = i / (fine * 4);
+			z = sin(((float)(i / 4 + 1) * PI * 2) / fine) * size.y;
 			v[i] = { { x, y, z}, {}, {0.0f,0.0f} };
 		}
 		if (i % 4 == 2)
 		{
-			x = cos(((float)(i / 4) * PI * 2) / fineSize) * size.x;
-			y = (i - 2) / (fine * 4) + 1;
-			z = sin(((float)(i / 4) * PI * 2) / fineSize) * size.y;
+			x = cos(((float)(i / 4) * PI * 2) / fine) * size.x;
+			y = i / (fine * 4) + 1;
+			z = sin(((float)(i / 4) * PI * 2) / fine) * size.y;
 			v[i] = { { x, y, z}, {}, {1.0f,1.0f} };
 		}
 		if (i % 4 == 3)
 		{
-			x = cos(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.x;
-			y = (i - 3) / (fine * 4) + 1;
-			z = sin(((float)(i / 4 + 1) * PI * 2) / fineSize) * size.y;
+			x = cos(((float)(i / 4 + 1) * PI * 2) / fine) * size.x;
+			y = i / (fine * 4) + 1;
+			z = sin(((float)(i / 4 + 1) * PI * 2) / fine) * size.y;
 			v[i] = { { x, y, z}, {}, {1.0f,0.0f} };
-		}
+		}*/
+
+		////横
+		//if (i % 4 == 0)
+		//{
+		//	y = sin(((float)(i / 4) * PI * 2) / fine) * size.y;
+		//	x = cos(((float)(i / 4) * PI * 2) / fine) * size.x;
+		//	z = i / (fine * 4);
+		//	v[i] = { {x , y, z}, {}, {0.0f,1.0f} };
+		//}
+		//if (i % 4 == 1)
+		//{
+		//	y = sin(((float)(i / 4 + 1) * PI * 2) / fine) * size.y;
+		//	x = cos(((float)(i / 4 + 1) * PI * 2) / fine) * size.x;
+		//	z = i / (fine * 4);
+		//	v[i] = { { x, y, z}, {}, {0.0f,0.0f} };
+		//}
+		//if (i % 4 == 2)
+		//{
+		//	y = sin(((float)(i / 4) * PI * 2) / fine) * size.y;
+		//	x = cos(((float)(i / 4) * PI * 2) / fine) * size.x;
+		//	z = i / (fine * 4) + 1;
+		//	v[i] = { { x, y, z}, {}, {1.0f,1.0f} };
+		//}
+		//if (i % 4 == 3)
+		//{
+		//	y = sin(((float)(i / 4 + 1) * PI * 2) / fine) * size.y;
+		//	x = cos(((float)(i / 4 + 1) * PI * 2) / fine) * size.x;
+		//	z = i / (fine * 4) + 1;
+		//	v[i] = { { x, y, z}, {}, {1.0f,0.0f} };
+		//}
+
+		//if (i % 4 == 0)
+		//{
+		//	x = cos(((i / 4) * PI * 2) / fine) * sin(((i / (fine * 4)) * PI) / fine) * size.x;
+		//	y = cos(((i / (fine * 4)) * PI) / fine) * size.x;
+		//	z = sin(((i / 4) * PI * 2) / fine) * sin(((i / (fine * 4)) * PI) / fine) * size.y;
+		//	v[i] = { {x , y, z}, {}, {0.0f,1.0f} };
+		//}
+		//if (i % 4 == 1)
+		//{
+		//	x = cos(((i / 4 + 1) * PI * 2) / fine) * sin(((i / (fine * 4) + 1) * PI) / fine) * size.x;
+		//	y = cos(((i / (fine * 4)) * PI) / fine) * size.x;
+		//	z = sin(((i / 4 + 1) * PI * 2) / fine) * sin(((i / (fine * 4) + 1) * PI) / fine) * size.y;
+		//	v[i] = { { x, y, z}, {}, {0.0f,0.0f} };
+		//}
+		//if (i % 4 == 2)
+		//{
+		//	x = cos(((i / 4) * PI * 2) / fine) * sin(((i / (fine * 4)) * PI) / fine) * size.x;
+		//	y = cos(((i / (fine * 4) + 1) * PI) / fine) * size.x;
+		//	z = sin(((i / 4) * PI * 2) / fine) * sin(((i / (fine * 4)) * PI) / fine) * size.y;
+		//	v[i] = { { x, y, z}, {}, {1.0f,1.0f} };
+		//}
+		//if (i % 4 == 3)
+		//{
+		//	x = cos(((i / 4 + 1) * PI * 2) / fine) * sin(((i / (fine * 4) + 1) * PI) / fine) * size.x;
+		//	y = cos(((i / (fine * 4) + 1) * PI) / fine) * size.x;
+		//	z = sin(((i / 4 + 1) * PI * 2) / fine) * sin(((i / (fine * 4) + 1) * PI) / fine) * size.y;
+		//	v[i] = { { x, y, z}, {}, {1.0f,0.0f} };
+		//}
 	}
 
 	unsigned short in[fine * fine* 6];
