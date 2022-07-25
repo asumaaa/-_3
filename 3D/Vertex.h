@@ -63,8 +63,8 @@ public:
 	static Ver3* GetInstance();
 	void Initialize(XMFLOAT3 size);
 public:
-	Vertex vertices[4 * 32];
-	unsigned short indices[6 * 32];
+	Vertex vertices[4 * 32 * 32];
+	unsigned short indices[6 * 32 * 32];
 	UINT sizeVB;
 	UINT sizeIB;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番
