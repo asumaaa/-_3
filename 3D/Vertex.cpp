@@ -269,7 +269,7 @@ void Ver3::Initialize(XMFLOAT3 size)
 	angleY = 0;
 	//頂点データ
 	float x, y, z;
-	for (int i = 0; i < fineSize * fineSize * 2; i++)
+	for (int i = 0; i < fine2; i++)
 	{
 		if (i == 0 || i % 4 == 0)
 		{
@@ -280,7 +280,7 @@ void Ver3::Initialize(XMFLOAT3 size)
 				{
 					angleY += oneAngle;
 				}
-				angleY = (2.0f * PI) * ((float)i / (float)(fine * fine * 4));
+				angleY = (2 * PI) * ((float)(i + fine * 4) / (float)(fine * fine * 4));
 			}
 			else
 			{
@@ -323,8 +323,8 @@ void Ver3::Initialize(XMFLOAT3 size)
 		}
 	}
 
-	unsigned short in[fine * fine* 3];
-	for (int i = 0; i < fineSize * fineSize * 3; i++)
+	unsigned short in[fine3];
+	for (int i = 0; i < fine3; i++)
 	{
 		double num_ = ((i / 6) * 6) * 2 / 3;	
 		if (i == 0 || i % 6 == 0)							{ in[i] = num_; }
@@ -360,18 +360,18 @@ void Ver3::Initialize(XMFLOAT3 size)
 
 
 	//頂点座標、uv座標、インデックスデータを代入
-	for (int i = 0; i < fineSize * fineSize * 2; i++)
+	for (int i = 0; i < fine2; i++)
 	{
 		vertices[i] = v[i];
 	}
 
-	for (int i = 0; i < fineSize * fineSize * 3; i++)
+	for (int i = 0; i < fine3; i++)
 	{
 		indices[i] = in[i];
 	}
 
 	//法線の計算
-	for (int i = 0; i < fineSize * fineSize * 3 / 3; i++)
+	for (int i = 0; i < fine3 / 3; i++)
 	{//三角形1つごとに計算していく
 		//三角形のインデックスを取り出して、一時的な変数に入れる
 		unsigned short indices0 = indices[i * 3 + 0];
