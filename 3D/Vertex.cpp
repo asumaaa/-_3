@@ -268,7 +268,6 @@ void Ver3::Initialize(XMFLOAT3 size)
 	float oneAngle = (2 * PI) / fineSize;
 	angleY = 0;
 	//頂点データ
-	/*Vertex v[fine * fine* 2];*/
 	float x, y, z;
 	for (int i = 0; i < fineSize * fineSize * 2; i++)
 	{
@@ -335,7 +334,6 @@ void Ver3::Initialize(XMFLOAT3 size)
 	}
 
 	//頂点データ
-	/*Vertex v2[fine * fine];*/
 	for (int i = 0; i < fineSize * fineSize ; i++)
 	{
 		if (i == 0)
@@ -440,9 +438,74 @@ void Ver3::Initialize(XMFLOAT3 size)
 
 void Ver3::Update()
 {
-	//// 頂点座標を更新、uv座標、インデックスデータを更新
-	//for (int i = 0; i < fineSize * fineSize * 2; i++)
-	//{
-	//	vertices[i] = v[i];
-	//}
+	 //頂点座標を更新、uv座標、インデックスデータを更新
+	for (int i = 0; i < fineSize * fineSize * 2; i++)
+	{
+		vertices[i] = v[i];
+	}
+
+	//法線の計算
+	for (int i = 0; i < fineSize * fineSize * 3 / 3; i++)
+	{//三角形1つごとに計算していく
+		//三角形のインデックスを取り出して、一時的な変数に入れる
+		unsigned short indices0 = indices[i * 3 + 0];
+		unsigned short indices1 = indices[i * 3 + 1];
+		unsigned short indices2 = indices[i * 3 + 2];
+		//三角形を構成する頂点座標をベクトルに代入
+		XMVECTOR p0 = XMLoadFloat3(&vertices[indices0].pos);
+		XMVECTOR p1 = XMLoadFloat3(&vertices[indices1].pos);
+		XMVECTOR p2 = XMLoadFloat3(&vertices[indices2].pos);
+		//p0→p1ベクトル、p0→p2ベクトルを計算　(ベクトルの減算)
+		XMVECTOR v1 = XMVectorSubtract(p1, p0);
+		XMVECTOR v2 = XMVectorSubtract(p2, p0);
+		//外積は両方から垂直なベクトル
+		XMVECTOR normal = XMVector3Cross(v1, v2);
+		//正規化
+		normal = XMVector3Normalize(normal);
+		//求めた法線を頂点データに代入
+		XMStoreFloat3(&vertices[indices0].normalize, normal);
+		XMStoreFloat3(&vertices[indices1].normalize, normal);
+		XMStoreFloat3(&vertices[indices2].normalize, normal);
+	}
+
+	sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
+	sizeIB = static_cast<UINT>(sizeof(uint16_t) * _countof(indices));
+
+	//頂点レイアウト
+	D3D12_INPUT_ELEMENT_DESC inputLayout_[] =
+	{
+		{	//xyz座標
+			"POSITION",
+			0,
+			DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+		//normalize
+		{
+			"NORMAL",
+			0,
+			DXGI_FORMAT_R32G32B32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+		//uv
+		{
+			"TEXCOORD",
+			0,
+			DXGI_FORMAT_R32G32_FLOAT,
+			0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+			0
+		},
+	};
+	for (int i = 0; i < 3; i++)
+	{
+		inputLayout[i] = inputLayout_[i];
+	}
 }

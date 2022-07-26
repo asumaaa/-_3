@@ -67,15 +67,7 @@ void Sphere::Update()
 	HRESULT result;
 	vertex->Update();
 	indexBuff.Initialize(vertex, dx);
-	vertBuff.GetInstance();
 	vertBuff.Initialize(vertex, dx);
-	shader.GetInstance();
-	shader.compileVs(L"BasicVS.hlsl");
-	shader.compilePs(L"BasicPS.hlsl");
-	rootSig.GetInstance();
-	rootSig.Initialize(shader, dx);
-	pipe.GetInstance();
-	pipe.Initialize(shader, rootSig, vertex, dx);
 	//パイプラインステート
 	result = dx->GetDevice()->CreateGraphicsPipelineState(&pipe.pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));

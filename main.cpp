@@ -159,27 +159,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (input->key[DIK_L]) { object3ds[1].position.x += 0.5f; }
 		else if (input->key[DIK_J]) { object3ds[1].position.x -= 0.5f; }
 
-		if (input->key[DIK_1])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
-			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
-		}
-		if (input->key[DIK_2])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
-			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
-		}
-		if (input->key[DIK_3])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
-			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
-		}
-		if (input->key[DIK_4])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
-			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
-		}
-
 		//バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = dx->GetSwapChain()->GetCurrentBackBufferIndex();
 
@@ -203,9 +182,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		// 4. 描画コマンド
-		sphere->Update();
-		/*sphere2->Update();*/
 
+		if (input->key[DIK_1])
+		{
+			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
+			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
+		}
+		if (input->key[DIK_2])
+		{
+			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
+			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
+		}
+		if (input->key[DIK_3])
+		{
+			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
+			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
+		}
+		if (input->key[DIK_4])
+		{
+			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
+			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
+		}
+
+		sphere->Update();
 		//円を描画
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();
