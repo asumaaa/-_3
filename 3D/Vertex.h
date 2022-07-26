@@ -61,9 +61,11 @@ class Ver3
 public:
 	static Ver3* GetInstance();
 	void Initialize(XMFLOAT3 size);
+	void Update();
 public:
 	const float fineSize = 48;	//‹…‘Ì‚Ì×‚©‚³
 	Vertex vertices[4 * 48 * 48];
+	Vertex vertices2[48 * 48];
 	unsigned short indices[6 * 48 * 48];
 	UINT sizeVB;
 	UINT sizeIB;

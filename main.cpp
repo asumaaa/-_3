@@ -21,17 +21,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Initialize(win);
 
 #pragma region 描画処理初期化
-	Square2* square = nullptr;
-	square = Square2::GetInstance();
-	square->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f),dx);
-
-	Triangle* triangle = nullptr;
-	triangle = Triangle::GetInstance();
-	triangle->Initialize(XMFLOAT3(10.0f,10.0f,10.0f),dx);
-
 	Sphere* sphere = nullptr;
 	sphere = Sphere::GetInstance();
 	sphere->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx);
+
+	Sphere* sphere2 = nullptr;
+	sphere2 = Sphere::GetInstance();
+	sphere2->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx);
 
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResorceDesc{};
@@ -166,18 +162,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (input->key[DIK_1])
 		{
 			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
+			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
 		}
 		if (input->key[DIK_2])
 		{
 			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
+			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
 		}
 		if (input->key[DIK_3])
 		{
 			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
+			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
 		}
 		if (input->key[DIK_4])
 		{
 			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
+			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
 		}
 
 		//バックバッファの番号を取得(2つなので0番か1番)
@@ -204,6 +204,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 4. 描画コマンド
 		sphere->Update();
+		/*sphere2->Update();*/
 
 		//円を描画
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
@@ -212,7 +213,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		texture[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[1].Draw();
-		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere->vertBuff.vbView, sphere->indexBuff.ibView, _countof(sphere->vertex->indices));
+		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere2->vertBuff.vbView, sphere2->indexBuff.ibView, _countof(sphere2->vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から

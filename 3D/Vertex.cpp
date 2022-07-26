@@ -334,6 +334,31 @@ void Ver3::Initialize(XMFLOAT3 size)
 		if (i == 5 || i % 6 == 5)							{ in[i] = num_ + 3; }
 	}
 
+	////頂点データ
+	//Vertex v2[fine * fine];
+	//for (int i = 0; i < fineSize * fineSize * 2; i++)
+	//{
+	//	if (i == 0)
+	//	{
+	//		angleX = (2.0f * PI) * ((float)i / (float)(fine));
+	//	}
+	//	else
+	//	{
+	//		angleX += oneAngle;
+	//	}
+	//	if (i == 0 || i % fine == 0)
+	//	{
+	//		angleY = (2.0f * PI) * ((float)i / (float)(fine * fine));
+	//	}
+	//	else
+	//	{
+	//		angleX += oneAngle;
+	//	}
+	//	x = size.x * cos(angleX) * sin(angleY);
+	//	y = size.y * cos(angleY);
+	//	z = size.z * sin(angleX) * sin(angleY);
+	//	v2[i] = { {x , y, z}, {}, {1.0f,0.0f} };
+	//}
 
 
 	//頂点座標、uv座標、インデックスデータを代入
