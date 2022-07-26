@@ -55,7 +55,11 @@ public:
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番
 };
 
-	const int fine = 48;	//球体の細かさ	変数宣言用
+const int fine = 48;	//球体の細かさ	変数宣言用
+const int fine2 = fine * fine * 4;	//描画に使う頂点の数
+const int fine3 = fine * fine * 6;	//インデックスの数
+const int fine4 = fine * fine;	//頂点の数
+
 class Ver3
 {
 public:
@@ -63,10 +67,10 @@ public:
 	void Initialize(XMFLOAT3 size);
 	void Update();
 public:
-	const float fineSize = 48;	//球体の細かさ
-	Vertex vertices[4 * 48 * 48];
-	Vertex vertices2[48 * 48];
-	unsigned short indices[6 * 48 * 48];
+	const float fineSize = fine;	//球体の細かさ
+	Vertex vertices[fine2];	//外部に渡す用の頂点データ
+	Vertex v[fine2], v2[fine4];	//計算用頂点データ
+	unsigned short indices[fine3];
 	UINT sizeVB;
 	UINT sizeIB;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番

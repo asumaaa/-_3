@@ -268,7 +268,7 @@ void Ver3::Initialize(XMFLOAT3 size)
 	float oneAngle = (2 * PI) / fineSize;
 	angleY = 0;
 	//頂点データ
-	Vertex v[fine * fine* 2];
+	/*Vertex v[fine * fine* 2];*/
 	float x, y, z;
 	for (int i = 0; i < fineSize * fineSize * 2; i++)
 	{
@@ -334,31 +334,31 @@ void Ver3::Initialize(XMFLOAT3 size)
 		if (i == 5 || i % 6 == 5)							{ in[i] = num_ + 3; }
 	}
 
-	////頂点データ
-	//Vertex v2[fine * fine];
-	//for (int i = 0; i < fineSize * fineSize * 2; i++)
-	//{
-	//	if (i == 0)
-	//	{
-	//		angleX = (2.0f * PI) * ((float)i / (float)(fine));
-	//	}
-	//	else
-	//	{
-	//		angleX += oneAngle;
-	//	}
-	//	if (i == 0 || i % fine == 0)
-	//	{
-	//		angleY = (2.0f * PI) * ((float)i / (float)(fine * fine));
-	//	}
-	//	else
-	//	{
-	//		angleX += oneAngle;
-	//	}
-	//	x = size.x * cos(angleX) * sin(angleY);
-	//	y = size.y * cos(angleY);
-	//	z = size.z * sin(angleX) * sin(angleY);
-	//	v2[i] = { {x , y, z}, {}, {1.0f,0.0f} };
-	//}
+	//頂点データ
+	/*Vertex v2[fine * fine];*/
+	for (int i = 0; i < fineSize * fineSize ; i++)
+	{
+		if (i == 0)
+		{
+			angleX = (2.0f * PI) * ((float)i / (float)(fine));
+		}
+		else
+		{
+			angleX += oneAngle;
+		}
+		if (i == 0 || i % fine == 0)
+		{
+			angleY = (2.0f * PI) * ((float)i / (float)(fine * fine));
+		}
+		else
+		{
+			angleX += oneAngle;
+		}
+		x = size.x * cos(angleX) * sin(angleY);
+		y = size.y * cos(angleY);
+		z = size.z * sin(angleX) * sin(angleY);
+		v2[i] = { {x , y, z}, {}, {1.0f,0.0f} };
+	}
 
 
 	//頂点座標、uv座標、インデックスデータを代入
@@ -436,4 +436,13 @@ void Ver3::Initialize(XMFLOAT3 size)
 	{
 		inputLayout[i] = inputLayout_[i];
 	}
+}
+
+void Ver3::Update()
+{
+	//// 頂点座標を更新、uv座標、インデックスデータを更新
+	//for (int i = 0; i < fineSize * fineSize * 2; i++)
+	//{
+	//	vertices[i] = v[i];
+	//}
 }
