@@ -80,11 +80,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	);
 
 	//読み込む画像の数
-	const size_t metadataCount = 1;
+	const size_t metadataCount = 2;
 	//画像
 	Texture texture[metadataCount];
 	//初期化
 	texture[0].Initialize(dx, 0);
+	texture[1].Initialize(dx, 1);
 
 
 	//3Dオブジェクトの数
@@ -105,8 +106,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			object3ds[i].parent = &object3ds[i - 1];
 			//親オブジェクトを元にアフィン変換情報を生成
 			object3ds[i].scale = { 1.0f,1.0f,1.0f };
-			object3ds[i].rotation = { 0.0f,0.0f,XMConvertToRadians(30.0f) };
-			object3ds[i].position = { -20.0f,0.0f,-8.0f };
+			object3ds[i].rotation = { 0.0f,0.0f,0.0f };
+			object3ds[i].position = { -60.0f,0.0f,0.0f };
+			object3ds[i].parent = 0;
 		}
 	}
 
@@ -141,32 +143,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			UpdateObject3d(&object3ds[i], matView, matProjection);
 		}
+		//オブジェクト0の移動処理
+		if (input->key[DIK_D]) {object3ds[0].rotation.y += XMConvertToRadians(1.0f);}
+		else if (input->key[DIK_A]) {object3ds[0].rotation.y -= XMConvertToRadians(1.0f);}
+		if (input->key[DIK_S]) {object3ds[0].rotation.x += XMConvertToRadians(1.0f);}
+		else if (input->key[DIK_W]) { object3ds[0].rotation.x -= XMConvertToRadians(1.0f); }
+		if (input->key[DIK_UP]) { object3ds[0].position.z += 0.5f; }
+		else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 0.5f; }
+		if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 0.5f; }
+		else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 0.5f; }
 
-		if (input->key[DIK_D] || input->key[DIK_A] || input->key[DIK_W] || input->key[DIK_S])
-		{
-			if (input->key[DIK_D]) {
-				object3ds[0].rotation.y += XMConvertToRadians(1.0f);
-			}
-			else if (input->key[DIK_A]) {
-				object3ds[0].rotation.y -= XMConvertToRadians(1.0f);
-			}
-			if (input->key[DIK_S]) {
-				object3ds[0].rotation.x += XMConvertToRadians(1.0f);
-			}
-			else if (input->key[DIK_W]) {
-				object3ds[0].rotation.x -= XMConvertToRadians(1.0f);
-			}
-		}
-
-		//座標を移動する処理
-		if (input->key[DIK_UP] || input->key[DIK_DOWN] || input->key[DIK_RIGHT] ||input->key[DIK_LEFT])
-		{
-			if (input->key[DIK_UP]) { object3ds[0].position.z += 1.0f; }
-			else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 1.0f; }
-			if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 1.0f; }
-			else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 1.0f; }
-
-		}
+		//オブジェクト1の移動処理
+		if (input->key[DIK_H]) { object3ds[1].rotation.y += XMConvertToRadians(1.0f); }
+		else if (input->key[DIK_F]) { object3ds[1].rotation.y -= XMConvertToRadians(1.0f); }
+		if (input->key[DIK_G]) { object3ds[1].rotation.x += XMConvertToRadians(1.0f); }
+		else if (input->key[DIK_T]) { object3ds[1].rotation.x -= XMConvertToRadians(1.0f); }
+		if (input->key[DIK_I]) { object3ds[1].position.z += 0.5f; }
+		else if (input->key[DIK_K]) { object3ds[1].position.z -= 0.5f; }
+		if (input->key[DIK_L]) { object3ds[1].position.x += 0.5f; }
+		else if (input->key[DIK_J]) { object3ds[1].position.x -= 0.5f; }
 
 		if (input->key[DIK_1])
 		{
@@ -214,6 +209,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();
 		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere->vertBuff.vbView, sphere->indexBuff.ibView, _countof(sphere->vertex->indices));
+
+		texture[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
+		texture[1].Draw();
+		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere->vertBuff.vbView, sphere->indexBuff.ibView, _countof(sphere->vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
