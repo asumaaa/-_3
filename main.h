@@ -35,4 +35,4 @@ HRESULT result;
 float angle = 0.0f;
 
 //ç¿ïW
-XMFLOAT3 position = { 0.0f,0.0f,0.0f };
+XMFLOAT3 position = { 0.0f,-20.0f,0.0f };

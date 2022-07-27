@@ -6,7 +6,7 @@ Sphere* Sphere::GetInstance()
 	return &instance;
 }
 
-void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_)
+void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file)
 {
 	dx = dx_;
 	HRESULT result;
@@ -18,7 +18,7 @@ void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_)
 	vertBuff.GetInstance();
 	vertBuff.Initialize(vertex, dx);
 	shader.GetInstance();
-	shader.compileVs(L"BasicVS.hlsl");
+	shader.compileVs(file);
 	shader.compilePs(L"BasicPS.hlsl");
 	rootSig.GetInstance();
 	rootSig.Initialize(shader, dx);

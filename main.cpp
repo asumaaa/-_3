@@ -21,13 +21,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Initialize(win);
 
 #pragma region 描画処理初期化
+
+	Triangle* triangle = nullptr;
+	triangle = Triangle::GetInstance();
+	triangle->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f),dx);
+
 	Sphere* sphere = nullptr;
 	sphere = Sphere::GetInstance();
-	sphere->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx);
+	sphere->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx, L"BasicVS.hlsl");
 
 	Sphere* sphere2 = nullptr;
 	sphere2 = Sphere::GetInstance();
-	sphere2->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx);
+	sphere2->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx,L"BasicVS.hlsl");
 
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResorceDesc{};
@@ -88,6 +93,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	const size_t kObjectCount = 2;
 	//3Dオブジェクトの配列
 	Object3d object3ds[kObjectCount];
+	object3ds[0].position = { 20.0f,0.0f,-60.0f };
+	object3ds[1].position = { -20.0f,0.0f,-60.0f };
 
 	//配列内すべてのオブジェクトに対して
 	for (int i = 0; i < _countof(object3ds); i++)
@@ -103,7 +110,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//親オブジェクトを元にアフィン変換情報を生成
 			object3ds[i].scale = { 1.0f,1.0f,1.0f };
 			object3ds[i].rotation = { 0.0f,0.0f,0.0f };
-			object3ds[i].position = { -60.0f,0.0f,0.0f };
+			/*object3ds[i].position = { -60.0f,0.0f,0.0f };*/
 			object3ds[i].parent = 0;
 		}
 	}
@@ -144,20 +151,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		else if (input->key[DIK_A]) {object3ds[0].rotation.y -= XMConvertToRadians(1.0f);}
 		if (input->key[DIK_S]) {object3ds[0].rotation.x += XMConvertToRadians(1.0f);}
 		else if (input->key[DIK_W]) { object3ds[0].rotation.x -= XMConvertToRadians(1.0f); }
-		if (input->key[DIK_UP]) { object3ds[0].position.z += 0.5f; }
-		else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 0.5f; }
-		if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 0.5f; }
-		else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 0.5f; }
+		if (input->key[DIK_UP]) { object3ds[0].position.z += 0.1f; }
+		else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 0.1f; }
+		if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 0.1f; }
+		else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 0.1f; }
 
 		//オブジェクト1の移動処理
-		if (input->key[DIK_H]) { object3ds[1].rotation.y += XMConvertToRadians(1.0f); }
+		/*if (input->key[DIK_H]) { object3ds[1].rotation.y += XMConvertToRadians(1.0f); }
 		else if (input->key[DIK_F]) { object3ds[1].rotation.y -= XMConvertToRadians(1.0f); }
 		if (input->key[DIK_G]) { object3ds[1].rotation.x += XMConvertToRadians(1.0f); }
-		else if (input->key[DIK_T]) { object3ds[1].rotation.x -= XMConvertToRadians(1.0f); }
-		if (input->key[DIK_I]) { object3ds[1].position.z += 0.5f; }
-		else if (input->key[DIK_K]) { object3ds[1].position.z -= 0.5f; }
-		if (input->key[DIK_L]) { object3ds[1].position.x += 0.5f; }
-		else if (input->key[DIK_J]) { object3ds[1].position.x -= 0.5f; }
+		else if (input->key[DIK_T]) { object3ds[1].rotation.x -= XMConvertToRadians(1.0f); }*/
+		if (input->key[DIK_I]) { object3ds[1].position.z += 0.1f; }
+		else if (input->key[DIK_K]) { object3ds[1].position.z -= 0.1f; }
+		if (input->key[DIK_L]) { object3ds[1].position.x += 0.1f; }
+		else if (input->key[DIK_J]) { object3ds[1].position.x -= 0.1f; }
 
 		//バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = dx->GetSwapChain()->GetCurrentBackBufferIndex();
@@ -203,8 +210,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
 			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
 		}
+		sphere->vertex->v2[9].pos.x += 0.02;
 
 		sphere->Update();
+		/*sphere2->Update();*/
 		//円を描画
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();

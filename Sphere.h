@@ -12,7 +12,7 @@ class Sphere
 {
 public:
 	static Sphere* GetInstance();
-	void Initialize(XMFLOAT3 size, DirectXIni* dx_);
+	void Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file);
 	void Update();
 public:
 	Ver3* vertex = nullptr;

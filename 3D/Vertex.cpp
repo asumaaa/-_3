@@ -521,7 +521,7 @@ void Ver3::Initialize(XMFLOAT3 size)
 
 void Ver3::Update()
 {
-	v2[15].pos.x += 0.03f;
+	/*v2[15].pos.x += 0.03f;*/
 	//e’¸“_‚ğ‚à‚Æ‚É’¸“_‚ğˆÚ“®
 	for (int i = 0; i < fine2; i++)
 	{
