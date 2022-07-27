@@ -5,7 +5,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ウィンドウ生成
 	WinApp* win = nullptr;
 	win = WinApp::GetInstance();
-	win->CreateWindow_(L"1");
+	win->CreateWindow_(L"DirectX");
 
 	Masage* masage;	//メッセージ
 	masage = Masage::GetInstance();
@@ -22,17 +22,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region 描画処理初期化
 
-	Triangle* triangle = nullptr;
-	triangle = Triangle::GetInstance();
-	triangle->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f),dx);
+	Sphere sphere;
+	sphere.Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx, L"BasicVS.hlsl");
 
-	Sphere* sphere = nullptr;
-	sphere = Sphere::GetInstance();
-	sphere->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx, L"BasicVS.hlsl");
-
-	Sphere* sphere2 = nullptr;
-	sphere2 = Sphere::GetInstance();
-	sphere2->Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx,L"BasicVS.hlsl");
+	Sphere sphere2;
+	sphere2.Initialize(XMFLOAT3(5.0f, 5.0f, 5.0f), dx, L"BasicVS.hlsl");
 
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResorceDesc{};
@@ -93,26 +87,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	const size_t kObjectCount = 2;
 	//3Dオブジェクトの配列
 	Object3d object3ds[kObjectCount];
-	object3ds[0].position = { 20.0f,0.0f,-60.0f };
-	object3ds[1].position = { -20.0f,0.0f,-60.0f };
+	object3ds[0].position = { 20.0f,0.0f,-20.0f };
+	object3ds[1].position = { -20.0f,0.0f,-20.0f };
 
 	//配列内すべてのオブジェクトに対して
 	for (int i = 0; i < _countof(object3ds); i++)
 	{
 		//初期化
 		InitializeObject3d(&object3ds[i], dx->GetDevice());
-
-		//ここから↓は親子構造のサンプル
-		if (i > 0)
-		{
-			//ひとつ前のオブジェクトを親オブジェクトとする
-			object3ds[i].parent = &object3ds[i - 1];
-			//親オブジェクトを元にアフィン変換情報を生成
 			object3ds[i].scale = { 1.0f,1.0f,1.0f };
 			object3ds[i].rotation = { 0.0f,0.0f,0.0f };
-			/*object3ds[i].position = { -60.0f,0.0f,0.0f };*/
-			object3ds[i].parent = 0;
-		}
 	}
 
 	//射影変換
@@ -146,25 +130,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			UpdateObject3d(&object3ds[i], matView, matProjection);
 		}
-		//オブジェクト0の移動処理
-		if (input->key[DIK_D]) {object3ds[0].rotation.y += XMConvertToRadians(1.0f);}
-		else if (input->key[DIK_A]) {object3ds[0].rotation.y -= XMConvertToRadians(1.0f);}
-		if (input->key[DIK_S]) {object3ds[0].rotation.x += XMConvertToRadians(1.0f);}
-		else if (input->key[DIK_W]) { object3ds[0].rotation.x -= XMConvertToRadians(1.0f); }
-		if (input->key[DIK_UP]) { object3ds[0].position.z += 0.1f; }
-		else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 0.1f; }
-		if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 0.1f; }
-		else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 0.1f; }
 
-		//オブジェクト1の移動処理
-		/*if (input->key[DIK_H]) { object3ds[1].rotation.y += XMConvertToRadians(1.0f); }
-		else if (input->key[DIK_F]) { object3ds[1].rotation.y -= XMConvertToRadians(1.0f); }
-		if (input->key[DIK_G]) { object3ds[1].rotation.x += XMConvertToRadians(1.0f); }
-		else if (input->key[DIK_T]) { object3ds[1].rotation.x -= XMConvertToRadians(1.0f); }*/
-		if (input->key[DIK_I]) { object3ds[1].position.z += 0.1f; }
-		else if (input->key[DIK_K]) { object3ds[1].position.z -= 0.1f; }
-		if (input->key[DIK_L]) { object3ds[1].position.x += 0.1f; }
-		else if (input->key[DIK_J]) { object3ds[1].position.x -= 0.1f; }
+		if (input->key[DIK_D] || input->key[DIK_A] || input->key[DIK_W] || input->key[DIK_S])
+		{
+			if (input->key[DIK_D]) {
+				object3ds[0].rotation.y += XMConvertToRadians(1.0f);
+			}
+			else if (input->key[DIK_A]) {
+				object3ds[0].rotation.y -= XMConvertToRadians(1.0f);
+			}
+			if (input->key[DIK_S]) {
+				object3ds[0].rotation.x += XMConvertToRadians(1.0f);
+			}
+			else if (input->key[DIK_W]) {
+				object3ds[0].rotation.x -= XMConvertToRadians(1.0f);
+			}
+		}
+
+		//座標を移動する処理
+		if (input->key[DIK_UP] || input->key[DIK_DOWN] || input->key[DIK_RIGHT] ||input->key[DIK_LEFT])
+		{
+			if (input->key[DIK_UP]) { object3ds[0].position.z += 1.0f; }
+			else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 1.0f; }
+			if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 1.0f; }
+			else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 1.0f; }
+
+		}
 
 		//バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = dx->GetSwapChain()->GetCurrentBackBufferIndex();
@@ -189,39 +180,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		// 4. 描画コマンド
+		sphere.Update();
+		sphere2.Update();
+		/*triangle->Update();*/
 
-		if (input->key[DIK_1])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
-			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
-		}
-		if (input->key[DIK_2])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
-			sphere2->pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//背面をカリング
-		}
-		if (input->key[DIK_3])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
-			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
-		}
-		if (input->key[DIK_4])
-		{
-			sphere->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
-			sphere2->pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ワイヤーフレーム
-		}
-		sphere->vertex->v2[9].pos.x += 0.02;
-
-		sphere->Update();
-		/*sphere2->Update();*/
 		//円を描画
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();
-		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere->vertBuff.vbView, sphere->indexBuff.ibView, _countof(sphere->vertex->indices));
-
-		texture[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
-		texture[1].Draw();
-		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere2->vertBuff.vbView, sphere2->indexBuff.ibView, _countof(sphere2->vertex->indices));
+		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere.vertBuff.vbView, sphere.indexBuff.ibView, _countof(sphere.vertex->indices));
+		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere2.vertBuff.vbView, sphere2.indexBuff.ibView, _countof(sphere2.vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から

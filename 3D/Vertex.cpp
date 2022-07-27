@@ -359,17 +359,6 @@ void Ver3::Initialize(XMFLOAT3 size)
 		v2[i] = { {x , y, z}, {}, {0.0f,0.0f} };
 	}
 
-	////親頂点データを割り当て
-	//for (int i = 0; i < fine2; i++)
-	//{
-	//	for (int j = 0; j < fine4; j++)
-	//	{
-	//		if (v2[j].pos.x == v[i].pos.x && v2[j].pos.y == v[i].pos.y && v2[j].pos.z == v[i].pos.z)
-	//		{
-	//			v[i].parent = &v2[j];
-	//		}
-	//	}
-	//}
 
 	for (int i = 0; i < fine2; i++)
 	{
