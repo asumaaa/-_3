@@ -22,6 +22,7 @@ struct Vertex
 	XMFLOAT3 pos;	//座標
 	XMFLOAT3 normalize;	//法線ベクトル
 	XMFLOAT2 uv;	//uv座標
+	Vertex* parent = nullptr;
 };
 
 struct Indices
@@ -55,10 +56,10 @@ public:
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番
 };
 
-const int fine = 48;	//球体の細かさ	変数宣言用
+const int fine = 8;	//球体の細かさ	変数宣言用
 const int fine2 = fine * fine * 2;	//描画に使う頂点の数
 const int fine3 = fine * fine * 3;	//インデックスの数
-const int fine4 = fine * fine;	//頂点の数
+const int fine4 = fine * 5;	//頂点の数
 
 class Ver3
 {

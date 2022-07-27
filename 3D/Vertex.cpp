@@ -273,13 +273,12 @@ void Ver3::Initialize(XMFLOAT3 size)
 	{
 		if (i == 0 || i % 4 == 0)
 		{
-			angleX = (2.0f * PI) * ((float)i / (float)(fine * 4));
+			if (i == 0)
+			{
+				angleX = 0;
+			}
 			if (i == 0 || i % (fine * 4) == 0)
 			{
-				if (i != 0)
-				{
-					angleY += oneAngle;
-				}
 				angleY = (2 * PI) * ((float)(i + fine * 4) / (float)(fine * fine * 4));
 			}
 			else
@@ -333,29 +332,113 @@ void Ver3::Initialize(XMFLOAT3 size)
 		if (i == 5 || i % 6 == 5)							{ in[i] = num_ + 3; }
 	}
 
-	//頂点データ
-	for (int i = 0; i < fineSize * fineSize ; i++)
+	angleY = 0;
+	angleX = 0;
+	//頂点データ	上から順番に割り当てる
+	for (int i = 0; i < fine4 ; i++)
 	{
-		if (i == 0)
-		{
-			angleX = (2.0f * PI) * ((float)i / (float)(fine));
-		}
-		else
-		{
-			angleX += oneAngle;
-		}
 		if (i == 0 || i % fine == 0)
 		{
-			angleY = (2.0f * PI) * ((float)i / (float)(fine * fine));
+			angleX = 0;
 		}
 		else
 		{
 			angleX += oneAngle;
+		}
+		if (i == 0)
+		{
+			angleY = 0;
+		}
+		else if (i != 0 && i >= fine && i % fine == 0)
+		{
+			angleY = (2 * PI) * ((float)(i) / (float)(fine * fine));
 		}
 		x = size.x * cos(angleX) * sin(angleY);
 		y = size.y * cos(angleY);
 		z = size.z * sin(angleX) * sin(angleY);
-		v2[i] = { {x , y, z}, {}, {1.0f,0.0f} };
+		v2[i] = { {x , y, z}, {}, {0.0f,0.0f} };
+	}
+
+	////親頂点データを割り当て
+	//for (int i = 0; i < fine2; i++)
+	//{
+	//	for (int j = 0; j < fine4; j++)
+	//	{
+	//		if (v2[j].pos.x == v[i].pos.x && v2[j].pos.y == v[i].pos.y && v2[j].pos.z == v[i].pos.z)
+	//		{
+	//			v[i].parent = &v2[j];
+	//		}
+	//	}
+	//}
+
+	for (int i = 0; i < fine2; i++)
+	{
+		for (int j = 0; j < fine4; j++)
+		{
+			//uv(0.0f,0.0f)
+			if (i == 1 || i % 4 == 1)
+			{
+				if (i == 1)
+				{
+					v[i].parent = &v2[0];
+				}
+				else if (i % 4 == 1 && i != 1)
+				{
+					v[i].parent = &v2[i / 4];
+				}
+			}
+			//uv(1.0f,0.0f)
+			if (i == 3 || i % 4 == 3)
+			{
+				if (i == 3)
+				{
+					v[i].parent = &v2[1];
+				}
+				else if (i % 4 == 3)
+				{
+					if (i % (fine * 4) != (fine * 4) - 1 && i != (fine * 4) - 1)
+					{
+						v[i].parent = &v2[(i + 1) / 4];
+					}
+					if (i % (fine * 4) == (fine * 4) - 1 || i == (fine * 4) - 1)
+					{
+						v[i].parent = &v2[(i / 4) - (fine - 1)];
+					}
+				}
+			}
+
+			//uv(0.0f,1.0f)
+			if (i == 0 || i % 4 == 0)
+			{
+				if (i == 0)
+				{
+					v[i].parent = &v2[fine];
+				}
+				else if (i % 4 == 0 && i != 0)
+				{
+					v[i].parent = &v2[(i / 4) + fine];
+				}
+			}
+
+			if (i == 2 || i % 4 == 2)
+			{
+				if (i == 2)
+				{
+					v[i].parent = &v2[fine + 1];
+				}
+				else if (i % 4 == 2)
+				{
+					if (i % (fine * 4) != (fine * 4) - 2 && i != (fine * 4) - 2)
+					{
+						v[i].parent = &v2[(i + 2) / 4 + fine];
+					}
+					if (i % (fine * 4) == (fine * 4) - 2 || i == (fine * 4) - 2)
+					{
+						v[i].parent = &v2[(i / 4) - (fine - 1) + fine];
+					}
+				}
+			}
+		}
 	}
 
 
@@ -438,6 +521,18 @@ void Ver3::Initialize(XMFLOAT3 size)
 
 void Ver3::Update()
 {
+	v2[15].pos.x += 0.03f;
+	//親頂点をもとに頂点を移動
+	for (int i = 0; i < fine2; i++)
+	{
+		if (v[i].parent != nullptr)
+		{
+			v[i].pos.x = v[i].parent->pos.x;
+			v[i].pos.y = v[i].parent->pos.y;
+			v[i].pos.z = v[i].parent->pos.z;
+		}
+			/*v[0].pos.x = v[0].parent->pos.x;*/
+	}
 	 //頂点座標を更新、uv座標、インデックスデータを更新
 	for (int i = 0; i < fineSize * fineSize * 2; i++)
 	{
