@@ -140,6 +140,7 @@ void Ver::Initialize(XMFLOAT3 size)
 		{
 			inputLayout[i] = inputLayout_[i];
 		}
+		
 }
 
 Ver2* Ver2::GetInstance()
@@ -264,8 +265,6 @@ Ver3* Ver3::GetInstance()
 
 void Ver3::Initialize(XMFLOAT3 size)
 {
-	float angleX, angleY;
-	float oneAngle = (2 * PI) / fineSize;
 	angleY = 0;
 	//頂点データ
 	float x, y, z;
@@ -286,39 +285,39 @@ void Ver3::Initialize(XMFLOAT3 size)
 				angleY += oneAngle;
 			}
 
-			x = size.x * cos(angleX) * sin(angleY);
-			y = size.y * cos(angleY);
-			z = size.z * sin(angleX) * sin(angleY);
-			v[i] = { {x , y, z}, {}, {0.0f,1.0f} };
+			v[i].pos.x = size.x * cos(angleX) * sin(angleY);
+			v[i].pos.y = size.y * cos(angleY);
+			v[i].pos.z = size.z * sin(angleX) * sin(angleY);
+			
 		}
 
 		if (i == 1 || i % 4 == 1)
 		{
 			angleY -= oneAngle;
 
-			x = size.x * cos(angleX) * sin(angleY);
-			y = size.y * cos(angleY);
-			z = size.z * sin(angleX) * sin(angleY);
-			v[i] = { {x , y, z}, {}, {0.0f,0.0f} };
+			v[i].pos.x = size.x * cos(angleX) * sin(angleY);
+			v[i].pos.y = size.y * cos(angleY);
+			v[i].pos.z = size.z * sin(angleX) * sin(angleY);
+			
 		}
 		if (i == 2 || i % 4 == 2)
 		{
 			angleX += oneAngle;
 			angleY += oneAngle;
 
-			x = size.x * cos(angleX) * sin(angleY);
-			y = size.y * cos(angleY);
-			z = size.z * sin(angleX) * sin(angleY);
-			v[i] = { {x , y, z}, {}, {1.0f,1.0f} };
+			v[i].pos.x = size.x * cos(angleX) * sin(angleY);
+			v[i].pos.y = size.y * cos(angleY);
+			v[i].pos.z = size.z * sin(angleX) * sin(angleY);
+			
 		}
 		if (i == 3 || i % 4 == 3)
 		{
 			angleY -= oneAngle;
 
-			x = size.x * cos(angleX) * sin(angleY);
-			y = size.y * cos(angleY);
-			z = size.z * sin(angleX) * sin(angleY);
-			v[i] = { {x , y, z}, {}, {1.0f,0.0f} };
+			v[i].pos.x = size.x * cos(angleX) * sin(angleY);
+			v[i].pos.y = size.y * cos(angleY);
+			v[i].pos.z = size.z * sin(angleX) * sin(angleY);
+			
 		}
 	}
 
@@ -353,10 +352,12 @@ void Ver3::Initialize(XMFLOAT3 size)
 		{
 			angleY = (2 * PI) * ((float)(i) / (float)(fine * fine));
 		}
-		x = size.x * cos(angleX) * sin(angleY);
-		y = size.y * cos(angleY);
-		z = size.z * sin(angleX) * sin(angleY);
-		v2[i] = { {x , y, z}, {}, {0.0f,0.0f} };
+		v2[i].pos.x = size.x * cos(angleX) * sin(angleY);
+		v2[i].pos.y = size.y * cos(angleY);
+		v2[i].pos.z = size.z * sin(angleX) * sin(angleY);
+		v3[i].pos.x = v2[i].pos.x;
+		v3[i].pos.y = v2[i].pos.y;
+		v3[i].pos.z = v2[i].pos.z;
 	}
 
 
@@ -505,6 +506,18 @@ void Ver3::Initialize(XMFLOAT3 size)
 	for (int i = 0; i < 3; i++)
 	{
 		inputLayout[i] = inputLayout_[i];
+	}
+}
+
+void Ver3::Initialize2(XMFLOAT3 size)
+{
+	/*float x, y, z;*/
+	//頂点データ	上から順番に割り当てる
+	for (int i = 0; i < fine4; i++)
+	{
+		v2[i].pos.x = v3[i].pos.x;
+		v2[i].pos.y = v3[i].pos.y;
+		v2[i].pos.z = v3[i].pos.z;
 	}
 }
 

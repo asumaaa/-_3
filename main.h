@@ -38,3 +38,6 @@ float angle = 0.0f;
 XMFLOAT3 position = { 0.0f,0.0f,-40.0f };
 
 float x = 0;
+
+Gravity g[fine4]; 
+Gravity gra;

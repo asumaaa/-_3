@@ -2,45 +2,45 @@
 
 void Gravity::Initialize(float x_, float y_, float z_, float weight_)
 {
-	this->x = x_;
-	this->y = y_;
-	this->z = z_;
-	this->weight = weight_;
+	x = x_;
+	y = y_;
+	z = z_;
+	weight = weight_;
 }
 
-void Gravity::Updadte(Gravity g)
+void Gravity::Update(Gravity g)
 {
-	if (abs(x - g.x) >= 32 || abs(y - g.y) >= 32 || abs(z - g.z) >= 32)
+	if (abs(x - g.x) >= 0.01f)
 	{
 		if (x - g.x < 0)
 		{
-			x += ((weight * g.weight) / (length(g) * length(g))) * G * VecGetX(g);
+			x = x + ((weight * g.weight) / (length(g) * length(g))) * G * VecGetX(g) * 100;
 		}
 		else
 		{
-			x -= ((weight * g.weight) / (length(g) * length(g))) * G * VecGetX(g);
+			x = x - ((weight * g.weight) / (length(g) * length(g))) * G * VecGetX(g) * 100;
 		}
 	}
-	if (abs(x - g.x) >= 32 || abs(y - g.y) >= 32 || abs(z - g.z) >= 32)
+	if (abs(y - g.y) >= 0.01f)
 	{
 		if (y - g.y < 0)
 		{
-			y += ((weight * g.weight) / (length(g) * length(g))) * G * VecGetY(g);
+			y = y + ((weight * g.weight) / (length(g) * length(g))) * G * VecGetY(g) * 100;
 		}
 		else
 		{
-			y -= ((weight * g.weight) / (length(g) * length(g))) * G * VecGetY(g);
+			y = y - ((weight * g.weight) / (length(g) * length(g))) * G * VecGetY(g) * 100;
 		}
 	}
-	if (abs(x - g.x) >= 32 || abs(y - g.y) >= 32 || abs(z - g.z) >= 32)
+	if (abs(z - g.z) >= 0.01f)
 	{
 		if (z - g.z < 0)
 		{
-			z += ((weight * g.weight) / (length(g) * length(g))) * G * VecGetY(g);
+			z  = z + ((weight * g.weight) / (length(g) * length(g))) * G * VecGetZ(g) * 100;
 		}
 		else
 		{
-			z-= ((weight * g.weight) / (length(g) * length(g))) * G * VecGetY(g);
+			z = z - ((weight * g.weight) / (length(g) * length(g))) * G * VecGetZ(g) * 100;
 		}
 	}
 }

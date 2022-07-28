@@ -7,7 +7,7 @@ class Gravity
 {
 public:
 	void Initialize(float x_,float y_, float z_,float weight_);
-	void Updadte(Gravity g);
+	void Update(Gravity g);
 public:
 	float length(Gravity g);	//	’·‚³‚ğ•Ô‚·
 	float VecGetX(Gravity g);	//³‹K‰»
@@ -18,6 +18,9 @@ public:
 	float x;		//d—Í‚ğ‚½‚¹‚é“_‚ÌÀ•W
 	float y;
 	float z;
+	float x2;
+	float y2;
+	float z2;
 	float r;
 };
 

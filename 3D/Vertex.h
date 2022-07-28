@@ -10,6 +10,7 @@
 #include "DirectXTex.h"
 #include "wrl.h"
 #include "math.h"
+#include "Gravity.h"
 
 #define PI 3.141592653589793238462643
 
@@ -22,7 +23,7 @@ struct Vertex
 	XMFLOAT3 pos;	//座標
 	XMFLOAT3 normalize;	//法線ベクトル
 	XMFLOAT2 uv;	//uv座標
-	Vertex* parent = nullptr;
+	Vertex* parent = nullptr; 
 };
 
 struct Indices
@@ -56,7 +57,7 @@ public:
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番
 };
 
-const int fine = 96;	//球体の細かさ	変数宣言用
+const int fine = 64;	//球体の細かさ	変数宣言用
 const int fine2 = fine * fine * 2;	//描画に使う頂点の数
 const int fine3 = fine * fine * 3;	//インデックスの数
 const int fine4 = fine * fine + fine;	//頂点の数
@@ -66,13 +67,16 @@ class Ver3
 public:
 	static Ver3* GetInstance();
 	void Initialize(XMFLOAT3 size);
+	void Initialize2(XMFLOAT3 size);
 	void Update();
 public:
 	const float fineSize = fine;	//球体の細かさ
 	Vertex vertices[fine2];	//外部に渡す用の頂点データ
-	Vertex v[fine2], v2[fine4];	//計算用頂点データ
+	Vertex v[fine2], v2[fine4],v3[fine4];	//計算用頂点データ
 	unsigned short indices[fine3];
 	UINT sizeVB;
 	UINT sizeIB;
+	float angleX, angleY;
+	float oneAngle = (2 * PI) / fineSize;
 	D3D12_INPUT_ELEMENT_DESC inputLayout[3];//頂点レイアウト	xyz座標、法線ベクトル、uv座標の順番
 };

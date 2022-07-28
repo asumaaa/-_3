@@ -7,6 +7,7 @@
 #include "RootSig.h"
 #include "Pipe.h"
 #include "d3d12.h"
+#include "Gravity.h"
 
 class Sphere
 {

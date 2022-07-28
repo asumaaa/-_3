@@ -21,11 +21,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Initialize(win);
 
 #pragma region 描画処理初期化
-	XMFLOAT3 size1 = { 10.0f,10.0f,10.0f };
-	XMFLOAT3 size2 = { 5.0f,5.0f,5.0f };
+	XMFLOAT3 size1 = { 7.0f,7.0f,7.0f };
+	XMFLOAT3 size2 = { 2.0f,2.0f,2.0f };
 
+	Sphere sphere2;
+	sphere2.Initialize(size2, dx, L"BasicVS.hlsl", L"BasicPS.hlsl");
 	Sphere sphere;
 	sphere.Initialize(size1, dx, L"BasicVS.hlsl", L"BasicPS.hlsl");
+	for (int i = 0; i < fine4; i++)
+	{
+		g[i].Initialize(sphere.vertex->v2[i].pos.x, sphere.vertex->v2[i].pos.y, sphere.vertex->v2[i].pos.z, 1.0f);
+	}
+	gra.Initialize(40, 0, 0, 5.0f);
 
 	/*Sphere sphere2;
 	sphere2.Initialize(size2, dx, L"VS2.hlsl", L"PS2.hlsl");*/
@@ -90,7 +97,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//3Dオブジェクトの配列
 	Object3d object3ds[kObjectCount];
 	object3ds[0].position = { 0.0f,0.0f,-60.0f };
-	object3ds[1].position = { -20.0f,0.0f,-20.0f };
+	object3ds[1].position = { gra.x,gra.y,gra.z };
 
 	//配列内すべてのオブジェクトに対して
 	for (int i = 0; i < _countof(object3ds); i++)
@@ -115,6 +122,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 up(0, 1, 0);
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
+	for (int i = 0; i < fine4; i++)
+	{
+		g[i].Update(gra);
+	}
+
 #pragma endregion
 
 	//ゲームループ
@@ -133,29 +145,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			UpdateObject3d(&object3ds[i], matView, matProjection);
 		}
 
-		if (input->key[DIK_D] || input->key[DIK_A] || input->key[DIK_W] || input->key[DIK_S])
-		{
-			if (input->key[DIK_D]) {
-				object3ds[0].rotation.y += XMConvertToRadians(1.0f);
-			}
-			else if (input->key[DIK_A]) {
-				object3ds[0].rotation.y -= XMConvertToRadians(1.0f);
-			}
-			if (input->key[DIK_S]) {
-				object3ds[0].rotation.x += XMConvertToRadians(1.0f);
-			}
-			else if (input->key[DIK_W]) {
-				object3ds[0].rotation.x -= XMConvertToRadians(1.0f);
-			}
-		}
 
 		//座標を移動する処理
 		if (input->key[DIK_UP] || input->key[DIK_DOWN] || input->key[DIK_RIGHT] ||input->key[DIK_LEFT])
 		{
-			if (input->key[DIK_UP]) { object3ds[0].position.z += 0.2f; }
-			else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 0.2f; }
-			if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 0.2f; }
-			else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 0.2f; }
+			if (input->key[DIK_UP]) { 
+				object3ds[1].position.y += 0.4f; 
+				gra.y += 0.4f;
+			}
+			else if (input->key[DIK_DOWN]) { 
+				object3ds[1].position.y -= 0.4f;
+				gra.y += 0.4f;
+			}
+			if (input->key[DIK_RIGHT]) { 
+				object3ds[1].position.x += 0.4f;
+				gra.x += 0.4f;
+			}
+			else if (input->key[DIK_LEFT]) { 
+				object3ds[1].position.x -= 0.4f;
+				gra.x += 0.4f;
+			}
 
 		}
 
@@ -199,13 +208,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		// 4. 描画コマンド
-		sphere.vertex->v2[200].pos.x += 0.1f;
+		if (input->key[DIK_UP] || input->key[DIK_DOWN] || input->key[DIK_RIGHT] || input->key[DIK_LEFT])
+		{
+			for (int i = 0; i < fine4; i++)
+			{
+				/*sphere2.vertex->Initialize2(size2);*/
+				sphere.vertex->Initialize2(size1);
+				g[i].Initialize(sphere.vertex->v2[i].pos.x, sphere.vertex->v2[i].pos.y, sphere.vertex->v2[i].pos.z, 1.0f);
+				gra.Initialize(object3ds[1].position.x, object3ds[1].position.y, object3ds[1].position.z, 5.0f);
+				g[i].Update(gra);
+			}
+		}
+
+		for (int i = 0; i < fine4; i++)
+		{
+			sphere.vertex->v2[i].pos.x = g[i].x;
+			sphere.vertex->v2[i].pos.y = g[i].y;
+			sphere.vertex->v2[i].pos.z = g[i].z;
+		}
+
 		sphere.Update(size1, L"BasicVS.hlsl", L"BasicPS.hlsl");
 
 		//円を描画
+		for (int i = 0; i < fine4; i++)
+		{
+			g[i].Initialize(sphere.vertex->v2[i].pos.x, sphere.vertex->v2[i].pos.y, sphere.vertex->v2[i].pos.z, 1.0f);
+		}
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();
 		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere.vertBuff.vbView, sphere.indexBuff.ibView, _countof(sphere.vertex->indices));
+
+		texture[1].SetImageData(XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f));
+		texture[1].Draw();
+		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere2.vertBuff.vbView, sphere2.indexBuff.ibView, _countof(sphere2.vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
