@@ -199,7 +199,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		// 4. •`‰æƒRƒ}ƒ“ƒh
-		sphere.vertex->v2[200].pos.x += 0.1f;
+		/*sphere.vertex->v2[200].pos.x += 0.1f;*/
 		sphere.Update(size1, L"BasicVS.hlsl", L"BasicPS.hlsl");
 
 		//‰~‚ð•`‰æ
