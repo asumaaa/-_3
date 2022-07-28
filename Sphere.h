@@ -12,8 +12,8 @@ class Sphere
 {
 public:
 	static Sphere* GetInstance();
-	void Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file);
-	void Update();
+	void Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file,const wchar_t* file2);
+	void Update(XMFLOAT3 size,const wchar_t* file, const wchar_t* file2);
 public:
 	Ver3* vertex = nullptr;
 	IndexBuff indexBuff;

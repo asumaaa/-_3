@@ -21,12 +21,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Initialize(win);
 
 #pragma region 描画処理初期化
+	XMFLOAT3 size1 = { 10.0f,10.0f,10.0f };
+	XMFLOAT3 size2 = { 5.0f,5.0f,5.0f };
 
 	Sphere sphere;
-	sphere.Initialize(XMFLOAT3(10.0f, 10.0f, 10.0f), dx, L"BasicVS.hlsl");
+	sphere.Initialize(size1, dx, L"BasicVS.hlsl", L"BasicPS.hlsl");
 
-	Sphere sphere2;
-	sphere2.Initialize(XMFLOAT3(5.0f, 5.0f, 5.0f), dx, L"BasicVS.hlsl");
+	/*Sphere sphere2;
+	sphere2.Initialize(size2, dx, L"VS2.hlsl", L"PS2.hlsl");*/
 
 	//リソース設定
 	D3D12_RESOURCE_DESC depthResorceDesc{};
@@ -87,7 +89,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	const size_t kObjectCount = 2;
 	//3Dオブジェクトの配列
 	Object3d object3ds[kObjectCount];
-	object3ds[0].position = { 20.0f,0.0f,-20.0f };
+	object3ds[0].position = { 0.0f,0.0f,-60.0f };
 	object3ds[1].position = { -20.0f,0.0f,-20.0f };
 
 	//配列内すべてのオブジェクトに対して
@@ -150,11 +152,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//座標を移動する処理
 		if (input->key[DIK_UP] || input->key[DIK_DOWN] || input->key[DIK_RIGHT] ||input->key[DIK_LEFT])
 		{
-			if (input->key[DIK_UP]) { object3ds[0].position.z += 1.0f; }
-			else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 1.0f; }
-			if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 1.0f; }
-			else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 1.0f; }
+			if (input->key[DIK_UP]) { object3ds[0].position.z += 0.2f; }
+			else if (input->key[DIK_DOWN]) { object3ds[0].position.z -= 0.2f; }
+			if (input->key[DIK_RIGHT]) { object3ds[0].position.x += 0.2f; }
+			else if (input->key[DIK_LEFT]) { object3ds[0].position.x -= 0.2f; }
 
+		}
+
+		if (input->key[DIK_1])
+		{
+			sphere.pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;	//カリングしない
+		}
+		if (input->key[DIK_2])
+		{
+			sphere.pipe.pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK;	//カリングしない
+		}
+		if (input->key[DIK_3])
+		{
+			sphere.pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;	//ポリゴン塗りつぶし
+		}
+		if (input->key[DIK_4])
+		{
+			sphere.pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ポリゴン塗りつぶし
 		}
 
 		//バックバッファの番号を取得(2つなので0番か1番)
@@ -180,15 +199,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		// 4. 描画コマンド
-		sphere.Update();
-		sphere2.Update();
-		/*triangle->Update();*/
+		sphere.vertex->v2[200].pos.x += 0.1f;
+		sphere.Update(size1, L"BasicVS.hlsl", L"BasicPS.hlsl");
 
 		//円を描画
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();
 		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere.vertBuff.vbView, sphere.indexBuff.ibView, _countof(sphere.vertex->indices));
-		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere2.vertBuff.vbView, sphere2.indexBuff.ibView, _countof(sphere2.vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から

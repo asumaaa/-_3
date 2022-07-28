@@ -6,7 +6,7 @@ Sphere* Sphere::GetInstance()
 	return &instance;
 }
 
-void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file)
+void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file, const wchar_t* file2)
 {
 	dx = dx_;
 	HRESULT result;
@@ -19,7 +19,7 @@ void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file)
 	vertBuff.Initialize(vertex, dx);
 	shader.GetInstance();
 	shader.compileVs(file);
-	shader.compilePs(L"BasicPS.hlsl");
+	shader.compilePs(file2);
 	rootSig.GetInstance();
 	rootSig.Initialize(shader, dx);
 	pipe.GetInstance();
@@ -62,15 +62,14 @@ void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file)
 	constMapMaterial->color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void Sphere::Update()
+void Sphere::Update(XMFLOAT3 size,const wchar_t* file, const wchar_t* file2)
 {
 	HRESULT result;
 	vertex->Update();
-	indexBuff.Initialize(vertex, dx);
 	vertBuff.Initialize(vertex, dx);
+	pipe.pipelineDesc.pRootSignature = rootSig.rootSignature.Get();
 	//パイプラインステート
 	result = dx->GetDevice()->CreateGraphicsPipelineState(&pipe.pipelineDesc, IID_PPV_ARGS(&pipelineState));
-	assert(SUCCEEDED(result));
 	//ビューポート設定コマンド
 	viewport.Width = window_width;
 	viewport.Height = window_height;

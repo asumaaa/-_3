@@ -510,7 +510,6 @@ void Ver3::Initialize(XMFLOAT3 size)
 
 void Ver3::Update()
 {
-	/*v2[15].pos.x += 0.03f;*/
 	//親頂点をもとに頂点を移動
 	for (int i = 0; i < fine2; i++)
 	{
@@ -520,7 +519,6 @@ void Ver3::Update()
 			v[i].pos.y = v[i].parent->pos.y;
 			v[i].pos.z = v[i].parent->pos.z;
 		}
-			/*v[0].pos.x = v[0].parent->pos.x;*/
 	}
 	 //頂点座標を更新、uv座標、インデックスデータを更新
 	for (int i = 0; i < fineSize * fineSize * 2; i++)
