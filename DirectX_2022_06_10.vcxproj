@@ -157,6 +157,7 @@
     <ClCompile Include="base\Masage.cpp" />
     <ClCompile Include="base\Texture.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="input\input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="base\Masage.h" />
     <ClInclude Include="base\Texture.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="Gravity.h" />
     <ClInclude Include="input\input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Sphere.h" />
