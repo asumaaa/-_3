@@ -223,7 +223,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
-		//ウィンドウクラスを登録解除
+		//ウィンドウクラスを登録解除 
 		win->deleteWindow();
 	}
 
