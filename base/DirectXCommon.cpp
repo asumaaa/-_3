@@ -1,11 +1,13 @@
 #include "DirectXCommon.h"
 
+//シングルトンインスタンスを取得
 DirectXCommon* DirectXCommon::GetInstance()
 {
 	static DirectXCommon instance;
 	return &instance;
 }
 
+//初期化処理
 void DirectXCommon::Initialize(WinApp* winApp)
 {
 	winApp_ = winApp;
@@ -19,6 +21,8 @@ void DirectXCommon::Initialize(WinApp* winApp)
 	InitializeSwapchain();
 	//レンダーターゲットビュー初期化
 	InitializeRenderTargetView();
+	//深度バッファ
+	InitializeDepthBuffer();
 	//フェンス生成
 	InitializeFence();
 }
@@ -182,9 +186,52 @@ void DirectXCommon::InitializeRenderTargetView()
 	}
 }
 #pragma endregion
+#pragma region 深度バッファ
 void DirectXCommon::InitializeDepthBuffer()
 {
+	HRESULT result;
+
+	//リソース設定
+	depthResorceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	depthResorceDesc.Width = window_width;	//レンダーターゲットに合わせる
+	depthResorceDesc.Height = window_height;	//レンダーターゲットに合わせる
+	depthResorceDesc.DepthOrArraySize = 1;
+	depthResorceDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
+	depthResorceDesc.SampleDesc.Count = 1;
+	depthResorceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;	//デプスステンシル
+
+	//震度値用ヒーププロパティ
+	depthHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
+	//深度値のクリア設定
+	depthClearValue.DepthStencil.Depth = 1.0f;	//深度値1.0f(最大値)でクリア
+	depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
+
+	//リソース生成
+	result =GetDevice()->CreateCommittedResource(
+		&depthHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&depthResorceDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,	//深度値書き込みに使用
+		&depthClearValue,
+		IID_PPV_ARGS(&depthBuff)
+	);
+
+	//深度ビュー用デスクリプタヒープ作成
+	dsvHeapDesc.NumDescriptors = 1;	//深度ビューは1つ
+	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
+	result = GetDevice()->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+
+	//深度ステンシルビューの生成
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	GetDevice()->CreateDepthStencilView(
+		depthBuff.Get(),
+		&dsvDesc,
+		dsvHeap->GetCPUDescriptorHandleForHeapStart()
+	);
 }
+#pragma endregion
 #pragma region フェンス
 void DirectXCommon::InitializeFence()
 {
@@ -194,10 +241,72 @@ void DirectXCommon::InitializeFence()
 }
 #pragma endregion
 
+#pragma region 描画前処理
 void DirectXCommon::PreDraw()
 {
-}
+	//バックバッファの番号を取得(2つなので0番か1番)
+	UINT bbIndex = GetSwapChain()->GetCurrentBackBufferIndex();
 
+	// 1. リソースバリアに書き込み可能に変更
+	barrierDesc.Transition.pResource = backBuffers[bbIndex].Get();	//バックバッファを指定
+	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;	//表示状態から
+	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態へ
+	GetCommandList()->ResourceBarrier(1, &barrierDesc);
+
+	// 2. 描画先の変更
+	// レンダーターゲットビューのハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = GetRtvHeap()->GetCPUDescriptorHandleForHeapStart();
+	rtvHandle.ptr += bbIndex * GetDevice()->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+	GetCommandList()->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+
+	// 3. 画面クリアコマンド   R     G    B    A
+	FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
+	GetCommandList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+	GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+}
+#pragma endregion 
+#pragma region 描画後処理
 void DirectXCommon::PostDraw()
 {
+	HRESULT result;
+
+	// 5. リソースバリアを書き込み禁止に
+	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
+	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;			//表示状態へ
+	GetCommandList()->ResourceBarrier(1, &barrierDesc);
+
+	//命令のクローズ
+	result = GetCommandList()->Close();
+	assert(SUCCEEDED(result));
+	//コマンドリストの実行
+	ID3D12CommandList* commandLists[] = { GetCommandList() };
+	GetCommandQueue()->ExecuteCommandLists(1, commandLists);
+
+	//画面に表示するバッファをクリップ
+	result = GetSwapChain()->Present(1, 0);
+	assert(SUCCEEDED(result));
+
+
+	//コマンドの実行完了を待つ
+	GetCommandQueue()->Signal(GetFence(), ++fenceVal);
+	if (GetFence()->GetCompletedValue() != fenceVal)
+	{
+		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
+		GetFence()->SetEventOnCompletion(fenceVal, event);
+		if (event != NULL) {
+			WaitForSingleObject(event, INFINITE);
+		}
+		if (event != NULL) {
+			CloseHandle(event);
+		}
+	}
+
+	//キューをクリア
+	result = GetCommandAllocator()->Reset();
+	assert(SUCCEEDED(result));
+	//再びコマンドリストを貯める準備
+	result = GetCommandList()->Reset(GetCommandAllocator(), nullptr);
+	assert(SUCCEEDED(result));
 }
+#pragma endregion

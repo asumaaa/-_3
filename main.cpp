@@ -25,51 +25,51 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Sphere sphere;
 	sphere.Initialize(size1, dx, L"BasicVS.hlsl", L"BasicPS.hlsl");
 
-	//リソース設定
-	D3D12_RESOURCE_DESC depthResorceDesc{};
-	depthResorceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResorceDesc.Width = window_width;	//レンダーターゲットに合わせる
-	depthResorceDesc.Height = window_height;	//レンダーターゲットに合わせる
-	depthResorceDesc.DepthOrArraySize = 1;
-	depthResorceDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
-	depthResorceDesc.SampleDesc.Count = 1;
-	depthResorceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;	//デプスステンシル
+	////リソース設定
+	//D3D12_RESOURCE_DESC depthResorceDesc{};
+	//depthResorceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	//depthResorceDesc.Width = window_width;	//レンダーターゲットに合わせる
+	//depthResorceDesc.Height = window_height;	//レンダーターゲットに合わせる
+	//depthResorceDesc.DepthOrArraySize = 1;
+	//depthResorceDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
+	//depthResorceDesc.SampleDesc.Count = 1;
+	//depthResorceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;	//デプスステンシル
 
-	//震度値用ヒーププロパティ
-	D3D12_HEAP_PROPERTIES depthHeapProp{};
-	depthHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
-	//深度値のクリア設定
-	D3D12_CLEAR_VALUE depthClearValue{};
-	depthClearValue.DepthStencil.Depth = 1.0f;	//深度値1.0f(最大値)でクリア
-	depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
+	////震度値用ヒーププロパティ
+	//D3D12_HEAP_PROPERTIES depthHeapProp{};
+	//depthHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
+	////深度値のクリア設定
+	//D3D12_CLEAR_VALUE depthClearValue{};
+	//depthClearValue.DepthStencil.Depth = 1.0f;	//深度値1.0f(最大値)でクリア
+	//depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
 
-	//リソース生成
-	ComPtr<ID3D12Resource> depthBuff;
-	result = dx->GetDevice()->CreateCommittedResource(
-		&depthHeapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&depthResorceDesc,
-		D3D12_RESOURCE_STATE_DEPTH_WRITE,	//深度値書き込みに使用
-		&depthClearValue,
-		IID_PPV_ARGS(&depthBuff)
-	);
+	////リソース生成
+	//ComPtr<ID3D12Resource> depthBuff;
+	//result = dx->GetDevice()->CreateCommittedResource(
+	//	&depthHeapProp,
+	//	D3D12_HEAP_FLAG_NONE,
+	//	&depthResorceDesc,
+	//	D3D12_RESOURCE_STATE_DEPTH_WRITE,	//深度値書き込みに使用
+	//	&depthClearValue,
+	//	IID_PPV_ARGS(&depthBuff)
+	//);
 
-	//深度ビュー用デスクリプタヒープ作成
-	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
-	dsvHeapDesc.NumDescriptors = 1;	//深度ビューは1つ
-	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
-	ComPtr<ID3D12DescriptorHeap> dsvHeap;
-	result = dx->GetDevice()->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
+	////深度ビュー用デスクリプタヒープ作成
+	//D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	//dsvHeapDesc.NumDescriptors = 1;	//深度ビューは1つ
+	//dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
+	//ComPtr<ID3D12DescriptorHeap> dsvHeap;
+	//result = dx->GetDevice()->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
 
-	//深度ステンシルビューの生成
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	dx->GetDevice()->CreateDepthStencilView(
-		depthBuff.Get(),
-		&dsvDesc,
-		dsvHeap->GetCPUDescriptorHandleForHeapStart()
-	);
+	////深度ステンシルビューの生成
+	//D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	//dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
+	//dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	//dx->GetDevice()->CreateDepthStencilView(
+	//	depthBuff.Get(),
+	//	&dsvDesc,
+	//	dsvHeap->GetCPUDescriptorHandleForHeapStart()
+	//);
 
 	//読み込む画像の数
 	const size_t metadataCount = 2;
@@ -146,27 +146,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			sphere.pipe.pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;	//ポリゴン塗りつぶし
 		}
 
-		//バックバッファの番号を取得(2つなので0番か1番)
-		UINT bbIndex = dx->GetSwapChain()->GetCurrentBackBufferIndex();
+		////バックバッファの番号を取得(2つなので0番か1番)
+		//UINT bbIndex = dx->GetSwapChain()->GetCurrentBackBufferIndex();
 
-		// 1. リソースバリアに書き込み可能に変更
-		D3D12_RESOURCE_BARRIER barrierDesc{};
-		barrierDesc.Transition.pResource = dx->backBuffers[bbIndex].Get();	//バックバッファを指定
-		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;	//表示状態から
-		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態へ
-		dx->GetCommandList()->ResourceBarrier(1, &barrierDesc);
+		//// 1. リソースバリアに書き込み可能に変更
+		//D3D12_RESOURCE_BARRIER barrierDesc{};
+		//barrierDesc.Transition.pResource = dx->backBuffers[bbIndex].Get();	//バックバッファを指定
+		//barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;	//表示状態から
+		//barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態へ
+		//dx->GetCommandList()->ResourceBarrier(1, &barrierDesc);
 
-		// 2. 描画先の変更
-		// レンダーターゲットビューのハンドルを取得
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = dx->GetRtvHeap()->GetCPUDescriptorHandleForHeapStart();
-		rtvHandle.ptr += bbIndex * dx->GetDevice()->GetDescriptorHandleIncrementSize(dx->rtvHeapDesc.Type);
-		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-		dx->GetCommandList()->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
+		//// 2. 描画先の変更
+		//// レンダーターゲットビューのハンドルを取得
+		//D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = dx->GetRtvHeap()->GetCPUDescriptorHandleForHeapStart();
+		//rtvHandle.ptr += bbIndex * dx->GetDevice()->GetDescriptorHandleIncrementSize(dx->rtvHeapDesc.Type);
+		//D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
+		//dx->GetCommandList()->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
-		// 3. 画面クリアコマンド   R     G    B    A
-		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
-		dx->GetCommandList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+		//// 3. 画面クリアコマンド   R     G    B    A
+		//FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f };
+		//dx->GetCommandList()->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
+		//dx->GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
+		dx->PreDraw();
 
 		// 4. 描画コマンド
 		sphere.Update(size1, L"BasicVS.hlsl", L"BasicPS.hlsl");
@@ -177,43 +179,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere.vertBuff.vbView, sphere.indexBuff.ibView, _countof(sphere.vertex->indices));
 		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere.vertBuff.vbView, sphere.indexBuff.ibView, _countof(sphere.vertex->indices));
 
-		// 5. リソースバリアを書き込み禁止に
-		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
-		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;			//表示状態へ
-		dx->GetCommandList()->ResourceBarrier(1, &barrierDesc);
 
-		//命令のクローズ
-		result = dx->GetCommandList()->Close();
-		assert(SUCCEEDED(result));
-		//コマンドリストの実行
-		ID3D12CommandList* commandLists[] = { dx->GetCommandList() };
-		dx->GetCommandQueue()->ExecuteCommandLists(1, commandLists);
+		dx->PostDraw();
+		//// 5. リソースバリアを書き込み禁止に
+		//barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
+		//barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;			//表示状態へ
+		//dx->GetCommandList()->ResourceBarrier(1, &barrierDesc);
 
-		//画面に表示するバッファをクリップ
-		result = dx->GetSwapChain()->Present(1, 0);
-		assert(SUCCEEDED(result));
+		////命令のクローズ
+		//result = dx->GetCommandList()->Close();
+		//assert(SUCCEEDED(result));
+		////コマンドリストの実行
+		//ID3D12CommandList* commandLists[] = { dx->GetCommandList() };
+		//dx->GetCommandQueue()->ExecuteCommandLists(1, commandLists);
+
+		////画面に表示するバッファをクリップ
+		//result = dx->GetSwapChain()->Present(1, 0);
+		//assert(SUCCEEDED(result));
 
 
-		//コマンドの実行完了を待つ
-		dx->GetCommandQueue()->Signal(dx->GetFence(), ++dx->fenceVal);
-		if (dx->GetFence()->GetCompletedValue() != dx->fenceVal)
-		{
-			HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-			dx->GetFence()->SetEventOnCompletion(dx->fenceVal, event);
-			if (event != NULL) {
-				WaitForSingleObject(event, INFINITE);
-			}
-			if (event != NULL) {
-				CloseHandle(event);
-			}
-		}
+		////コマンドの実行完了を待つ
+		//dx->GetCommandQueue()->Signal(dx->GetFence(), ++dx->fenceVal);
+		//if (dx->GetFence()->GetCompletedValue() != dx->fenceVal)
+		//{
+		//	HANDLE event = CreateEvent(nullptr, false, false, nullptr);
+		//	dx->GetFence()->SetEventOnCompletion(dx->fenceVal, event);
+		//	if (event != NULL) {
+		//		WaitForSingleObject(event, INFINITE);
+		//	}
+		//	if (event != NULL) {
+		//		CloseHandle(event);
+		//	}
+		//}
 
-		//キューをクリア
-		result = dx->GetCommandAllocator()->Reset();
-		assert(SUCCEEDED(result));
-		//再びコマンドリストを貯める準備
-		result = dx->GetCommandList()->Reset(dx->GetCommandAllocator(), nullptr);
-		assert(SUCCEEDED(result));
+		////キューをクリア
+		//result = dx->GetCommandAllocator()->Reset();
+		//assert(SUCCEEDED(result));
+		////再びコマンドリストを貯める準備
+		//result = dx->GetCommandList()->Reset(dx->GetCommandAllocator(), nullptr);
+		//assert(SUCCEEDED(result));
 
 #pragma endregion
 

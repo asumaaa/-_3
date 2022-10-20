@@ -60,6 +60,14 @@ private:
 	ComPtr<ID3D12Fence> fence;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+	ComPtr<ID3D12DescriptorHeap> dsvHeap;
+	ComPtr<ID3D12Resource> depthBuff;
+	D3D12_RESOURCE_DESC depthResorceDesc{};
+	D3D12_HEAP_PROPERTIES depthHeapProp{};
+	D3D12_CLEAR_VALUE depthClearValue{};
+	D3D12_RESOURCE_BARRIER barrierDesc{};
+
 public:
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 	std::vector<ComPtr<ID3D12Resource>>backBuffers;
