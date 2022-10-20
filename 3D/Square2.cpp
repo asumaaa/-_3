@@ -6,7 +6,7 @@ Square2* Square2::GetInstance()
 	return &instance;
 }
 
-void Square2::Initialize(XMFLOAT3 size, DirectXIni* dx_)
+void Square2::Initialize(XMFLOAT3 size, DirectXCommon* dx_)
 {
 	dx = dx_;
 	HRESULT result;

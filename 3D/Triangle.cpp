@@ -6,7 +6,7 @@ Triangle* Triangle::GetInstance()
 	return &instance;
 }
 
-void Triangle::Initialize(XMFLOAT3 size, DirectXIni* dx_)
+void Triangle::Initialize(XMFLOAT3 size, DirectXCommon* dx_)
 {
 	dx = dx_;
 	HRESULT result;

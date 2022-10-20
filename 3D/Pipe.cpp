@@ -6,7 +6,7 @@ Pipe *Pipe::GetInstance()
 	return &instance;
 }
 
-void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver* vertex_,DirectXIni* dx_)
+void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver* vertex_,DirectXCommon* dx_)
 {
 	HRESULT result;
     shader = shader_;
@@ -58,7 +58,7 @@ void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver* vertex_,DirectXIni*
 	assert(SUCCEEDED(result));*/
 }
 
-void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver2* vertex_, DirectXIni* dx_)
+void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver2* vertex_, DirectXCommon* dx_)
 {
 	HRESULT result;
 	shader = shader_;
@@ -110,7 +110,7 @@ void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver2* vertex_, DirectXIn
 	assert(SUCCEEDED(result));*/
 }
 
-void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver3* vertex_, DirectXIni* dx_)
+void Pipe::Initialize(Shader shader_, RootSig rootSig_, Ver3* vertex_, DirectXCommon* dx_)
 {
 	HRESULT result;
 	shader = shader_;

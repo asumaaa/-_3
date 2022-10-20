@@ -57,7 +57,7 @@
     <ClCompile Include="3D\RootSig.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="base\DirectXIni.cpp">
+    <ClCompile Include="base\DirectXCommon.cpp">
       <Filter>ソース ファイル\base</Filter>
     </ClCompile>
     <ClCompile Include="base\WinApp.cpp">
@@ -113,7 +113,7 @@
     <ClInclude Include="3D\RootSig.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="base\DirectXIni.h">
+    <ClInclude Include="base\DirectXCommon.h">
       <Filter>ヘッダー ファイル\base</Filter>
     </ClInclude>
     <ClInclude Include="base\WinApp.h">

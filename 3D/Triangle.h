@@ -1,5 +1,5 @@
 #pragma once
-#include "DirectXIni.h"
+#include "DirectXCommon.h"
 #include "Vertex.h"
 #include "IndexBuff.h"
 #include "VertBuff.h"
@@ -12,7 +12,7 @@ class Triangle
 {
 public:
 	static Triangle* GetInstance();
-	void Initialize(XMFLOAT3 size, DirectXIni* dx_);
+	void Initialize(XMFLOAT3 size, DirectXCommon* dx_);
 	void Update();
 public:
 	Ver2* vertex = nullptr;
@@ -21,7 +21,7 @@ public:
 	Shader shader;
 	RootSig rootSig;
 	Pipe pipe;
-	DirectXIni* dx;
+	DirectXCommon* dx;
 	ComPtr<ID3D12PipelineState> pipelineState;
 	ComPtr<ID3D12Resource> constBuffMaterial;
 public:

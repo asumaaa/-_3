@@ -6,7 +6,7 @@ RootSig* RootSig::GetInstance()
     return &instance;
 }
 
-void RootSig::Initialize(Shader shader_,DirectXIni* dx_)
+void RootSig::Initialize(Shader shader_,DirectXCommon* dx_)
 {
 	HRESULT result;
 	dx = dx_;

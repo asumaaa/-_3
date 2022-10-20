@@ -10,7 +10,7 @@
 #include "DirectXTex.h"
 #include "wrl.h"
 
-#include "DirectXIni.h"
+#include "DirectXCommon.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -35,8 +35,8 @@ class Texture
 {
 public:
 	static Texture* GetInstance();
-	void Initialize(const wchar_t* szFile, DirectXIni* dx, int texNum);
-	void Initialize(DirectXIni *dx,int texNum);
+	void Initialize(const wchar_t* szFile, DirectXCommon* dx, int texNum);
+	void Initialize(DirectXCommon *dx,int texNum);
 	void Draw();
 	void SetImageData(XMFLOAT4 color);
 
@@ -60,6 +60,6 @@ private:
 	const size_t imageDataCount = textureWidth * textureHeight;
 	XMFLOAT4* imageData = new XMFLOAT4[imageDataCount];
 public:
-	DirectXIni* dx_ ;
+	DirectXCommon* dx_ ;
 };
 

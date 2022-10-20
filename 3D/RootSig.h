@@ -1,5 +1,5 @@
 #pragma once
-#include "DirectXIni.h"
+#include "DirectXCommon.h"
 #include "Shader.h"
 #include "assert.h"
 #include "DirectXTex.h"
@@ -14,10 +14,10 @@ class RootSig
 {
 public:
 	static RootSig* GetInstance();
-	void Initialize(Shader shader_,DirectXIni* dx_);
+	void Initialize(Shader shader_,DirectXCommon* dx_);
 public:
 	ComPtr<ID3D12RootSignature> rootSignature;
-	DirectXIni* dx;
+	DirectXCommon* dx;
 	Shader shader;
 };
 

@@ -6,7 +6,7 @@ Sphere* Sphere::GetInstance()
 	return &instance;
 }
 
-void Sphere::Initialize(XMFLOAT3 size, DirectXIni* dx_, const wchar_t* file, const wchar_t* file2)
+void Sphere::Initialize(XMFLOAT3 size, DirectXCommon* dx_, const wchar_t* file, const wchar_t* file2)
 {
 	dx = dx_;
 	HRESULT result;

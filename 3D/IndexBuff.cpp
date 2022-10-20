@@ -1,6 +1,6 @@
 #include "IndexBuff.h"
 
-void IndexBuff::Initialize(Ver* vertex, DirectXIni* dx_)
+void IndexBuff::Initialize(Ver* vertex, DirectXCommon* dx_)
 {
 	HRESULT result;
 
@@ -42,7 +42,7 @@ void IndexBuff::Initialize(Ver* vertex, DirectXIni* dx_)
 	ibView.SizeInBytes = vertex->sizeIB;
 }
 
-void IndexBuff::Initialize(Ver2* vertex, DirectXIni* dx_)
+void IndexBuff::Initialize(Ver2* vertex, DirectXCommon* dx_)
 {
 	HRESULT result;
 
@@ -84,7 +84,7 @@ void IndexBuff::Initialize(Ver2* vertex, DirectXIni* dx_)
 	ibView.SizeInBytes = vertex->sizeIB;
 }
 
-void IndexBuff::Initialize(Ver3* vertex, DirectXIni* dx_)
+void IndexBuff::Initialize(Ver3* vertex, DirectXCommon* dx_)
 {
 	HRESULT result;
 

@@ -11,8 +11,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	masage = Masage::GetInstance();
 
 	//DirectX初期化処理
-	DirectXIni* dx = nullptr;
-	dx = DirectXIni::GetInstance();
+	DirectXCommon* dx = nullptr;
+	dx = DirectXCommon::GetInstance();
 	dx->Initialize(win);
 
 	//キーボード
@@ -21,7 +21,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input->Initialize(win);
 
 #pragma region 描画処理初期化
-	XMFLOAT3 size1 = { 10.0f,10.0f,10.0f };
+	XMFLOAT3 size1 = { 1.0f,1.0f,1.0f };
 	Sphere sphere;
 	sphere.Initialize(size1, dx, L"BasicVS.hlsl", L"BasicPS.hlsl");
 
@@ -91,7 +91,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		//初期化
 		InitializeObject3d(&object3ds[i], dx->GetDevice());
-			object3ds[i].scale = { 1.0f,1.0f,1.0f };
+			object3ds[i].scale = { 10.0f,10.0f,10.0f };
 			object3ds[i].rotation = { 0.0f,0.0f,0.0f };
 	}
 
@@ -175,6 +175,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		texture[0].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 		texture[0].Draw();
 		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere.vertBuff.vbView, sphere.indexBuff.ibView, _countof(sphere.vertex->indices));
+		DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere.vertBuff.vbView, sphere.indexBuff.ibView, _countof(sphere.vertex->indices));
 
 		// 5. リソースバリアを書き込み禁止に
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
@@ -223,7 +224,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
-		//ウィンドウクラスを登録解除 
+		//ウィンドウクラスを登録解除
 		win->deleteWindow();
 	}
 

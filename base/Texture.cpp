@@ -6,7 +6,7 @@ Texture* Texture::GetInstance()
 	return &instance;
 }
 
-void Texture::Initialize(const wchar_t* szFile, DirectXIni* dx, int texNum)
+void Texture::Initialize(const wchar_t* szFile, DirectXCommon* dx, int texNum)
 {
     this->dx_ = dx;
 
@@ -128,7 +128,7 @@ void Texture::Initialize(const wchar_t* szFile, DirectXIni* dx, int texNum)
 	}
 }
 
-void Texture::Initialize(DirectXIni* dx, int texNum)
+void Texture::Initialize(DirectXCommon* dx, int texNum)
 {
 	this->dx_ = dx;
 	HRESULT result;

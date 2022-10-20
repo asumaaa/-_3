@@ -6,7 +6,7 @@ Depth* Depth::GetInstance()
 	return &instance;
 }
 
-void Depth::Initialize(DirectXIni* dx_)
+void Depth::Initialize(DirectXCommon* dx_)
 {
 	HRESULT result;
 	dx = dx_;

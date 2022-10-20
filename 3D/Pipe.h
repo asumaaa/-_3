@@ -1,6 +1,6 @@
 #pragma once
 #include "WinApp.h"
-#include "DirectXIni.h"
+#include "DirectXCommon.h"
 #include "input.h"
 #include "Masage.h"
 #include "Texture.h"
@@ -28,9 +28,9 @@ class Pipe
 {
 public:
 	static Pipe* GetInstance();
-	void Initialize(Shader shader_, RootSig rootSig_, Ver* vertex_, DirectXIni* dx_);
-	void Initialize(Shader shader_, RootSig rootSig_, Ver2* vertex_, DirectXIni* dx_);
-	void Initialize(Shader shader_, RootSig rootSig_,Ver3* vertex_, DirectXIni* dx_);
+	void Initialize(Shader shader_, RootSig rootSig_, Ver* vertex_, DirectXCommon* dx_);
+	void Initialize(Shader shader_, RootSig rootSig_, Ver2* vertex_, DirectXCommon* dx_);
+	void Initialize(Shader shader_, RootSig rootSig_,Ver3* vertex_, DirectXCommon* dx_);
 	void Update();
 public:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};	//グラフィックスパイプライン
@@ -42,6 +42,6 @@ public:
 	Ver2* vertex2;
 	Ver3* vertex3;
 	RootSig rootSig;
-	DirectXIni* dx;
+	DirectXCommon* dx;
 };
 

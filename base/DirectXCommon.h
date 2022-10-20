@@ -17,11 +17,22 @@
 
 using namespace Microsoft::WRL;
 
-class DirectXIni
+class DirectXCommon
 {
 public:
-	static DirectXIni* GetInstance();
+	//シングルトンインスタンスを取得
+	static DirectXCommon* GetInstance();
+	//初期化処理
 	void Initialize(WinApp* winApp);
+	void InitializeDevice();			//デバイス関連
+	void InitializeCommand();			//コマンド関連
+	void InitializeSwapchain();			//スワップチェーン関連
+	void InitializeRenderTargetView();	//レンダーターゲット関連
+	void InitializeDepthBuffer();		//深度バッファ関連
+	void InitializeFence();				//フェンス関連
+	//描画
+	void PreDraw();		//描画前
+	void PostDraw();	//描画後 
 	//ゲッター
 	ID3D12Device* GetDevice() { return device.Get(); }
 	IDXGISwapChain4* GetSwapChain() { return swapChain.Get(); }
@@ -47,6 +58,7 @@ private:
 	ComPtr<ID3D12CommandQueue> commandQueue;
 	ComPtr<ID3D12DescriptorHeap> rtvHeap;
 	ComPtr<ID3D12Fence> fence;
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
 public:
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};

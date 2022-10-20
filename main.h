@@ -1,6 +1,6 @@
 #pragma once
 #include "WinApp.h"
-#include "DirectXIni.h"
+#include "DirectXCommon.h"
 #include "input.h"
 #include "Masage.h"
 #include "Texture.h"

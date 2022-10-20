@@ -6,7 +6,7 @@ VertBuff* VertBuff::GetInstance()
 	return &instance;
 }
 
-void VertBuff::Initialize(Ver* vertex, DirectXIni* dx_)
+void VertBuff::Initialize(Ver* vertex, DirectXCommon* dx_)
 {
 	HRESULT result;
 
@@ -52,7 +52,7 @@ void VertBuff::Initialize(Ver* vertex, DirectXIni* dx_)
 	vbView.StrideInBytes = sizeof(vertex->vertices[0]);
 }
 
-void VertBuff::Initialize(Ver2* vertex, DirectXIni* dx_)
+void VertBuff::Initialize(Ver2* vertex, DirectXCommon* dx_)
 {
 	HRESULT result;
 
@@ -98,7 +98,7 @@ void VertBuff::Initialize(Ver2* vertex, DirectXIni* dx_)
 	vbView.StrideInBytes = sizeof(vertex->vertices[0]);
 }
 
-void VertBuff::Initialize(Ver3* vertex, DirectXIni* dx_)
+void VertBuff::Initialize(Ver3* vertex, DirectXCommon* dx_)
 {
 	HRESULT result;
 
@@ -144,7 +144,7 @@ void VertBuff::Initialize(Ver3* vertex, DirectXIni* dx_)
 	vbView.StrideInBytes = sizeof(vertex->vertices[0]);
 }
 
-void VertBuff::Update(Ver3* vertex, DirectXIni* dx_)
+void VertBuff::Update(Ver3* vertex, DirectXCommon* dx_)
 {
 	HRESULT result;
 
