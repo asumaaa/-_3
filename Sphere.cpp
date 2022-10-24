@@ -16,8 +16,6 @@ void Sphere::Initialize(XMFLOAT3 size, DirectXCommon* dx_)
 	dx = dx_;
 	HRESULT result;
 
-	vertices = new int[fine2];
-
 	//頂点初期化
 	InitializeVertex(size);
 	//インデックスバッファ初期化
