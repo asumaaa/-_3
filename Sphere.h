@@ -1,16 +1,19 @@
 #pragma once
 #include "DirectXCommon.h"
-#include "Vertex.h"
-#include "IndexBuff.h"
 #include "VertBuff.h"
-#include "Shader.h"
-//#include "RootSig.h"
-//#include "Pipe.h"
+#include "Object3D.h"
 #include "d3d12.h"
 #include "list"
 #include "vector"
+#include "d3dcompiler.h"
 
-const int fine = 60;	//球体の細かさ	変数宣言用
+using namespace DirectX;
+using namespace Microsoft::WRL;
+
+#pragma comment(lib,"d3dcompiler.lib")
+#pragma comment(lib,"dinput8.lib")
+
+const int fine = 32;	//球体の細かさ	変数宣言用
 const int fine2 = fine * fine * 2;	//描画に使う頂点の数
 const int fine3 = fine * fine * 3;	//インデックスの数
 const int fine4 = fine * fine + fine;	//頂点の数
@@ -42,9 +45,12 @@ public:
 public:
 	//Vertex関連
 	const float fineSize = fine;	//球体の細かさ
-	Vertex vertices[fine2];	//外部に渡す用の頂点データ
-	Vertex v[fine2], v2[fine4], v3[fine4];	//計算用頂点データ
-	unsigned short indices[fine3];
+	//Vertex vertices[fine2];	//外部に渡す用の頂点データ
+	std::vector<Vertex> vertices;	//外部に渡す用の頂点データ
+	std::vector<Vertex> v;	
+	std::vector<Vertex> v2;	
+	std::vector<Vertex> v3;
+	std::vector<unsigned short> indices;
 	UINT sizeVB;
 	UINT sizeIB;
 	float angleX, angleY;

@@ -16,6 +16,12 @@ void Sphere::Initialize(XMFLOAT3 size, DirectXCommon* dx_)
 	dx = dx_;
 	HRESULT result;
 
+	vertices.resize(fine2);
+	v.resize(fine2);
+	v2.resize(fine4);
+	v3.resize(fine4); 
+	indices.resize(fine3);
+
 	//頂点初期化
 	InitializeVertex(size);
 	//インデックスバッファ初期化
@@ -269,8 +275,8 @@ void Sphere::InitializeVertex(XMFLOAT3 size)
 		XMStoreFloat3(&vertices[indices2].normalize, normal);
 	}
 
-	sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
-	sizeIB = static_cast<UINT>(sizeof(uint16_t) * _countof(indices));
+	sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
+	sizeIB = static_cast<UINT>(sizeof(uint16_t) * indices.size());
 
 	//頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout_[] =
@@ -341,7 +347,7 @@ void Sphere::InitializeIndexBuff()
 	uint16_t* indexMap = nullptr;
 	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
 	//全インデックスに対して
-	for (int i = 0; i < _countof(indices); i++)
+	for (int i = 0; i < indices.size(); i++)
 	{
 		indexMap[i] = indices[i];	//インデックスをコピー
 	}
@@ -388,7 +394,7 @@ void Sphere::InitializeVertBuff()
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	//全頂点に対して
-	for (int i = 0; i < _countof(vertices); i++)
+	for (int i = 0; i < vertices.size(); i++)
 	{
 		vertMap[i] = vertices[i];	//座標をコピー
 	}

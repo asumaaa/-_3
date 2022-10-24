@@ -109,7 +109,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//‰~‚ð•`‰æ
 		texture[0].SetImageData(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 		texture[0].Draw();
-		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere.vbView, sphere.ibView, _countof(sphere.indices));
+		DrawObject3d(&object3ds[0], dx->GetCommandList(), sphere.vbView, sphere.ibView, sphere.indices.size());
 		/*DrawObject3d(&object3ds[1], dx->GetCommandList(), sphere.vbView, sphere.ibView, _countof(sphere.indices));*/
 
 
