@@ -268,7 +268,7 @@ void Ver3::Initialize(XMFLOAT3 size)
 	angleY = 0;
 	//頂点データ
 	float x, y, z;
-	for (int i = 0; i < fine2; i++)
+	for (int i = 0; i < f2; i++)
 	{
 		if (i == 0 || i % 4 == 0)
 		{
@@ -276,9 +276,9 @@ void Ver3::Initialize(XMFLOAT3 size)
 			{
 				angleX = 0;
 			}
-			if (i == 0 || i % (fine * 4) == 0)
+			if (i == 0 || i % (f * 4) == 0)
 			{
-				angleY = (2 * PI) * ((float)(i + fine * 4) / (float)(fine * fine * 4));
+				angleY = (2 * PI) * ((float)(i + f * 4) / (float)(f * f * 4));
 			}
 			else
 			{
@@ -321,8 +321,8 @@ void Ver3::Initialize(XMFLOAT3 size)
 		}
 	}
 
-	unsigned short in[fine3];
-	for (int i = 0; i < fine3; i++)
+	unsigned short in[f3];
+	for (int i = 0; i < f3; i++)
 	{
 		double num_ = ((i / 6) * 6) * 2 / 3;	
 		if (i == 0 || i % 6 == 0)							{ in[i] = num_; }
@@ -334,9 +334,9 @@ void Ver3::Initialize(XMFLOAT3 size)
 	angleY = 0;
 	angleX = 0;
 	//頂点データ	上から順番に割り当てる
-	for (int i = 0; i < fine4 ; i++)
+	for (int i = 0; i < f4 ; i++)
 	{
-		if (i == 0 || i % fine == 0)
+		if (i == 0 || i % f == 0)
 		{
 			angleX = 0;
 		}
@@ -348,9 +348,9 @@ void Ver3::Initialize(XMFLOAT3 size)
 		{
 			angleY = 0;
 		}
-		else if (i != 0 && i >= fine && i % fine == 0)
+		else if (i != 0 && i >= f && i % f == 0)
 		{
-			angleY = (2 * PI) * ((float)(i) / (float)(fine * fine));
+			angleY = (2 * PI) * ((float)(i) / (float)(f * f));
 		}
 		v2[i].pos.x = size.x * cos(angleX) * sin(angleY);
 		v2[i].pos.y = size.y * cos(angleY);
@@ -361,9 +361,9 @@ void Ver3::Initialize(XMFLOAT3 size)
 	}
 
 
-	for (int i = 0; i < fine2; i++)
+	for (int i = 0; i < f2; i++)
 	{
-		for (int j = 0; j < fine4; j++)
+		for (int j = 0; j < f4; j++)
 		{
 			//uv(0.0f,0.0f)
 			if (i == 1 || i % 4 == 1)
@@ -386,13 +386,13 @@ void Ver3::Initialize(XMFLOAT3 size)
 				}
 				else if (i % 4 == 3)
 				{
-					if (i % (fine * 4) != (fine * 4) - 1 && i != (fine * 4) - 1)
+					if (i % (f * 4) != (f * 4) - 1 && i != (f * 4) - 1)
 					{
 						v[i].parent = &v2[(i + 1) / 4];
 					}
-					if (i % (fine * 4) == (fine * 4) - 1 || i == (fine * 4) - 1)
+					if (i % (f * 4) == (f * 4) - 1 || i == (f * 4) - 1)
 					{
-						v[i].parent = &v2[(i / 4) - (fine - 1)];
+						v[i].parent = &v2[(i / 4) - (f - 1)];
 					}
 				}
 			}
@@ -402,11 +402,11 @@ void Ver3::Initialize(XMFLOAT3 size)
 			{
 				if (i == 0)
 				{
-					v[i].parent = &v2[fine];
+					v[i].parent = &v2[f];
 				}
 				else if (i % 4 == 0 && i != 0)
 				{
-					v[i].parent = &v2[(i / 4) + fine];
+					v[i].parent = &v2[(i / 4) + f];
 				}
 			}
 
@@ -414,17 +414,17 @@ void Ver3::Initialize(XMFLOAT3 size)
 			{
 				if (i == 2)
 				{
-					v[i].parent = &v2[fine + 1];
+					v[i].parent = &v2[f + 1];
 				}
 				else if (i % 4 == 2)
 				{
-					if (i % (fine * 4) != (fine * 4) - 2 && i != (fine * 4) - 2)
+					if (i % (f * 4) != (f * 4) - 2 && i != (f * 4) - 2)
 					{
-						v[i].parent = &v2[(i + 2) / 4 + fine];
+						v[i].parent = &v2[(i + 2) / 4 + f];
 					}
-					if (i % (fine * 4) == (fine * 4) - 2 || i == (fine * 4) - 2)
+					if (i % (f * 4) == (f * 4) - 2 || i == (f * 4) - 2)
 					{
-						v[i].parent = &v2[(i / 4) - (fine - 1) + fine];
+						v[i].parent = &v2[(i / 4) - (f - 1) + f];
 					}
 				}
 			}
@@ -433,18 +433,18 @@ void Ver3::Initialize(XMFLOAT3 size)
 
 
 	//頂点座標、uv座標、インデックスデータを代入
-	for (int i = 0; i < fine2; i++)
+	for (int i = 0; i < f2; i++)
 	{
 		vertices[i] = v[i];
 	}
 
-	for (int i = 0; i < fine3; i++)
+	for (int i = 0; i < f3; i++)
 	{
 		indices[i] = in[i];
 	}
 
 	//法線の計算
-	for (int i = 0; i < fine3 / 3; i++)
+	for (int i = 0; i < f3 / 3; i++)
 	{//三角形1つごとに計算していく
 		//三角形のインデックスを取り出して、一時的な変数に入れる
 		unsigned short indices0 = indices[i * 3 + 0];
@@ -513,7 +513,7 @@ void Ver3::Initialize2(XMFLOAT3 size)
 {
 	/*float x, y, z;*/
 	//頂点データ	上から順番に割り当てる
-	for (int i = 0; i < fine4; i++)
+	for (int i = 0; i < f4; i++)
 	{
 		v2[i].pos.x = v3[i].pos.x;
 		v2[i].pos.y = v3[i].pos.y;
@@ -524,7 +524,7 @@ void Ver3::Initialize2(XMFLOAT3 size)
 void Ver3::Update()
 {
 	//親頂点をもとに頂点を移動
-	for (int i = 0; i < fine2; i++)
+	for (int i = 0; i < f2; i++)
 	{
 		if (v[i].parent != nullptr)
 		{

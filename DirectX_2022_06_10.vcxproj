@@ -144,40 +144,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="3D\Depth.cpp" />
-    <ClCompile Include="3D\IndexBuff.cpp" />
     <ClCompile Include="3D\object3D.cpp" />
-    <ClCompile Include="3D\Pipe.cpp" />
-    <ClCompile Include="3D\RootSig.cpp" />
-    <ClCompile Include="3D\Shader.cpp" />
-    <ClCompile Include="3D\Square2.cpp" />
-    <ClCompile Include="3D\Triangle.cpp" />
-    <ClCompile Include="3D\VertBuff.cpp" />
-    <ClCompile Include="3D\Vertex.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\Masage.cpp" />
     <ClCompile Include="base\Texture.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
-    <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="input\input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3D\Depth.h" />
-    <ClInclude Include="3D\IndexBuff.h" />
     <ClInclude Include="3D\object3D.h" />
-    <ClInclude Include="3D\Pipe.h" />
-    <ClInclude Include="3D\RootSig.h" />
-    <ClInclude Include="3D\Shader.h" />
-    <ClInclude Include="3D\Square2.h" />
-    <ClInclude Include="3D\Triangle.h" />
-    <ClInclude Include="3D\VertBuff.h" />
-    <ClInclude Include="3D\Vertex.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\Masage.h" />
     <ClInclude Include="base\Texture.h" />
     <ClInclude Include="base\WinApp.h" />
-    <ClInclude Include="Gravity.h" />
     <ClInclude Include="input\input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Sphere.h" />
