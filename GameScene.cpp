@@ -66,7 +66,7 @@ void GameScene::Draw()
 {
 	sphere_->Update();
 	cube_->Update();
-	sprite_[0].Update();
+	/*sprite_[0].Update();*/
 
 	texture_[0].SetImageData(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 	texture_[0].Draw();

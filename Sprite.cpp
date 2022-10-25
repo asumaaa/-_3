@@ -24,36 +24,36 @@ void Sprite::Initialize(XMFLOAT3 size,DirectXCommon *dxCommon)
 	//パイプラインステート
 	InitializePipelineState();
 
-	//定数バッファ
-	//ヒープ設定
-	D3D12_HEAP_PROPERTIES cbHeapProp{};
-	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//GPUの転送用
-	//リソース設定
-	D3D12_RESOURCE_DESC cbResourceDesc{};
-	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
-	cbResourceDesc.Height = 1;
-	cbResourceDesc.DepthOrArraySize = 1;
-	cbResourceDesc.MipLevels = 1;
-	cbResourceDesc.SampleDesc.Count = 1;
-	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	//定数バッファの生成
-	result = dxCommon_->GetDevice()->CreateCommittedResource(
-		&cbHeapProp,	//ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&cbResourceDesc,	//リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuffMaterial)
-	);
-	assert(SUCCEEDED(result));
+	////定数バッファ
+	////ヒープ設定
+	//D3D12_HEAP_PROPERTIES cbHeapProp{};
+	//cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;	//GPUの転送用
+	////リソース設定
+	//D3D12_RESOURCE_DESC cbResourceDesc{};
+	//cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	//cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
+	//cbResourceDesc.Height = 1;
+	//cbResourceDesc.DepthOrArraySize = 1;
+	//cbResourceDesc.MipLevels = 1;
+	//cbResourceDesc.SampleDesc.Count = 1;
+	//cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	////定数バッファの生成
+	//result = dxCommon_->GetDevice()->CreateCommittedResource(
+	//	&cbHeapProp,	//ヒープ設定
+	//	D3D12_HEAP_FLAG_NONE,
+	//	&cbResourceDesc,	//リソース設定
+	//	D3D12_RESOURCE_STATE_GENERIC_READ,
+	//	nullptr,
+	//	IID_PPV_ARGS(&constBuffMaterial)
+	//);
+	//assert(SUCCEEDED(result));
 
-	//定数バッファのマッピング
-	ConstBufferDataMaterial* constMapMaterial = nullptr;
-	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);	//マッピング
-	assert(SUCCEEDED(result));
-	//値を書き込むと自動的に転送される
-	constMapMaterial->color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	////定数バッファのマッピング
+	//ConstBufferDataMaterial* constMapMaterial = nullptr;
+	//result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);	//マッピング
+	//assert(SUCCEEDED(result));
+	////値を書き込むと自動的に転送される
+	//constMapMaterial->color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 void Sprite::InitializeVertex(XMFLOAT3 size)
@@ -334,6 +334,10 @@ void Sprite::InitializeRootSignature()
 
 	rootSigBlob->Release();
 	pipelineDesc.pRootSignature = rootSignature.Get();
+
+	//パイプラインステートの生成
+	result = dxCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	assert(SUCCEEDED(result));
 }
 
 void Sprite::InitializePipeline()
@@ -404,9 +408,9 @@ void Sprite::InitializePipelineState()
 {
 	HRESULT result;
 
-	//パイプラインステートの生成
-	result = dxCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-	assert(SUCCEEDED(result));
+	////パイプラインステートの生成
+	//result = dxCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	//assert(SUCCEEDED(result));
 }
 
 void Sprite::Update()
