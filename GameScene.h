@@ -7,6 +7,8 @@
 #include "list"
 #include "memory"
 #include "Texture.h"
+#include "WinApp.h"
+
 
 class GameScene
 {
@@ -33,12 +35,17 @@ private:
 	std::unique_ptr<Cube> cube_;
 
 	//画像
-	size_t textureCount_ = 3;	//テクスチャの数
-	std::vector<Texture> texture_;	//テクスチャ
+	//size_t textureCount_ = 3;	//テクスチャの数
+	//std::vector<Texture> texture_;	//テクスチャ
+	size_t texImgCount_ = 2;	//テクスチャの数
+	std::vector<Texture> texImg_;	//テクスチャ
 
 	//3Dオブジェクト
 	size_t kObjectCount = 2;		//オブジェクトの数
 	std::vector<Object3d> object3ds_;	//オブジェクト
+
+	size_t backGroundCount = 1;		//オブジェクトの数
+	std::vector<Object3d> objectBackGround_;	//オブジェクト
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
