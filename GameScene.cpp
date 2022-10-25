@@ -37,11 +37,15 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	}
 
 	//オブジェクト初期化
-	objectBackGround.resize(backGroundCount);
-	InitializeObject3d(&objectBackGround[0], dxCommon->GetDevice());
-	objectBackGround[0].scale = { 10.0f,10.0f,10.0f };
-	objectBackGround[0].rotation = { 0.0f,0.0f,0.0f };
-	objectBackGround[0].position = { -10.0f,0.0f,-60.0f };
+	objectBackGround_.resize(backGroundCount);
+	InitializeObject3d(&objectBackGround_[0], dxCommon->GetDevice());
+	InitializeObject3d(&objectBackGround_[1], dxCommon->GetDevice());
+	objectBackGround_[0].scale = { 10.0f,10.0f,10.0f };
+	objectBackGround_[0].rotation = { 0.0f,0.0f,0.0f };
+	objectBackGround_[0].position = { -10.0f,0.0f,-60.0f };
+	objectBackGround_[1].scale = { 10.0f,10.0f,10.0f };
+	objectBackGround_[1].rotation = { 0.0f,0.0f,0.0f };
+	objectBackGround_[1].position = { -10.0f,0.0f,-60.0f };
 
 	//カメラ初期化
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -50,7 +54,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 void GameScene::Update()
 {
 	//オブジェクトの更新
-	UpdateObject3d(&objectBackGround[0], matView, matProjection);
+	UpdateObject3d(&objectBackGround_[0], matView, matProjection);
+	UpdateObject3d(&objectBackGround_[1], matView, matProjection);
 }
 
 void GameScene::Draw()
@@ -66,6 +71,8 @@ void GameScene::Draw()
 	texture_[1].Draw();
 	texture_[2].Draw();*/
 
+	texture_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 	texImg_[0].Draw();
-	DrawObject3d(&objectBackGround[0], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
+	DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
+	DrawObject3d(&objectBackGround_[1], dxCommon->GetCommandList(), sphere_->vbView, sphere_->ibView, sphere_->indices.size());
 }

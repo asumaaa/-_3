@@ -39,8 +39,8 @@ private:
 	std::vector<Texture> texImg_;	//テクスチャ
 
 	//3
-	size_t backGroundCount = 1;		//オブジェクトの数
-	std::vector<Object3d> objectBackGround;	//オブジェクト
+	size_t backGroundCount = 2;		//オブジェクトの数
+	std::vector<Object3d> objectBackGround_;	//オブジェクト
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
