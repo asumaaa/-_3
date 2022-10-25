@@ -1,13 +1,5 @@
 #include "GameScene.h"
 
-GameScene::GameScene()
-{
-}
-
-GameScene::~GameScene()
-{
-}
-
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 {
 	this->dxCommon = dxCommon;
@@ -41,9 +33,10 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 
 	//レーン初期化
-	/*lane_[0].Initialize(dxCommon, cube_.get(), Left);
+	lane_.resize(laneCount);
+	lane_[0].Initialize(dxCommon, cube_.get(), Left);
 	lane_[1].Initialize(dxCommon, cube_.get(), Center);
-	lane_[2].Initialize(dxCommon, cube_.get(), Right);*/
+	lane_[2].Initialize(dxCommon, cube_.get(), Right);
 
 	//オブジェクト初期化
 	object3ds_.resize(kObjectCount);
@@ -58,9 +51,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		object3ds_[1].position = { 10.0f,0.0f,-60.0f };
 	}
 	InitializeObject3d(&objectBackGround_[0], dxCommon->GetDevice());
-	objectBackGround_[0].scale = { window_width  * 0.82f,window_height  * 0.82f,1.0f };
-	objectBackGround_[0].rotation = { 0.0f,0.0f,0.0f };
-	objectBackGround_[0].position = { 0.0f,0.0f,600.0f };
+	objectBackGround_[0].scale = { window_width  * 0.4f,window_height  * 0.4f,1.0f };
+	objectBackGround_[0].rotation = { 0.4f,0.0f,0.0f };
+	objectBackGround_[0].position = { 0.0f,-250.0f,600.0f };
 
 	//カメラ初期化
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -69,10 +62,10 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 void GameScene::Update()
 {
 	//レーン更新
-	/*for (int i = 0; i < lane_.size() ;i++)
+	for (int i = 0; i < lane_.size() ;i++)
 	{
-		lane_[i].Update();
-	}*/
+		lane_[i].Update(matView, matProjection);
+	}
 
 	//オブジェクト更新
 	for (int i = 0; i < object3ds_.size(); i++)
@@ -97,8 +90,9 @@ void GameScene::Draw()
 	texImg_[0].Draw();
 	DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
 
-	/*for (int i = 0; i < lane_.size(); i++)
+	for (int i = 0; i < lane_.size(); i++)
 	{
+		laneTex_[i].Draw();
 		lane_[i].Draw(matView);
-	}*/
+	}
 }

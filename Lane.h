@@ -19,10 +19,10 @@ class Field
 {
 public:
 	void Initialize(DirectXCommon* dxCommon,Cube* cube, Lane lane);	//レーンのX座標を決めて初期化
-	void Draw(XMMATRIX matView, Texture* texture);
-	void Update();
+	void Draw(XMMATRIX matView);
+	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	//ゲッター
-	XMFLOAT3 GetTransration() { return worldTransform_.translation_; };
+	XMFLOAT3 GetTransration() { return translation_; };
 	/*int GetLane() { return lane_; };
 
 	void LaneChange();*/
@@ -30,9 +30,11 @@ private:
 
 	DirectXCommon* dxCommon_;
 	Input* input_ = nullptr;
-	WorldTransform worldTransform_;
+	XMFLOAT3 translation_;
+	XMFLOAT3 scale_;
+	XMFLOAT3 rotation_;
 	Cube* cube_;
-	Object3d* object_;
+	Object3d object_;
 
 	float length = 200.0f;	//レーンの長さ
 	float zLen_ = 165.0f;	//okuyuki

@@ -8,7 +8,6 @@
 #include "memory"
 #include "Texture.h"
 #include "WinApp.h"
-#include "WorldTransform.h"
 #include "Lane.h"
 
 
@@ -16,8 +15,6 @@ class GameScene
 {
 	//メンバ関数
 public:
-	GameScene();
-	~GameScene();
 	void Initialize(DirectXCommon* dxCommon, Input* input);
 	void Update();
 	void Draw();
@@ -33,7 +30,7 @@ private:
 	std::unique_ptr<Sphere> sphere_;
 
 	//キューブのモデル
-	XMFLOAT3 size2 = { 1.0f,1.0f,1.0f };
+	XMFLOAT3 size2 = { 2.02f,2.02f,2.02f };
 	std::unique_ptr<Cube> cube_;
 
 	//画像
@@ -52,7 +49,7 @@ private:
 
 	//レーン
 	size_t laneCount = 3;	//レーンの数
-	Field lane_;	//レーン
+	std::vector<Field> lane_;	//レーン
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
@@ -63,7 +60,7 @@ private:
 
 	//ビュー変換行列
 	XMMATRIX matView;
-	XMFLOAT3 eye = { 0, 0, -100 };
-	XMFLOAT3 target = { 0, 0, 0 };
+	XMFLOAT3 eye = { 0,8,-50 };
+	XMFLOAT3 target = { 0,0,-30 };
 	XMFLOAT3 up = { 0, 1, 0 };
 };
