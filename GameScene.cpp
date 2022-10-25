@@ -1,4 +1,3 @@
-
 #include "GameScene.h"
 
 GameScene::GameScene()
@@ -27,18 +26,24 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 
 	//テクスチャ初期化
-	/*texture_.resize(textureCount_);*/
+	laneTex_.resize(laneTexCount_);
 	texImg_.resize(texImgCount_);
-	/*for (int i = 0; i < texture_.size(); i++)
+	//レーン画像
+	for (int i = 0; i < laneTex_.size(); i++)
 	{
-		texture_[i].Initialize(dxCommon, i);
-	}*/
+		laneTex_[i].Initialize(dxCommon, i);
+	}
+	//背景画像
 	for (int i = 0; i < texImg_.size(); i++)
 	{
 		texImg_[i].Initialize(L"Resources/backGround.png", dxCommon, 0);
 	}
 
 
+	//レーン初期化
+	/*lane_[0].Initialize(dxCommon, cube_.get(), Left);
+	lane_[1].Initialize(dxCommon, cube_.get(), Center);
+	lane_[2].Initialize(dxCommon, cube_.get(), Right);*/
 
 	//オブジェクト初期化
 	object3ds_.resize(kObjectCount);
@@ -63,6 +68,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 void GameScene::Update()
 {
+	//レーン更新
+	/*for (int i = 0; i < lane_.size() ;i++)
+	{
+		lane_[i].Update();
+	}*/
+
+	//オブジェクト更新
 	for (int i = 0; i < object3ds_.size(); i++)
 	{
 		UpdateObject3d(&object3ds_[i], matView, matProjection);
@@ -75,12 +87,18 @@ void GameScene::Draw()
 	sphere_->Update();
 	cube_->Update();
 
-	/*texture_[0].SetImageData(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-	texture_[0].Draw();
-	DrawObject3d(&object3ds_[0], dxCommon->GetCommandList(), sphere_->vbView, sphere_->ibView, sphere_->indices.size());*/
+	for (int i = 0; i < laneTex_.size(); i++)
+	{
+		laneTex_[0].SetImageData(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+		laneTex_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
+		laneTex_[2].SetImageData(XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+	}
 
-	/*texture_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
-	texture_[1].Draw();*/
 	texImg_[0].Draw();
 	DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
+
+	/*for (int i = 0; i < lane_.size(); i++)
+	{
+		lane_[i].Draw(matView);
+	}*/
 }

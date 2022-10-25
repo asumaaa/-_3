@@ -8,6 +8,8 @@
 #include "memory"
 #include "Texture.h"
 #include "WinApp.h"
+#include "WorldTransform.h"
+#include "Lane.h"
 
 
 class GameScene
@@ -35,9 +37,9 @@ private:
 	std::unique_ptr<Cube> cube_;
 
 	//画像
-	//size_t textureCount_ = 3;	//テクスチャの数
-	//std::vector<Texture> texture_;	//テクスチャ
-	size_t texImgCount_ = 2;	//テクスチャの数
+	size_t laneTexCount_ = 3;	//テクスチャの数
+	std::vector<Texture> laneTex_;	//テクスチャ
+	size_t texImgCount_ = 1;	//テクスチャの数
 	std::vector<Texture> texImg_;	//テクスチャ
 
 	//3Dオブジェクト
@@ -46,6 +48,11 @@ private:
 
 	size_t backGroundCount = 1;		//オブジェクトの数
 	std::vector<Object3d> objectBackGround_;	//オブジェクト
+
+
+	//レーン
+	size_t laneCount = 3;	//レーンの数
+	Field lane_;	//レーン
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(

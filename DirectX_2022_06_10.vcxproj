@@ -151,8 +151,10 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="input\input.cpp" />
+    <ClCompile Include="Lane.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="WorldTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3D\object3D.h" />
@@ -163,8 +165,10 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="input\input.h" />
+    <ClInclude Include="Lane.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="WorldTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">
