@@ -13,6 +13,7 @@
 #include "assert.h"
 #include "DirectXTex.h"
 #include "object3D.h"
+#include "GameScene.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

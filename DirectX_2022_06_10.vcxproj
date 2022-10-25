@@ -143,23 +143,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="3D\Depth.cpp" />
     <ClCompile Include="3D\object3D.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\Masage.cpp" />
     <ClCompile Include="base\Texture.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="input\input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="3D\Depth.h" />
     <ClInclude Include="3D\object3D.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\Masage.h" />
     <ClInclude Include="base\Texture.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="input\input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Sphere.h" />
