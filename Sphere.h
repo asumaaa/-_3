@@ -1,6 +1,5 @@
 #pragma once
 #include "DirectXCommon.h"
-#include "VertBuff.h"
 #include "Object3D.h"
 #include "d3d12.h"
 #include "list"
@@ -13,7 +12,9 @@ using namespace Microsoft::WRL;
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"dinput8.lib")
 
-const int fine = 32;	//球体の細かさ	変数宣言用
+#define PI 3.14159265359
+
+const int fine = 64;	//球体の細かさ	変数宣言用
 const int fine2 = fine * fine * 2;	//描画に使う頂点の数
 const int fine3 = fine * fine * 3;	//インデックスの数
 const int fine4 = fine * fine + fine;	//頂点の数
@@ -43,6 +44,19 @@ public:
 	D3D12_VIEWPORT viewport{};
 
 public:
+	//頂点データ構造体
+	struct Vertex
+	{
+		XMFLOAT3 pos;	//座標
+		XMFLOAT3 normalize;	//法線ベクトル
+		XMFLOAT2 uv;	//uv座標
+		Vertex* parent = nullptr;
+	};
+
+	struct Indices
+	{
+		int num;
+	};
 	//Vertex関連
 	const float fineSize = fine;	//球体の細かさ
 	//Vertex vertices[fine2];	//外部に渡す用の頂点データ

@@ -9,10 +9,23 @@
 #include "assert.h"
 #include "DirectXTex.h"
 #include "wrl.h"
-#include "Vertex.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+
+////頂点データ構造体
+//struct Vertex
+//{
+//	XMFLOAT3 pos;	//座標
+//	XMFLOAT3 normalize;	//法線ベクトル
+//	XMFLOAT2 uv;	//uv座標
+//	Vertex* parent = nullptr;
+//};
+//
+//struct Indices
+//{
+//	int num;
+//};
 
 //定数バッファ用データ構造体(マテリアル)
 struct ConstBufferDataMaterial {

@@ -2,6 +2,7 @@
 #include "input.h"
 #include "DirectXTex.h"
 #include "Sphere.h"
+#include "Cube.h"
 #include "object3D.h"
 #include "list"
 #include "memory"
@@ -23,18 +24,21 @@ private:
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
 
-	//モデル
+	//球体のモデル
 	XMFLOAT3 size1 = { 1.0f,1.0f,1.0f };
 	std::unique_ptr<Sphere> sphere_;
+
+	//キューブのモデル
+	XMFLOAT3 size2 = { 1.0f,1.0f,1.0f };
+	std::unique_ptr<Cube> cube_;
 
 	//画像
 	size_t textureCount_ = 2;	//テクスチャの数
 	std::vector<Texture> texture_;	//テクスチャ
 
-	//3Dオブジェクトの数
-	size_t kObjectCount = 1;
-	//3Dオブジェクトの配列
-	std::vector<Object3d> object3ds_;
+	//3Dオブジェクト
+	size_t kObjectCount = 2;		//オブジェクトの数
+	std::vector<Object3d> object3ds_;	//オブジェクト
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
