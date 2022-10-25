@@ -20,6 +20,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	input = Input::GetInstance();
 	input->Initialize(win);
 
+	////スプライト
+	//SpriteCommon* spriteCommon = nullptr;
+	//spriteCommon = new SpriteCommon;
+	//spriteCommon->Initialize(dx);
+
+	//Sprite* sprite = nullptr;
+	//sprite = new Sprite;
+	//sprite->Initialize(XMFLOAT3(1.0f,1.0f,1.0f),spriteCommon->GetDxCommon());
+
 	//ゲームシーン
 	GameScene* gameScene = nullptr;
 	gameScene = new GameScene();

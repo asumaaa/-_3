@@ -24,6 +24,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	newCube->Initialize(size2, dxCommon);
 	cube_.reset(newCube);
 
+	//スプライト初期化
+	sprite_.resize(spriteCount);
+	for (int i = 0; i < sprite_.size(); i++)
+	{
+		sprite_[i].Initialize(XMFLOAT3(1.0f, 1.0f, 1.0f), dxCommon);
+	}
+
 	//テクスチャ初期化
 	texture_.resize(textureCount_);	
 	for (int i = 0; i < texture_.size(); i++)
@@ -59,12 +66,15 @@ void GameScene::Draw()
 {
 	sphere_->Update();
 	cube_->Update();
+	sprite_[0].Update();
 
 	texture_[0].SetImageData(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 	texture_[0].Draw();
-	DrawObject3d(&object3ds_[0], dxCommon->GetCommandList(), sphere_->vbView, sphere_->ibView, sphere_->indices.size());
+	/*DrawObject3d(&object3ds_[0], dxCommon->GetCommandList(), sphere_->vbView, sphere_->ibView, sphere_->indices.size());*/
 
 	texture_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 	texture_[1].Draw();
-	DrawObject3d(&object3ds_[1], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
+	/*DrawObject3d(&object3ds_[1], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());*/
+
+	/*dxCommon->GetCommandList()->DrawIndexedInstanced(sprite_[0].indices.size(), 1, 0, 0, 0);*/
 }

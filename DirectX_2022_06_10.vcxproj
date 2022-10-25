@@ -153,6 +153,8 @@
     <ClCompile Include="input\input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3D\object3D.h" />
@@ -165,6 +167,8 @@
     <ClInclude Include="input\input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteCommon.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl">

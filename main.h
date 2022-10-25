@@ -14,6 +14,8 @@
 #include "DirectXTex.h"
 #include "object3D.h"
 #include "GameScene.h"
+#include "SpriteCommon.h"
+#include "Sprite.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

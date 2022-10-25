@@ -7,6 +7,8 @@
 #include "list"
 #include "memory"
 #include "Texture.h"
+#include "Sprite.h"
+#include "SpriteCommon.h"
 
 class GameScene
 {
@@ -35,6 +37,10 @@ private:
 	//画像
 	size_t textureCount_ = 2;	//テクスチャの数
 	std::vector<Texture> texture_;	//テクスチャ
+
+	//スプライト
+	size_t spriteCount = 1;	//スプライトの数
+	std::vector<Sprite> sprite_;
 
 	//3Dオブジェクト
 	size_t kObjectCount = 2;		//オブジェクトの数
