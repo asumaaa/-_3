@@ -28,7 +28,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	texture_.resize(textureCount_);	
 	for (int i = 0; i < texture_.size(); i++)
 	{
-		texture_[i].Initialize(dxCommon, i);
+		if (i < 2)
+		{
+			texture_[i].Initialize(dxCommon, i);
+		}
+		texture_[2].Initialize(L"Resources/texture.jpg", dxCommon, 0);
 	}
 
 	//オブジェクト初期化
@@ -66,5 +70,6 @@ void GameScene::Draw()
 
 	texture_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 	texture_[1].Draw();
+	texture_[2].Draw();
 	DrawObject3d(&object3ds_[1], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
 }

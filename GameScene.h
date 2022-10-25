@@ -33,7 +33,7 @@ private:
 	std::unique_ptr<Cube> cube_;
 
 	//画像
-	size_t textureCount_ = 2;	//テクスチャの数
+	size_t textureCount_ = 3;	//テクスチャの数
 	std::vector<Texture> texture_;	//テクスチャ
 
 	//3Dオブジェクト
