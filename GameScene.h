@@ -35,10 +35,12 @@ private:
 	//画像
 	size_t textureCount_ = 3;	//テクスチャの数
 	std::vector<Texture> texture_;	//テクスチャ
+	size_t texImgCount_ = 1;	//テクスチャの数
+	std::vector<Texture> texImg_;	//テクスチャ
 
-	//3Dオブジェクト
-	size_t kObjectCount = 2;		//オブジェクトの数
-	std::vector<Object3d> object3ds_;	//オブジェクト
+	//3
+	size_t backGroundCount = 1;		//オブジェクトの数
+	std::vector<Object3d> objectBackGround;	//オブジェクト
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
@@ -49,7 +51,7 @@ private:
 
 	//ビュー変換行列
 	XMMATRIX matView;
-	XMFLOAT3 eye = { 0, 0, -100 };
-	XMFLOAT3 target = { 0, 0, 0 };
+	XMFLOAT3 eye = { 0,7,-50 };
+	XMFLOAT3 target = { 0,0,-32 };
 	XMFLOAT3 up = { 0, 1, 0 };
 };

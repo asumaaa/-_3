@@ -28,24 +28,20 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	texture_.resize(textureCount_);	
 	for (int i = 0; i < texture_.size(); i++)
 	{
-		if (i < 2)
-		{
-			texture_[i].Initialize(dxCommon, i);
-		}
-		texture_[2].Initialize(L"Resources/texture.jpg", dxCommon, 0);
+		texture_[i].Initialize(dxCommon, i);
+	}
+	texImg_.resize(texImgCount_);
+	for (int i = 0; i < texImgCount_; i++)
+	{
+		texImg_[0].Initialize(L"Resource/backGround.png", dxCommon, i);
 	}
 
 	//オブジェクト初期化
-	object3ds_.resize(kObjectCount);
-	for (int i = 0; i < object3ds_.size(); i++)
-	{
-		//初期化
-		InitializeObject3d(&object3ds_[i], dxCommon->GetDevice());
-		object3ds_[i].scale = { 10.0f,10.0f,10.0f };
-		object3ds_[i].rotation = { 0.0f,0.0f,0.0f };
-		object3ds_[0].position = { -10.0f,0.0f,-60.0f };
-		object3ds_[1].position = { 10.0f,0.0f,-60.0f };
-	}
+	objectBackGround.resize(backGroundCount);
+	InitializeObject3d(&objectBackGround[0], dxCommon->GetDevice());
+	objectBackGround[0].scale = { 10.0f,10.0f,10.0f };
+	objectBackGround[0].rotation = { 0.0f,0.0f,0.0f };
+	objectBackGround[0].position = { -10.0f,0.0f,-60.0f };
 
 	//カメラ初期化
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -53,10 +49,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 void GameScene::Update()
 {
-	for (int i = 0; i < object3ds_.size(); i++)
-	{
-		UpdateObject3d(&object3ds_[i], matView, matProjection);
-	}
+	//オブジェクトの更新
+	UpdateObject3d(&objectBackGround[0], matView, matProjection);
 }
 
 void GameScene::Draw()
@@ -64,12 +58,14 @@ void GameScene::Draw()
 	sphere_->Update();
 	cube_->Update();
 
-	texture_[0].SetImageData(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+	/*texture_[0].SetImageData(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 	texture_[0].Draw();
 	DrawObject3d(&object3ds_[0], dxCommon->GetCommandList(), sphere_->vbView, sphere_->ibView, sphere_->indices.size());
 
 	texture_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
 	texture_[1].Draw();
-	texture_[2].Draw();
-	DrawObject3d(&object3ds_[1], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
+	texture_[2].Draw();*/
+
+	texImg_[0].Draw();
+	DrawObject3d(&objectBackGround[0], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
 }
