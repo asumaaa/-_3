@@ -23,6 +23,7 @@ public:
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	//ÉQÉbÉ^Å[
 	XMFLOAT3 GetTransration() { return translation_; };
+	Lane GetLane() { return lane_; };
 	/*int GetLane() { return lane_; };
 
 	void LaneChange();*/

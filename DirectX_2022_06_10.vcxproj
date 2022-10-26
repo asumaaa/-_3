@@ -148,7 +148,9 @@
     <ClCompile Include="base\Masage.cpp" />
     <ClCompile Include="base\Texture.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Ease.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="input\input.cpp" />
@@ -163,7 +165,9 @@
     <ClInclude Include="base\Masage.h" />
     <ClInclude Include="base\Texture.h" />
     <ClInclude Include="base\WinApp.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Ease.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="input\input.h" />

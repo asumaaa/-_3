@@ -10,6 +10,9 @@
 #include "WinApp.h"
 #include "Lane.h"
 #include "Goal.h"
+#include "Bullet.h"
+#include "string"
+#include "sstream"
 
 
 class GameScene
@@ -51,9 +54,32 @@ private:
 	//レーン
 	size_t laneCount = 3;	//レーンの数
 	std::vector<Field> lane_;	//レーン
+	int popLane_ = 0;
 
 	//ゴール
 	Goal goal_;
+
+	//弾
+	//弾リストを取得
+	std::list<std::unique_ptr<Bullet>> bullets_;
+	const std::list<std::unique_ptr<Bullet>>& GetBullets() { return bullets_; }
+	//弾を足す
+	void AddBullet(std::unique_ptr<Bullet>& Bullet);
+	void GenerBullet(XMFLOAT3 BulletPos, int ID, int lane);
+	//敵発生データ読み込み
+	void LoadBulletPopData();
+	void BulletReset();
+	void UpdateBulletPopCommands();
+	//csv
+	std::stringstream bulletPopCommands_;
+
+	int gameLevel_ = 0;
+	int levelMax_ = 8;
+	//待機中フラグ
+	bool isStand_ = false;
+	//待機タイマー
+	int standTime_ = 0;
+	int gameTimer_ = 0;
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(

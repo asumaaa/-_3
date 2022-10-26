@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include<fstream>
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 {
@@ -15,7 +16,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	newCube->Initialize(size2, dxCommon);
 	cube_.reset(newCube);
 
-
+	//バレット
+	BulletReset();
 
 	//テクスチャ初期化
 	laneTex_.resize(laneTexCount_);
@@ -63,10 +65,32 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 void GameScene::Update()
 {
+	//タイマー更新
+	gameTimer_++;
+	if (gameTimer_ > 200) {
+		if (gameLevel_ < levelMax_) {
+			gameTimer_ = 0;
+			gameLevel_++;
+		}
+		else {
+			gameTimer_ = 0;
+		}
+	}
+
+	//弾
+	//デリート
+	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet_) { return bullet_->IsDead(); });
+	UpdateBulletPopCommands();
+
 	//レーン更新
 	for (int i = 0; i < lane_.size() ;i++)
 	{
 		lane_[i].Update(matView, matProjection);
+	}
+
+	//弾更新
+	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
+		bullet_->Update(matView, matProjection,lane_[bullet_->GetFieldLane()].GetTransration());
 	}
 
 	//ゴール更新
@@ -105,4 +129,163 @@ void GameScene::Draw()
 	//ゴール描画
 	laneTex_[0].Draw();
 	goal_.Draw(matView);
+
+	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
+		bullet_->Draw(matView);
+	}
+}
+
+void GameScene::AddBullet(std::unique_ptr<Bullet>& Bullet)
+{
+}
+
+void GameScene::GenerBullet(XMFLOAT3 BulletPos, int ID, int lane)
+{
+	//生成
+	std::unique_ptr<Bullet> newBullet = std::make_unique<Bullet>();
+	//敵キャラの初期化
+	float kBulSpeed = 0.4f;
+	if (gameLevel_ > 0) {
+		kBulSpeed += gameLevel_ * 0.1f + 1.0f;	//レベルが上がると弾が加速
+	}
+
+	if (lane == 0) {
+		newBullet->Initialize(dxCommon,cube_.get(), BulletPos, kBulSpeed);
+	}
+	else if (lane == 1) {
+		newBullet->Initialize(dxCommon, cube_.get(), BulletPos, kBulSpeed);
+	}
+	else if (lane == 2) {
+		newBullet->Initialize(dxCommon, cube_.get(), BulletPos, kBulSpeed);
+	}
+
+	newBullet->SetID(ID);
+	newBullet->SetFieldLane(lane);
+
+	//リストに登録する
+	bullets_.push_back(std::move(newBullet));
+
+}
+
+void GameScene::LoadBulletPopData()
+{
+	//ファイルを開く
+	std::ifstream file;
+	file.open("Resources/enemyPop2.csv");
+
+	assert(file.is_open());
+
+	//ファイルの内容を文字列ストリームにコピー
+	bulletPopCommands_ << file.rdbuf();
+
+	//ファイルを閉じる
+	file.close();
+}
+
+void GameScene::UpdateBulletPopCommands()
+{
+	//待機処理
+	if (isStand_) {
+		standTime_--;
+		if (standTime_ <= 0) {
+			//待機完了
+			isStand_ = false;
+		}
+		return;
+	}
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	//コマンド実行ループ
+	while (getline(bulletPopCommands_, line)) {
+		// 1行分の文字数をストリームに変換して解折しやすくなる
+		std::istringstream line_stream(line);
+
+		std::string word;
+		//,区切りで行の先頭文字を取得
+		getline(line_stream, word, ',');
+
+		//"//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			//コメント行を飛ばす
+			continue;
+		}
+		// POPコマンド
+		if (word.find("POP") == 0) {
+
+			//レーン
+			std::getline(line_stream, word, ',');
+			int lane = static_cast<int>(std::atof(word.c_str()));
+
+			// ID
+			std::getline(line_stream, word, ',');
+			int ID = static_cast<int>(std::atof(word.c_str()));
+
+			float depth = 200.0f;	//奥行
+			float xDifference = 10.0f;	//左右差
+
+
+
+			if (lane == 1) {
+				for (int i = 0; i < 3; i++) {
+					if (lane_[i].GetLane() == 0) {
+						popLane_ = i;
+						break;
+					}
+				}
+				GenerBullet(XMFLOAT3(-xDifference, 0, depth), ID, popLane_);
+
+			}
+			else if (lane == 2) {
+				for (int i = 0; i < 3; i++) {
+					if (lane_[i].GetLane() == 1) {
+						popLane_ = i;
+						break;
+					}
+				}
+				GenerBullet(XMFLOAT3(0, 0, depth), ID, popLane_);
+			}
+			else if (lane == 3) {
+				for (int i = 0; i < 3; i++) {
+					if (lane_[i].GetLane() == 2) {
+						popLane_ = i;
+						break;
+					}
+				}
+				GenerBullet(XMFLOAT3(xDifference, 0, depth), ID, popLane_);
+			}
+			else {
+
+
+			}
+		}
+		// WAITコマンド
+		else if (word.find("WAIT") == 0) {
+			std::getline(line_stream, word, ',');
+
+			//待ち時間
+			int32_t waitTime = std::atoi(word.c_str());
+
+			//待機開始
+			isStand_ = true;
+			int maxTimeDiv = 10;
+			if (gameLevel_ <= 0) {
+				standTime_ = waitTime * (maxTimeDiv - gameLevel_) / maxTimeDiv;
+			}
+			else {
+
+				standTime_ = waitTime * (maxTimeDiv - gameLevel_) / maxTimeDiv;
+			}
+
+			//抜ける
+			break;
+		}
+	}
+
+}
+void GameScene::BulletReset()
+{
+	bulletPopCommands_.str("");
+	bulletPopCommands_.clear(std::stringstream::goodbit);
+	LoadBulletPopData();
 }
