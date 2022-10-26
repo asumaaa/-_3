@@ -151,6 +151,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Ease.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="input\input.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Ease.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="input\input.h" />

@@ -82,6 +82,10 @@ void GameScene::Update()
 	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet_) { return bullet_->IsDead(); });
 	UpdateBulletPopCommands();
 
+	//エフェクト
+	//デリート
+	effects_.remove_if([](std::unique_ptr<Effect>& effect_) { return effect_->IsDead(); });;
+
 	//レーン更新
 	for (int i = 0; i < lane_.size() ;i++)
 	{
@@ -91,6 +95,11 @@ void GameScene::Update()
 	//弾更新
 	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
 		bullet_->Update(matView, matProjection,lane_[bullet_->GetFieldLane()].GetTransration());
+	}
+
+	//エフェクト更新
+	for (std::unique_ptr<Effect>& effect_ : effects_) {
+		effect_->Update(matView, matProjection);
 	}
 
 	//ゴール更新
@@ -134,6 +143,11 @@ void GameScene::Draw()
 
 	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
 		bullet_->Draw(matView);
+	}
+
+	//エフェクト描画
+	for (std::unique_ptr<Effect>& effect_ : effects_) {
+		effect_->Draw(matView);
 	}
 }
 
@@ -316,7 +330,7 @@ void GameScene::CheckAllCollisions() {
 		if (cd <= 4.0f) {
 			//敵キャラの衝突時コールバックを呼び出す
 			bullet_->OnCollision(true);
-			/*GenerEffect(goal_->GetWorldPosition(), bullet_->GetFieldLane());*/
+			GenerEffect(goal_.GetWorldPosition(), bullet_->GetFieldLane());
 
 			//衝突時コールバックを呼び出す
 			//goal_->OnCollision();
@@ -328,7 +342,35 @@ void GameScene::CheckAllCollisions() {
 				goal_.bulletHit_[bullet_->GetFieldLane()]--;
 			}
 		}
-
-
 	}
+}
+
+void GameScene::GenerEffect(XMFLOAT3 pos, int lane)
+{
+	//生成
+	std::unique_ptr<Effect> newEffect = std::make_unique<Effect>();
+	///敵キャラの初期化
+	int maxHitCount = 14;
+	if (lane == Left) {
+		newEffect->Initialize(dxCommon,cube_.get(), pos);
+		if (goal_.bulletHit_[Left] <= maxHitCount) {
+			goal_.bulletHit_[Left]++;	//グローバル変数です。ごめんなさい。by細井
+		}
+	}
+	else if (lane == Center) {
+		newEffect->Initialize(dxCommon, cube_.get(), pos);
+		if (goal_.bulletHit_[Center] <= maxHitCount) {
+			goal_.bulletHit_[Center]++;
+		}
+	}
+	else if (lane == Right) {
+		newEffect->Initialize(dxCommon, cube_.get(), pos);
+		if (goal_.bulletHit_[Right] <= maxHitCount) {
+			goal_.bulletHit_[Right]++;
+		}
+	}
+
+	//リストに登録する
+	effects_.push_back(std::move(newEffect));
+
 }

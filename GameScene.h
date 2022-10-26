@@ -13,6 +13,7 @@
 #include "Bullet.h"
 #include "string"
 #include "sstream"
+#include "Effect.h"
 
 
 class GameScene
@@ -72,6 +73,11 @@ private:
 	void UpdateBulletPopCommands();
 	//csv
 	std::stringstream bulletPopCommands_;
+
+	//エフェクト
+	std::list<std::unique_ptr<Effect>> effects_;
+	void GenerEffect(XMFLOAT3 pos, int lane);
+	Effect* effect_ = nullptr;
 
 	//あたり判定
 	void CheckAllCollisions();
