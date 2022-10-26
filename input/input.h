@@ -26,4 +26,3 @@ public:
 	ComPtr<IDirectInputDevice8> keyboard;
 	BYTE key[256] = {};
 };
-

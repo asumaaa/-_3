@@ -6,6 +6,7 @@
 #include "Cube.h"
 #include "Texture.h"
 #include "DirectXCommon.h"
+#include "Ease.h"
 
 //レーンの列挙型
 enum Lane
@@ -18,15 +19,12 @@ enum Lane
 class Field
 {
 public:
-	void Initialize(DirectXCommon* dxCommon,Cube* cube, Lane lane);	//レーンのX座標を決めて初期化
+	void Initialize(DirectXCommon* dxCommon,Cube* cube, Lane lane, Input* input);	//レーンのX座標を決めて初期化
 	void Draw(XMMATRIX matView);
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	//ゲッター
 	XMFLOAT3 GetTransration() { return translation_; };
 	Lane GetLane() { return lane_; };
-	/*int GetLane() { return lane_; };
-
-	void LaneChange();*/
 private:
 
 	DirectXCommon* dxCommon_;
@@ -44,12 +42,12 @@ private:
 
 	//レーンの幅
 	float laneWidth = 10.0f;
-	////イージング用
-	//Ease* ease_ = nullptr;
-	//bool isChangeRight_ = false;		//レーンチェンジ
-	//bool isChangeLeft_ = false;
-	//const int maxTime_ = 10;
-	//int time_ = 0;
+	//イージング用
+	Ease* ease_ = nullptr;
+	bool isChangeRight_ = false;		//レーンチェンジ
+	bool isChangeLeft_ = false;
+	const int maxTime_ = 10;
+	int time_ = 0;
 
 
 };

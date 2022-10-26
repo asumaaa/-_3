@@ -85,7 +85,7 @@ void GameScene::Update()
 	//レーン更新
 	for (int i = 0; i < lane_.size() ;i++)
 	{
-		lane_[i].Update(matView, matProjection);
+		lane_[i].Update(matView, matProjection, input);
 	}
 
 	//弾更新
