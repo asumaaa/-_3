@@ -3,6 +3,7 @@
 #include "DirectXTex.h"
 #include "Sphere.h"
 #include "Cube.h"
+#include "Sprite.h"
 #include "object3D.h"
 #include "list"
 #include "memory"
@@ -24,6 +25,14 @@ public:
 	void Update();
 	void Draw();
 
+	void Title();
+	void Select();
+	void Game();
+
+	void TitleDraw();
+	void SelectDraw();
+	void GameDraw();
+
 	//メンバ変数
 private: 
 	//デバイスとinput
@@ -38,6 +47,10 @@ private:
 	XMFLOAT3 size2 = { 2.02f,2.02f,2.02f };
 	std::unique_ptr<Cube> cube_;
 
+	//スプライトのモデル
+	XMFLOAT3 size3 = { 2.02f,2.02f,2.02f };
+	std::unique_ptr<Sprite> sprite_;
+
 	//画像
 	size_t laneTexCount_ = 3;	//テクスチャの数
 	std::vector<Texture> laneTex_;	//テクスチャ
@@ -50,6 +63,9 @@ private:
 
 	size_t backGroundCount = 1;		//オブジェクトの数
 	std::vector<Object3d> objectBackGround_;	//オブジェクト
+
+	size_t bulletCount = 30;		//オブジェクトの数
+	std::vector<Object3d> objectBullet_;	//オブジェクト
 
 
 	//レーン
@@ -96,6 +112,18 @@ private:
 		(float)window_width / window_height,//アスペクト比(画面横幅/画面立幅)
 		0.1f, 1000.0f						//前端、奥端
 	);
+
+	//シーン
+	enum class Scene
+	{
+		Title,	//タイトル
+		Select,	//ステージ選択
+		Game	//操作
+	};
+	//シーン	最初がタイトル
+	size_t scene_ = static_cast<size_t>(Scene::Title);
+	//メンバ関数のポインタテーブル
+	static void (GameScene::* Scene_[])();
 
 	//ビュー変換行列
 	XMMATRIX matView;

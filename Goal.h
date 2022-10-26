@@ -28,5 +28,7 @@ public:
 	XMFLOAT3 translation_[4];
 	XMFLOAT3 scale_[4];
 	XMFLOAT3 rotation_[4];
+
+	float s = 0;
 };
 

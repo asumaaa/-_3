@@ -1,4 +1,5 @@
 #include "Goal.h"
+#include "Math.h"
 
 #define PI 3.141592653589
 
@@ -33,27 +34,11 @@ void Goal::Update(XMMATRIX& matView, XMMATRIX& matProjection)
 		modelVelocityAngle_ = 0;
 	}
 
-	//for (int i = 0; i < 4; i++) {
-
-	//	XMFLOAT3 kVec = { 0,sinf(modelVelocityAngle_ * PI / 180.0f) + 2.4f,0 };
-
-	//	XMFLOAT3 result = { 0, 0, 0 };
-
-
-	//	result.x = kVec.x * worldTransform.matWorld_.m[0][0] +
-	//		kVec.y * worldTransform.matWorld_.m[1][0] +
-	//		kVec.z * worldTransform.matWorld_.m[2][0];
-
-	//	result.y = kVec.x * worldTransform.matWorld_.m[0][1] +
-	//		kVec.y * worldTransform.matWorld_.m[1][1] +
-	//		kVec.z * worldTransform.matWorld_.m[2][1];
-
-	//	result.z = kVec.x * worldTransform.matWorld_.m[0][2] +
-	//		kVec.y * worldTransform.matWorld_.m[1][2] +
-	//		kVec.z * worldTransform.matWorld_.m[2][2];
-
-	//	translation_[i] = {kVec.x,kVec.y,-38};
-	//}
+	s += 0.02;
+	translation_[0].y += cos(s) / 70;
+	translation_[1].x += cos(s) / 70;
+	translation_[2].y += cos(s + PI) / 70;
+	translation_[3].x += cos(s + PI) / 70;
 
 	for (int i = 0; i < 4; i++)
 	{

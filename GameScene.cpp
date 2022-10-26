@@ -16,6 +16,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	newCube->Initialize(size2, dxCommon);
 	cube_.reset(newCube);
 
+	//キューブモデル初期化
+	Sprite* newSprite = new Sprite();
+	newSprite->Initialize(size2, dxCommon);
+	sprite_.reset(newSprite);
+
 	//バレット
 	BulletReset();
 
@@ -45,6 +50,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	//オブジェクト初期化
 	object3ds_.resize(kObjectCount);
 	objectBackGround_.resize(backGroundCount);
+	objectBullet_.resize(bulletCount);
 	for (int i = 0; i < object3ds_.size(); i++)
 	{
 		//初期化
@@ -58,6 +64,15 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	objectBackGround_[0].scale = { window_width  * 0.4f,window_height  * 0.4f,1.0f };
 	objectBackGround_[0].rotation = { 0.4f,0.0f,0.0f };
 	objectBackGround_[0].position = { 0.0f,-250.0f,600.0f };
+	for (int i = 0; i < objectBullet_.size(); i++)
+	{
+		//初期化
+		InitializeObject3d(&objectBullet_[i], dxCommon->GetDevice());
+		objectBullet_[i].scale = { 1,10.0f,1 };
+		objectBullet_[i].rotation = { 0.0f,0.0f,0.0f };
+		objectBullet_[0].position = { -10.0f,0.0f,-60.0f };
+		objectBullet_[1].position = { 10.0f,0.0f,-60.0f };
+	}
 
 	//カメラ初期化
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -113,12 +128,18 @@ void GameScene::Update()
 		UpdateObject3d(&object3ds_[i], matView, matProjection);
 	}
 	UpdateObject3d(&objectBackGround_[0], matView, matProjection);
+	for (int i = 0; i < objectBullet_.size(); i++)
+	{
+		//初期化
+		UpdateObject3d(&objectBullet_[0], matView, matProjection);
+	}
 }
 
 void GameScene::Draw()
 {
 	sphere_->Update();
 	cube_->Update();
+	sprite_->Update();
 
 	for (int i = 0; i < laneTex_.size(); i++)
 	{
@@ -128,7 +149,7 @@ void GameScene::Draw()
 	}
 
 	texImg_[0].Draw();
-	DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
+	DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
 
 	//レーン描画
 	for (int i = 0; i < lane_.size(); i++)
@@ -173,6 +194,30 @@ void GameScene::Draw()
 		}
 		effect_->Draw(matView);
 	}
+}
+
+void GameScene::Title()
+{
+}
+
+void GameScene::Select()
+{
+}
+
+void GameScene::Game()
+{
+}
+
+void GameScene::TitleDraw()
+{
+}
+
+void GameScene::SelectDraw()
+{
+}
+
+void GameScene::GameDraw()
+{
 }
 
 void GameScene::AddBullet(std::unique_ptr<Bullet>& Bullet)
@@ -398,3 +443,11 @@ void GameScene::GenerEffect(XMFLOAT3 pos, int lane,int texNum)
 	effects_.push_back(std::move(newEffect));
 
 }
+
+//メンバ関数のポインタテーブル
+void (GameScene::* GameScene::Scene_[])() =
+{
+	&GameScene::Title,
+	&GameScene::Select,
+	&GameScene::Game,
+};
