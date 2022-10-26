@@ -13,6 +13,10 @@ public:
 	void Initialize(DirectXCommon* dxCommon, Cube* cube);
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	void Draw(XMMATRIX matView);
+	//ÉQÉbÉ^Å[
+	XMFLOAT3 GetWorldPosition();
+
+	int bulletHit_[3] = {};
 public:
 
 	DirectXCommon* dxCommon_;

@@ -72,3 +72,21 @@ void Goal::Draw(XMMATRIX matView)
 		DrawObject3d(&object_[i], dxCommon_->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
 	}
 }
+
+XMFLOAT3 Goal::GetWorldPosition()
+{
+	XMFLOAT3 a = { 0,0,0 };
+	
+	for (int i = 0; i < 4; i++)
+	{
+		a.x += translation_[i].x;
+		a.y += translation_[i].y;
+		a.z += translation_[i].z;
+	}
+	a.x /= 4;
+	a.y /= 4;
+	a.z /= 4;
+
+
+	return a;
+}

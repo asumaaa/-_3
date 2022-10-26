@@ -96,6 +96,8 @@ void GameScene::Update()
 	//ゴール更新
 	goal_.Update(matView, matProjection);
 
+	CheckAllCollisions();
+
 	//オブジェクト更新
 	for (int i = 0; i < object3ds_.size(); i++)
 	{
@@ -216,7 +218,6 @@ void GameScene::UpdateBulletPopCommands()
 			//レーン
 			std::getline(line_stream, word, ',');
 			int lane = static_cast<int>(std::atof(word.c_str()));
-
 			// ID
 			std::getline(line_stream, word, ',');
 			int ID = static_cast<int>(std::atof(word.c_str()));
@@ -288,4 +289,46 @@ void GameScene::BulletReset()
 	bulletPopCommands_.str("");
 	bulletPopCommands_.clear(std::stringstream::goodbit);
 	LoadBulletPopData();
+}
+
+void GameScene::CheckAllCollisions() {
+
+	//判定対象AとBの座標
+	XMFLOAT3 posA, posB;
+
+
+
+#pragma region 自弾と敵キャラの当たり判定
+	//敵キャラの座標
+	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
+		posA = bullet_->GetWorldPosition();
+
+
+		//自弾の座標
+		posB = goal_.GetWorldPosition();
+
+		float x = posB.x - posA.x;
+		float y = posB.y - posA.y;
+		float z = posB.z - posA.z;
+
+		float cd = sqrt(x * x + y * y + z * z);
+
+		if (cd <= 4.0f) {
+			//敵キャラの衝突時コールバックを呼び出す
+			bullet_->OnCollision(true);
+			/*GenerEffect(goal_->GetWorldPosition(), bullet_->GetFieldLane());*/
+
+			//衝突時コールバックを呼び出す
+			//goal_->OnCollision();
+		}
+
+		if (posA.z < -50/*画面外*/) {
+			bullet_->OnCollision(false);
+			if (goal_.bulletHit_[bullet_->GetFieldLane()] >= 5) {
+				goal_.bulletHit_[bullet_->GetFieldLane()]--;
+			}
+		}
+
+
+	}
 }

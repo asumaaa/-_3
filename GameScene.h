@@ -73,6 +73,9 @@ private:
 	//csv
 	std::stringstream bulletPopCommands_;
 
+	//‚ ‚½‚è”»’è
+	void CheckAllCollisions();
+
 	int gameLevel_ = 0;
 	int levelMax_ = 8;
 	//‘Ò‹@’†ƒtƒ‰ƒO

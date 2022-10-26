@@ -34,6 +34,8 @@ void Bullet::Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3, f
 
 void Bullet::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3 vector3)
 {
+	translation_.x = vector3.x;
+	translation_.y = vector3.y;
 
 	//ƒm[ƒc‚Ì‘¬“x‚Ìˆ—
 	kBulletSpeedZ += kBulletSpeedAcc;
