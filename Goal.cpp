@@ -58,6 +58,23 @@ void Goal::Draw(XMMATRIX matView)
 	}
 }
 
+void Goal::MaterDown(bool isMaterDown)
+{
+	if (isMaterDown == true) {
+		materDownTime_++;
+
+		if (materDownTime_ >= 7) {
+			materDownTime_ = 0;
+			for (int i = 0; i < 3; i++) {
+				if (bulletHit_[i] > 0) {
+					bulletHit_[i]--;
+				}
+			}
+
+		}
+
+	}
+}
 XMFLOAT3 Goal::GetWorldPosition()
 {
 	XMFLOAT3 a = { 0,0,0 };

@@ -13,6 +13,7 @@ public:
 	void Initialize(DirectXCommon* dxCommon, Cube* cube);
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	void Draw(XMMATRIX matView);
+	void MaterDown(bool isMaterDown);
 	//ゲッター
 	XMFLOAT3 GetWorldPosition();
 
@@ -30,5 +31,7 @@ public:
 	XMFLOAT3 rotation_[4];
 
 	float s = 0;
+
+	int materDownTime_ = 0;//メーターダウンのディレイカウント
 };
 

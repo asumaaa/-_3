@@ -15,6 +15,7 @@
 #include "string"
 #include "sstream"
 #include "Effect.h"
+#include "FPS.h"
 
 
 class GameScene
@@ -54,14 +55,14 @@ private:
 	//画像
 	size_t laneTexCount_ = 3;	//テクスチャの数
 	std::vector<Texture> laneTex_;	//テクスチャ
-	size_t texImgCount_ = 1;	//テクスチャの数
+	size_t texImgCount_ = 3;	//テクスチャの数
 	std::vector<Texture> texImg_;	//テクスチャ
 
 	//3Dオブジェクト
 	size_t kObjectCount = 2;		//オブジェクトの数
 	std::vector<Object3d> object3ds_;	//オブジェクト
 
-	size_t backGroundCount = 1;		//オブジェクトの数
+	size_t backGroundCount = 3;		//オブジェクトの数
 	std::vector<Object3d> objectBackGround_;	//オブジェクト
 
 	size_t bulletCount = 30;		//オブジェクトの数
@@ -130,4 +131,22 @@ private:
 	XMFLOAT3 eye = { 0,8,-50 };
 	XMFLOAT3 target = { 0,0,-30 };
 	XMFLOAT3 up = { 0, 1, 0 };
+
+	//必殺技モデル用<-必殺技全般はゲームシーン直下です。ごめんなさい。
+	XMFLOAT3 deathblowTranslation_;
+	XMFLOAT3 deathblowScale_;
+	XMFLOAT3 deathblowRotation_;
+	bool isDeathblow_ = false;
+	float deathblowRadius = 0.0f;
+
+	int spriteCount = 10;
+	std::vector<Object3d> spriteOrangeMater_;//
+	std::vector<Object3d> spritePurpleMater_;//
+	std::vector<Object3d> spriteYellowMater_;//
+
+	int spriteCount2 = 2;
+	std::vector<Object3d> spriteTitle;//
+
+	int scene = 0;
+	int sceneChange = 0;
 };

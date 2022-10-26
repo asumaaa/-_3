@@ -35,7 +35,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	//背景画像
 	for (int i = 0; i < texImg_.size(); i++)
 	{
-		texImg_[i].Initialize(L"Resources/backGround.png", dxCommon, 0);
+		texImg_[0].Initialize(L"Resources/backGround.png", dxCommon, 0);
+		texImg_[1].Initialize(L"Resources/title.png", dxCommon, 0);
+		texImg_[2].Initialize(L"Resources/setumei.png", dxCommon, 0);
 	}
 
 
@@ -51,6 +53,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	object3ds_.resize(kObjectCount);
 	objectBackGround_.resize(backGroundCount);
 	objectBullet_.resize(bulletCount);
+	spriteOrangeMater_.resize(spriteCount);
+	spritePurpleMater_.resize(spriteCount);
+	spriteYellowMater_.resize(spriteCount);
+	spriteTitle.resize(spriteCount2);
+
 	for (int i = 0; i < object3ds_.size(); i++)
 	{
 		//初期化
@@ -60,10 +67,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		object3ds_[0].position = { -10.0f,0.0f,-60.0f };
 		object3ds_[1].position = { 10.0f,0.0f,-60.0f };
 	}
-	InitializeObject3d(&objectBackGround_[0], dxCommon->GetDevice());
-	objectBackGround_[0].scale = { window_width  * 0.4f,window_height  * 0.4f,1.0f };
-	objectBackGround_[0].rotation = { 0.4f,0.0f,0.0f };
-	objectBackGround_[0].position = { 0.0f,-250.0f,600.0f };
+	for (int i = 0; i < objectBackGround_.size(); i++)
+	{
+		InitializeObject3d(&objectBackGround_[i], dxCommon->GetDevice());
+		objectBackGround_[i].scale = { window_width * 0.4f,window_height * 0.4f,1.0f };
+		objectBackGround_[i].rotation = { 0.4f,0.0f,0.0f };
+		objectBackGround_[i].position = { 0.0f,-250.0f,600.0f };
+	}
 	for (int i = 0; i < objectBullet_.size(); i++)
 	{
 		//初期化
@@ -74,65 +84,143 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		objectBullet_[1].position = { 10.0f,0.0f,-60.0f };
 	}
 
+	for (int i = 0; i < spriteCount; i++)
+	{
+		InitializeObject3d(&spriteOrangeMater_[i], dxCommon->GetDevice());
+		InitializeObject3d(&spritePurpleMater_[i], dxCommon->GetDevice());
+		InitializeObject3d(&spriteYellowMater_[i], dxCommon->GetDevice());
+		float x1 = -9.2 + (i * 0.5);
+		spriteOrangeMater_[i].position = { x1,0,-38};
+		spriteOrangeMater_[i].rotation = { 0.24,0,0 };
+		spriteOrangeMater_[i].scale = { 0.24,0.24,0.24 };
+		float x2 = -8.6 + (i * 0.48);
+		spritePurpleMater_[i].position = { x2,0,-39 };
+		spritePurpleMater_[i].rotation = { 0.24,0,0 };
+		spritePurpleMater_[i].scale = { 0.23,0.23,0.23 };
+		float x3 = -8.0 + (i * 0.46);
+		spriteYellowMater_[i].position = { x3,0,-40 };
+		spriteYellowMater_[i].rotation = { 0.24,0,0 };
+		spriteYellowMater_[i].scale = { 0.22,0.22,0.22 };
+	}
+	for (int i = 0; i < spriteCount2; i++)
+	{
+		InitializeObject3d(&spriteTitle[i], dxCommon->GetDevice());
+		spriteTitle[i].scale = { window_width * 0.4f,window_height * 0.4f,1.0f };
+		spriteTitle[i].rotation = { 0.4f,0.0f,0.0f };
+		spriteTitle[i].position = { 0.0f,-250.0f,600.0f };
+	}
+
+	deathblowScale_ = { 2,0.5,2 };
+	isDeathblow_ = false;
+
 	//カメラ初期化
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 }
 
 void GameScene::Update()
 {
-	//タイマー更新
-	gameTimer_++;
-	if (gameTimer_ > 200) {
-		if (gameLevel_ < levelMax_) {
-			gameTimer_ = 0;
-			gameLevel_++;
+	if (scene == 0)
+	{
+		if (input->TriggerKey(DIK_SPACE) && sceneChange == 1)
+		{
+			scene = 1;
 		}
-		else {
-			gameTimer_ = 0;
+		if (input->TriggerKey(DIK_SPACE) && sceneChange == 0)
+		{
+			sceneChange = 1;
 		}
 	}
 
-	//弾
-	//デリート
-	bullets_.remove_if([](std::unique_ptr<Bullet>& bullet_) { return bullet_->IsDead(); });
-	UpdateBulletPopCommands();
-
-	//エフェクト
-	//デリート
-	effects_.remove_if([](std::unique_ptr<Effect>& effect_) { return effect_->IsDead(); });;
-
-	//レーン更新
-	for (int i = 0; i < lane_.size() ;i++)
+	if (scene == 1)
 	{
-		lane_[i].Update(matView, matProjection);
+		//タイマー更新
+		gameTimer_++;
+		if (gameTimer_ > 200) {
+			if (gameLevel_ < levelMax_) {
+				gameTimer_ = 0;
+				gameLevel_++;
+			}
+			else {
+				gameTimer_ = 0;
+			}
+		}
+
+		//弾
+		//デリート
+		bullets_.remove_if([](std::unique_ptr<Bullet>& bullet_) { return bullet_->IsDead(); });
+		UpdateBulletPopCommands();
+
+		//エフェクト
+		//デリート
+		effects_.remove_if([](std::unique_ptr<Effect>& effect_) { return effect_->IsDead(); });;
+
+		//レーン更新
+		for (int i = 0; i < lane_.size(); i++)
+		{
+			lane_[i].Update(matView, matProjection);
+		}
+
+		//弾更新
+		for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
+			bullet_->Update(matView, matProjection, lane_[bullet_->GetFieldLane()].GetTransration());
+		}
+
+		//エフェクト更新
+		for (std::unique_ptr<Effect>& effect_ : effects_) {
+			effect_->Update(matView, matProjection);
+		}
+
+		//ゴール更新
+		goal_.Update(matView, matProjection);
+
+#pragma region 必殺技
+		if (goal_.bulletHit_[0] >= 2 &&
+			goal_.bulletHit_[1] >= 2 &&
+			goal_.bulletHit_[2] >= 2) {
+			isDeathblow_ = true;
+		}
+		else if (goal_.bulletHit_[0] <= 0 &&
+			goal_.bulletHit_[1] <= 0 &&
+			goal_.bulletHit_[2] <= 0) {
+			isDeathblow_ = false;
+		}
+		goal_.MaterDown(isDeathblow_);
+
+		if (isDeathblow_ == true) {
+			float powerRadius = 5.5f;
+			deathblowRadius += powerRadius;
+		}
+		else if (isDeathblow_ == false) {
+			deathblowRadius = 0;
+		}
+#pragma endregion 必殺技
+
+		CheckAllCollisions();
 	}
 
-	//弾更新
-	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
-		bullet_->Update(matView, matProjection,lane_[bullet_->GetFieldLane()].GetTransration());
-	}
+		//オブジェクト更新
+		for (int i = 0; i < object3ds_.size(); i++)
+		{
+			UpdateObject3d(&object3ds_[i], matView, matProjection);
+		}
+		for (int i = 0; i < objectBackGround_.size(); i++)
+		{
+			UpdateObject3d(&objectBackGround_[i], matView, matProjection);
+		}
+		for (int i = 0; i < objectBullet_.size(); i++)
+		{
+			//初期化
+			UpdateObject3d(&objectBullet_[0], matView, matProjection);
+		}
 
-	//エフェクト更新
-	for (std::unique_ptr<Effect>& effect_ : effects_) {
-		effect_->Update(matView, matProjection);
-	}
+		for (int i = 0; i < spriteCount; i++)
+		{
+			//初期化
 
-	//ゴール更新
-	goal_.Update(matView, matProjection);
-
-	CheckAllCollisions();
-
-	//オブジェクト更新
-	for (int i = 0; i < object3ds_.size(); i++)
-	{
-		UpdateObject3d(&object3ds_[i], matView, matProjection);
-	}
-	UpdateObject3d(&objectBackGround_[0], matView, matProjection);
-	for (int i = 0; i < objectBullet_.size(); i++)
-	{
-		//初期化
-		UpdateObject3d(&objectBullet_[0], matView, matProjection);
-	}
+			UpdateObject3d(&spriteOrangeMater_[i], matView, matProjection);
+			UpdateObject3d(&spritePurpleMater_[i], matView, matProjection);
+			UpdateObject3d(&spriteYellowMater_[i], matView, matProjection);
+		}
 }
 
 void GameScene::Draw()
@@ -141,58 +229,91 @@ void GameScene::Draw()
 	cube_->Update();
 	sprite_->Update();
 
-	for (int i = 0; i < laneTex_.size(); i++)
+
+	if (scene == 0)
 	{
-		laneTex_[0].SetImageData(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
-		laneTex_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
-		laneTex_[2].SetImageData(XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+		if (sceneChange == 0)
+		{
+			texImg_[1].Draw();
+		}
+		else if(sceneChange == 1)
+		{
+			texImg_[2].Draw();
+		}
+		DrawObject3d(&objectBackGround_[1], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
 	}
 
-	texImg_[0].Draw();
-	DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
-
-	//レーン描画
-	for (int i = 0; i < lane_.size(); i++)
+	if (scene == 1)
 	{
-		laneTex_[i].Draw();
-		lane_[i].Draw(matView);
-	}
+		for (int i = 0; i < laneTex_.size(); i++)
+		{
+			laneTex_[0].SetImageData(XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f));
+			laneTex_[1].SetImageData(XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f));
+			laneTex_[2].SetImageData(XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f));
+		}
 
-	//ゴール描画
-	laneTex_[0].Draw();
-	goal_.Draw(matView);
+		texImg_[0].Draw();
+		DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
 
-	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
-		if (bullet_->GetTexNum() == 0)
+		//レーン描画
+		for (int i = 0; i < lane_.size(); i++)
 		{
-			laneTex_[0].Draw();
+			laneTex_[i].Draw();
+			lane_[i].Draw(matView);
 		}
-		if (bullet_->GetTexNum() == 1)
-		{
-			laneTex_[1].Draw();
-		}
-		if (bullet_->GetTexNum() == 2)
-		{
-			laneTex_[2].Draw();
-		}
-		bullet_->Draw(matView);
-	}
 
-	//エフェクト描画
-	for (std::unique_ptr<Effect>& effect_ : effects_) {
-		if (effect_->GetTexNum() == 0)
-		{
-			laneTex_[0].Draw();
+		//ゴール描画
+		laneTex_[0].Draw();
+		goal_.Draw(matView);
+
+		for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
+			if (bullet_->GetTexNum() == 0)
+			{
+				laneTex_[0].Draw();
+			}
+			if (bullet_->GetTexNum() == 1)
+			{
+				laneTex_[1].Draw();
+			}
+			if (bullet_->GetTexNum() == 2)
+			{
+				laneTex_[2].Draw();
+			}
+			bullet_->Draw(matView);
 		}
-		if (effect_->GetTexNum() == 1)
-		{
-			laneTex_[1].Draw();
+
+		//エフェクト描画
+		for (std::unique_ptr<Effect>& effect_ : effects_) {
+			if (effect_->GetTexNum() == 0)
+			{
+				laneTex_[0].Draw();
+			}
+			if (effect_->GetTexNum() == 1)
+			{
+				laneTex_[1].Draw();
+			}
+			if (effect_->GetTexNum() == 2)
+			{
+				laneTex_[2].Draw();
+			}
+			effect_->Draw(matView);
 		}
-		if (effect_->GetTexNum() == 2)
+
+		for (int i = 0; i < spriteCount; i++)
 		{
-			laneTex_[2].Draw();
+			if (i + 1 <= goal_.bulletHit_[0]) {
+				laneTex_[0].Draw();
+				DrawObject3d(&spriteOrangeMater_[i], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
+			}
+			if (i + 1 <= goal_.bulletHit_[1]) {
+				laneTex_[1].Draw();
+				DrawObject3d(&spritePurpleMater_[i], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
+			}
+			if (i + 1 <= goal_.bulletHit_[2]) {
+				laneTex_[2].Draw();
+				DrawObject3d(&spriteYellowMater_[i], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
+			}
 		}
-		effect_->Draw(matView);
 	}
 }
 
