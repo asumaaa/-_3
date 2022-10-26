@@ -187,7 +187,7 @@ void GameScene::Update()
 		goal_.MaterDown(isDeathblow_);
 
 		if (isDeathblow_ == true) {
-			float powerRadius = 5.5f;
+			float powerRadius = 9.5f;
 			deathblowRadius += powerRadius;
 		}
 		else if (isDeathblow_ == false) {
@@ -521,6 +521,15 @@ void GameScene::CheckAllCollisions() {
 			//敵キャラの衝突時コールバックを呼び出す
 			bullet_->OnCollision(true);
 			GenerEffect(goal_.GetWorldPosition(), bullet_->GetFieldLane(),bullet_->GetTexNum());
+
+			//衝突時コールバックを呼び出す
+			//goal_->OnCollision();
+		}
+
+		if (cd <= deathblowRadius) {
+			//敵キャラの衝突時コールバックを呼び出す
+			bullet_->OnCollision(true);
+			GenerEffect(bullet_->GetWorldPosition(), bullet_->GetFieldLane(), bullet_->GetTexNum());
 
 			//衝突時コールバックを呼び出す
 			//goal_->OnCollision();

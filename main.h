@@ -14,6 +14,7 @@
 #include "DirectXTex.h"
 #include "object3D.h"
 #include "GameScene.h"
+#include "FPS.h"
 
 using namespace DirectX;
 using namespace Microsoft::WRL;

@@ -25,6 +25,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	gameScene = new GameScene();
 	gameScene->Initialize(dx, input);
 
+	//FPS* fps = new FPS;
+
 #pragma endregion
 
 	//ゲームループ
@@ -58,6 +60,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//ウィンドウクラスを登録解除
 		win->deleteWindow();
+
+		/*delete fps;*/
+
 	}
 
 	return 0;
