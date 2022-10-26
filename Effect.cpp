@@ -1,10 +1,12 @@
 #include "Effect.h"
 #include "stdlib.h"
 
-void Effect::Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3)
+void Effect::Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3, int texNum)
 {
 	this->dxCommon_ = dxCommon;
 	this->cube_ = cube;
+
+	texNum_ = texNum;
 
 	object_.resize(EFFECT_NUM);
 	translation_.resize(EFFECT_NUM);

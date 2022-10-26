@@ -142,11 +142,35 @@ void GameScene::Draw()
 	goal_.Draw(matView);
 
 	for (std::unique_ptr<Bullet>& bullet_ : bullets_) {
+		if (bullet_->GetTexNum() == 0)
+		{
+			laneTex_[0].Draw();
+		}
+		if (bullet_->GetTexNum() == 1)
+		{
+			laneTex_[1].Draw();
+		}
+		if (bullet_->GetTexNum() == 2)
+		{
+			laneTex_[2].Draw();
+		}
 		bullet_->Draw(matView);
 	}
 
 	//エフェクト描画
 	for (std::unique_ptr<Effect>& effect_ : effects_) {
+		if (effect_->GetTexNum() == 0)
+		{
+			laneTex_[0].Draw();
+		}
+		if (effect_->GetTexNum() == 1)
+		{
+			laneTex_[1].Draw();
+		}
+		if (effect_->GetTexNum() == 2)
+		{
+			laneTex_[2].Draw();
+		}
 		effect_->Draw(matView);
 	}
 }
@@ -166,13 +190,13 @@ void GameScene::GenerBullet(XMFLOAT3 BulletPos, int ID, int lane)
 	}
 
 	if (lane == 0) {
-		newBullet->Initialize(dxCommon,cube_.get(), BulletPos, kBulSpeed);
+		newBullet->Initialize(dxCommon,cube_.get(), BulletPos, kBulSpeed,0);
 	}
 	else if (lane == 1) {
-		newBullet->Initialize(dxCommon, cube_.get(), BulletPos, kBulSpeed);
+		newBullet->Initialize(dxCommon, cube_.get(), BulletPos, kBulSpeed,1);
 	}
 	else if (lane == 2) {
-		newBullet->Initialize(dxCommon, cube_.get(), BulletPos, kBulSpeed);
+		newBullet->Initialize(dxCommon, cube_.get(), BulletPos, kBulSpeed,2);
 	}
 
 	newBullet->SetID(ID);
@@ -330,7 +354,7 @@ void GameScene::CheckAllCollisions() {
 		if (cd <= 4.0f) {
 			//敵キャラの衝突時コールバックを呼び出す
 			bullet_->OnCollision(true);
-			GenerEffect(goal_.GetWorldPosition(), bullet_->GetFieldLane());
+			GenerEffect(goal_.GetWorldPosition(), bullet_->GetFieldLane(),bullet_->GetTexNum());
 
 			//衝突時コールバックを呼び出す
 			//goal_->OnCollision();
@@ -345,26 +369,26 @@ void GameScene::CheckAllCollisions() {
 	}
 }
 
-void GameScene::GenerEffect(XMFLOAT3 pos, int lane)
+void GameScene::GenerEffect(XMFLOAT3 pos, int lane,int texNum)
 {
 	//生成
 	std::unique_ptr<Effect> newEffect = std::make_unique<Effect>();
 	///敵キャラの初期化
 	int maxHitCount = 14;
 	if (lane == Left) {
-		newEffect->Initialize(dxCommon,cube_.get(), pos);
+		newEffect->Initialize(dxCommon,cube_.get(),pos,texNum);
 		if (goal_.bulletHit_[Left] <= maxHitCount) {
 			goal_.bulletHit_[Left]++;	//グローバル変数です。ごめんなさい。by細井
 		}
 	}
 	else if (lane == Center) {
-		newEffect->Initialize(dxCommon, cube_.get(), pos);
+		newEffect->Initialize(dxCommon, cube_.get(), pos,texNum);
 		if (goal_.bulletHit_[Center] <= maxHitCount) {
 			goal_.bulletHit_[Center]++;
 		}
 	}
 	else if (lane == Right) {
-		newEffect->Initialize(dxCommon, cube_.get(), pos);
+		newEffect->Initialize(dxCommon, cube_.get(), pos,texNum);
 		if (goal_.bulletHit_[Right] <= maxHitCount) {
 			goal_.bulletHit_[Right]++;
 		}

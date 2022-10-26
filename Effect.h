@@ -6,6 +6,7 @@
 #include "Cube.h"
 #include "Input.h"
 #include "Object3d.h"
+#include "lane.h"
 
 //エフェクトの数
 const int EFFECT_NUM = 40;
@@ -13,7 +14,7 @@ const int EFFECT_NUM = 40;
 class Effect
 {
 public:
-	void Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3);
+	void Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3, int texNum);
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection);
 	void Draw(XMMATRIX matView);
 
@@ -21,6 +22,8 @@ public:
 
 	XMFLOAT3 vector3Normalize(XMFLOAT3 vector_);
 	float vector3Length(XMFLOAT3 vector_);
+
+	int GetTexNum() { return texNum_; };
 
 private:
 	DirectXCommon* dxCommon_;
@@ -37,5 +40,7 @@ private:
 	//デスフラグ
 	bool isDead_ = false;
 	int daedFlame_ = 0;
+
+	int texNum_;
 };
 

@@ -76,7 +76,7 @@ private:
 
 	//エフェクト
 	std::list<std::unique_ptr<Effect>> effects_;
-	void GenerEffect(XMFLOAT3 pos, int lane);
+	void GenerEffect(XMFLOAT3 pos, int lane, int texNum);
 	Effect* effect_ = nullptr;
 
 	//あたり判定

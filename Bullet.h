@@ -10,7 +10,7 @@
 class Bullet
 {
 public:
-	void Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3, float kBulSpeed);
+	void Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3, float kBulSpeed, int texNum);
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3 vector3);
 	void Draw(XMMATRIX matView);
 
@@ -19,6 +19,8 @@ public:
 	void SetID(int ID) { bulletId_ = ID; }
 	void SetFieldLane(int lane) { fieldLane_ = lane; };
 	int GetFieldLane() { return fieldLane_; }
+	Lane GetLane() { return lane_; };
+	int GetTexNum() { return texNum_; };
 	//弾のイージング
 	float easeIn(float x);
 
@@ -57,5 +59,8 @@ public:
 
 	//フィールド取得用
 	int fieldLane_ = 0;
+
+	//色変更用
+	int texNum_;
 };
 

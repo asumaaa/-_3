@@ -23,7 +23,6 @@ public:
 public:
 	//ウィンドウ
 	WinApp* winApp_;
-
 	ComPtr<IDirectInput8> directInput;
 	//キーボード
 	ComPtr<IDirectInputDevice8> keyboard;

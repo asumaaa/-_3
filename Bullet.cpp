@@ -3,11 +3,12 @@
 #include "math.h"
 #define PI 3.141592653589
 
-void Bullet::Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3, float kBulSpeed)
+void Bullet::Initialize(DirectXCommon* dxCommon, Cube* cube, XMFLOAT3 vector3, float kBulSpeed,  int texNum)
 {
 	this->dxCommon_ = dxCommon;
 	this->cube_ = cube;
 
+	texNum_ = texNum;
 	//シングルインスタンスを取得する
 	input_ = Input::GetInstance();
 
