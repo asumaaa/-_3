@@ -36,9 +36,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 
 	//レーン初期化
 	lane_.resize(laneCount);
-	lane_[0].Initialize(dxCommon, cube_.get(), Left);
-	lane_[1].Initialize(dxCommon, cube_.get(), Center);
-	lane_[2].Initialize(dxCommon, cube_.get(), Right);
+	lane_[0].Initialize(dxCommon, cube_.get(), Left,input);
+	lane_[1].Initialize(dxCommon, cube_.get(), Center,input);
+	lane_[2].Initialize(dxCommon, cube_.get(), Right,input);
 
 	goal_.Initialize(dxCommon, cube_.get());
 
@@ -85,7 +85,7 @@ void GameScene::Update()
 	//レーン更新
 	for (int i = 0; i < lane_.size() ;i++)
 	{
-		lane_[i].Update(matView, matProjection, input);
+		lane_[i].Update(matView, matProjection);
 	}
 
 	//弾更新

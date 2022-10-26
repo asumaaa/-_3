@@ -43,7 +43,7 @@ void Field::Draw(XMMATRIX matView)
 void Field::Update(XMMATRIX& matView, XMMATRIX& matProjection)
 {
 	//ƒL[“ü—Í‚É‰ž‚¶‚ÄLane‚ð•ÏX
-	if (input_->key(DIK_LEFT) && input_->key(DIK_SPACE)
+	if (input_->PushKey(DIK_LEFT) && input_->TriggerKey(DIK_SPACE)
 		&& isChangeLeft_ == false && isChangeRight_ == false)
 	{
 		/*if (lane_ == Left)lane_ = Center;
@@ -82,15 +82,15 @@ void Field::Update(XMMATRIX& matView, XMMATRIX& matProjection)
 
 		if (lane_ == Left)
 		{
-			worldTransform_.translation_ = { -laneWidth,0.0f,zLen_ };
+			translation_ = { -laneWidth,0.0f,zLen_ };
 		}
 		else if (lane_ == Center)
 		{
-			worldTransform_.translation_ = { 0.0f,0.0f,zLen_ };
+			translation_ = { 0.0f,0.0f,zLen_ };
 		}
 		else if (lane_ == Right)
 		{
-			worldTransform_.translation_ = { laneWidth,0.0f,zLen_ };
+			translation_ = { laneWidth,0.0f,zLen_ };
 		}
 	}
 
@@ -98,20 +98,20 @@ void Field::Update(XMMATRIX& matView, XMMATRIX& matProjection)
 	if (isChangeLeft_ == true) {
 		time_++;
 		if (lane_ == Left) {
-			worldTransform_.translation_.x = ease_->InOutQuad(laneWidth, -laneWidth, maxTime_, time_);
+			translation_.x = ease_->InOutQuad(laneWidth, -laneWidth, maxTime_, time_);
 		}
 		if (lane_ == Center) {
-			worldTransform_.translation_.x = ease_->InOutQuad(-laneWidth, 0.0f, maxTime_, time_);
+			translation_.x = ease_->InOutQuad(-laneWidth, 0.0f, maxTime_, time_);
 		}
 
 	}
 	else if (isChangeRight_ == true) {
 		time_++;
 		if (lane_ == Right) {
-			worldTransform_.translation_.x = ease_->InOutQuad(-laneWidth, laneWidth, maxTime_, time_);
+			translation_.x = ease_->InOutQuad(-laneWidth, laneWidth, maxTime_, time_);
 		}
 		if (lane_ == Center) {
-			worldTransform_.translation_.x = ease_->InOutQuad(laneWidth, 0.0f, maxTime_, time_);
+			translation_.x = ease_->InOutQuad(laneWidth, 0.0f, maxTime_, time_);
 		}
 	}
 

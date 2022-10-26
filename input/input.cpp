@@ -43,6 +43,34 @@ void Input::Update()
 {
 	//キーボード情報の取得開始
 	keyboard->Acquire();
+	// 前回のキー入力を保存
+	memcpy(keyPre, key, sizeof(key));
 	//全キーの入力状態を取得する
 	keyboard->GetDeviceState(sizeof(key), key);
+}
+
+bool Input::PushKey(BYTE keyNumber)
+{
+	assert(0 <= keyNumber && keyNumber <= 256);
+
+	// 0でなければ押している
+	if (key[keyNumber]) {
+		return true;
+	}
+
+	// 押していない
+	return false;
+}
+
+bool Input::TriggerKey(BYTE keyNumber)
+{
+	assert(0 <= keyNumber && keyNumber <= 256);
+
+	// 前回が0で、今回が0でなければトリガー
+	if (!keyPre[keyNumber] && key[keyNumber]) {
+		return true;
+	}
+
+	// トリガーでない
+	return false;
 }
