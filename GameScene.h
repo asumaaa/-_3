@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "WinApp.h"
 #include "Lane.h"
+#include "Goal.h"
 
 
 class GameScene
@@ -50,6 +51,9 @@ private:
 	//レーン
 	size_t laneCount = 3;	//レーンの数
 	std::vector<Field> lane_;	//レーン
+
+	//ゴール
+	Goal goal_;
 
 	//射影変換
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(

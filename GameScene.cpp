@@ -38,6 +38,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	lane_[1].Initialize(dxCommon, cube_.get(), Center);
 	lane_[2].Initialize(dxCommon, cube_.get(), Right);
 
+	goal_.Initialize(dxCommon, cube_.get());
+
 	//オブジェクト初期化
 	object3ds_.resize(kObjectCount);
 	objectBackGround_.resize(backGroundCount);
@@ -67,6 +69,9 @@ void GameScene::Update()
 		lane_[i].Update(matView, matProjection);
 	}
 
+	//ゴール更新
+	goal_.Update(matView, matProjection);
+
 	//オブジェクト更新
 	for (int i = 0; i < object3ds_.size(); i++)
 	{
@@ -90,9 +95,14 @@ void GameScene::Draw()
 	texImg_[0].Draw();
 	DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), cube_->vbView, cube_->ibView, cube_->indices.size());
 
+	//レーン描画
 	for (int i = 0; i < lane_.size(); i++)
 	{
 		laneTex_[i].Draw();
 		lane_[i].Draw(matView);
 	}
+
+	//ゴール描画
+	laneTex_[0].Draw();
+	goal_.Draw(matView);
 }

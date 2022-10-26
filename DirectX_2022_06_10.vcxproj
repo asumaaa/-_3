@@ -150,6 +150,7 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="input\input.cpp" />
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="main.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="base\WinApp.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="input\input.h" />
     <ClInclude Include="Lane.h" />
     <ClInclude Include="main.h" />
