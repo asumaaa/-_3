@@ -19,5 +19,5 @@ float4 main(VSOutput input) : SV_TARGET
 	/*return float4(1,0,1,1);*/
 	/*return float4(input.normal,1);*/
 	//‹P“x‚ğRGB‚É‘ã“ü‚µ‚Äo—Í
-	return float4(texcolor.rgb * brightness,texcolor.a);
+	return float4(texcolor.rgb * brightness,texcolor.a) * texcolor;
 }

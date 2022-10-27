@@ -63,7 +63,7 @@ void Goal::MaterDown(bool isMaterDown)
 	if (isMaterDown == true) {
 		materDownTime_++;
 
-		if (materDownTime_ >= 7) {
+		if (materDownTime_ >= 5) {
 			materDownTime_ = 0;
 			for (int i = 0; i < 3; i++) {
 				if (bulletHit_[i] > 0) {
