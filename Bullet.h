@@ -50,7 +50,7 @@ public:
 	float xDifference = 10.0f;	//左右差
 
 	//ノーツの速度
-	float kBulletSpeedZ = 0.4;
+	float kBulletSpeedZ = 0.9;
 	//ノーツの加速度
 	float kBulletSpeedAcc = 0.003;
 
