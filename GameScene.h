@@ -16,6 +16,9 @@
 #include "sstream"
 #include "Effect.h"
 #include "FPS.h"
+#include "wrl.h"
+
+using namespace Microsoft::WRL;
 
 
 class GameScene
@@ -40,9 +43,9 @@ private:
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
 
-	//球体のモデル
-	XMFLOAT3 size1 = { 1.0f,1.0f,1.0f };
-	std::unique_ptr<Sphere> sphere_;
+	////球体のモデル
+	//XMFLOAT3 size1 = { 1.0f,1.0f,1.0f };
+	//std::unique_ptr<ComPtr<Sphere>> sphere_;
 
 	//キューブのモデル
 	XMFLOAT3 size2 = { 2.02f,2.02f,2.02f };

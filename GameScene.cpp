@@ -7,9 +7,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	this->input = input;
 
 	//球体モデル初期化
-	Sphere* newSphere = new Sphere();
+	/*Sphere* newSphere = new Sphere();
 	newSphere->Initialize(size1,dxCommon);
-	sphere_.reset(newSphere);
+	sphere_.reset(newSphere);*/
 
 	//キューブモデル初期化
 	Cube* newCube = new Cube();
@@ -271,7 +271,7 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	sphere_->Update();
+	/*sphere_->Update();*/
 	cube_->Update();
 	sprite_->Update();
 
@@ -370,12 +370,17 @@ void GameScene::Draw()
 		{
 			numImg_[hit_ % 10].Draw();
 			DrawObject3d(&objectnum_[0], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
-			if (hit_ < 100)numImg_[hit_ / 10].Draw();
+			if (hit_ < 100)
+			{
+				int h = hit_ / 10;
+				numImg_[h].Draw();
+			}
 			else if (hit_ >= 100)
 			{
 				int hit = hit_;
 				hit - 100;
-				numImg_[hit / 10].Draw();
+				hit /= 10;
+				numImg_[hit].Draw();
 			}
 			DrawObject3d(&objectnum_[1], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
 			if (hit_ >= 100)
