@@ -55,8 +55,10 @@ private:
 	//画像
 	size_t laneTexCount_ = 3;	//テクスチャの数
 	std::vector<Texture> laneTex_;	//テクスチャ
-	size_t texImgCount_ = 3;	//テクスチャの数
+	size_t texImgCount_ = 4;	//テクスチャの数
 	std::vector<Texture> texImg_;	//テクスチャ
+	size_t numImgCount_ = 10;	//テクスチャの数
+	std::vector<Texture> numImg_;	//テクスチャ
 
 	//3Dオブジェクト
 	size_t kObjectCount = 2;		//オブジェクトの数
@@ -67,6 +69,9 @@ private:
 
 	size_t bulletCount = 30;		//オブジェクトの数
 	std::vector<Object3d> objectBullet_;	//オブジェクト
+
+	size_t numCount = 3;		//オブジェクトの数
+	std::vector<Object3d> objectnum_;	//オブジェクト
 
 
 	//レーン
@@ -149,4 +154,7 @@ private:
 
 	int scene = 0;
 	int sceneChange = 0;
+
+	//スコア
+	int hit_ = 0;
 };

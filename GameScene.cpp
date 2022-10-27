@@ -27,6 +27,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	//テクスチャ初期化
 	laneTex_.resize(laneTexCount_);
 	texImg_.resize(texImgCount_);
+	numImg_.resize(numImgCount_);
 	//レーン画像
 	for (int i = 0; i < laneTex_.size(); i++)
 	{
@@ -38,6 +39,20 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		texImg_[0].Initialize(L"Resources/backGround.png", dxCommon, 0);
 		texImg_[1].Initialize(L"Resources/title.png", dxCommon, 0);
 		texImg_[2].Initialize(L"Resources/setumei.png", dxCommon, 0);
+		texImg_[3].Initialize(L"Resources/score.png", dxCommon, 0);
+	}
+	for (int i = 0; i < numImgCount_; i++)
+	{
+		numImg_[0].Initialize(L"Resources/number/0.png", dxCommon, i);
+		numImg_[1].Initialize(L"Resources/number/1.png", dxCommon, i);
+		numImg_[2].Initialize(L"Resources/number/2.png", dxCommon, i);
+		numImg_[3].Initialize(L"Resources/number/3.png", dxCommon, i);
+		numImg_[4].Initialize(L"Resources/number/4.png", dxCommon, i);
+		numImg_[5].Initialize(L"Resources/number/5.png", dxCommon, i);
+		numImg_[6].Initialize(L"Resources/number/6.png", dxCommon, i);
+		numImg_[7].Initialize(L"Resources/number/7.png", dxCommon, i);
+		numImg_[8].Initialize(L"Resources/number/8.png", dxCommon, i);
+		numImg_[9].Initialize(L"Resources/number/9.png", dxCommon, i);
 	}
 
 
@@ -57,7 +72,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	spritePurpleMater_.resize(spriteCount);
 	spriteYellowMater_.resize(spriteCount);
 	spriteTitle.resize(spriteCount2);
-
+	objectnum_.resize(numCount);
 	for (int i = 0; i < object3ds_.size(); i++)
 	{
 		//初期化
@@ -109,6 +124,15 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 		spriteTitle[i].rotation = { 0.4f,0.0f,0.0f };
 		spriteTitle[i].position = { 0.0f,-250.0f,600.0f };
 	}
+	for (int i = 0; i < numCount; i++)
+	{
+		InitializeObject3d(&objectnum_[i], dxCommon->GetDevice());
+		objectnum_[0].position = { 6,0,-30 };
+		objectnum_[1].position = { 3,0,-30 };
+		objectnum_[2].position = { 0,0,-30 };
+		objectnum_[i].rotation = { 0.24,0,0 };
+		objectnum_[i].scale = { 1,1,1 };
+	}
 
 	deathblowScale_ = { 2,0.5,2 };
 	isDeathblow_ = false;
@@ -127,12 +151,20 @@ void GameScene::Update()
 		}
 		if (input->TriggerKey(DIK_SPACE) && sceneChange == 0)
 		{
+			BulletReset();
+			hit_ = 0;
+			gameLevel_ = 0;
+			gameTimer_ = 0;
+			goal_.bulletHit_[Left] = 0;
+			goal_.bulletHit_[Center] = 0;
+			goal_.bulletHit_[Right] = 0;
 			sceneChange = 1;
 		}
 	}
 
 	if (scene == 1)
 	{
+		sceneChange = 0;
 		//タイマー更新
 		gameTimer_++;
 		if (gameTimer_ > 200) {
@@ -174,9 +206,9 @@ void GameScene::Update()
 		goal_.Update(matView, matProjection);
 
 #pragma region 必殺技
-		if (goal_.bulletHit_[0] >= 2 &&
-			goal_.bulletHit_[1] >= 2 &&
-			goal_.bulletHit_[2] >= 2) {
+		if (goal_.bulletHit_[0] >= 7 &&
+			goal_.bulletHit_[1] >= 7 &&
+			goal_.bulletHit_[2] >= 7) {
 			isDeathblow_ = true;
 		}
 		else if (goal_.bulletHit_[0] <= 0 &&
@@ -196,6 +228,14 @@ void GameScene::Update()
 #pragma endregion 必殺技
 
 		CheckAllCollisions();
+	}
+
+	if (scene == 2)
+	{
+		if (input->TriggerKey(DIK_SPACE) && scene == 2) {
+
+			scene = 0;
+		}
 	}
 
 		//オブジェクト更新
@@ -220,6 +260,12 @@ void GameScene::Update()
 			UpdateObject3d(&spriteOrangeMater_[i], matView, matProjection);
 			UpdateObject3d(&spritePurpleMater_[i], matView, matProjection);
 			UpdateObject3d(&spriteYellowMater_[i], matView, matProjection);
+		}
+		for (int i = 0; i < numCount; i++)
+		{
+			//初期化
+
+			UpdateObject3d(&objectnum_[i], matView, matProjection);
 		}
 }
 
@@ -314,6 +360,31 @@ void GameScene::Draw()
 				DrawObject3d(&spriteYellowMater_[i], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
 			}
 		}
+	}
+
+	if (scene == 2)
+	{
+		texImg_[3].Draw();
+		DrawObject3d(&objectBackGround_[0], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
+		for (int i = 0; i < objectnum_.size(); i++)
+		{
+			numImg_[hit_ % 10].Draw();
+			DrawObject3d(&objectnum_[0], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
+			if (hit_ < 100)numImg_[hit_ / 10].Draw();
+			else if (hit_ >= 100)
+			{
+				int hit = hit_;
+				hit - 100;
+				numImg_[hit / 10].Draw();
+			}
+			DrawObject3d(&objectnum_[1], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
+			if (hit_ >= 100)
+			{
+				numImg_[1].Draw();
+				DrawObject3d(&objectnum_[2], dxCommon->GetCommandList(), sprite_->vbView, sprite_->ibView, sprite_->indices.size());
+			}
+		}
+		
 	}
 }
 
@@ -485,6 +556,11 @@ void GameScene::UpdateBulletPopCommands()
 			//抜ける
 			break;
 		}
+		else if (word.find("OVER") == 0) {
+			scene = 2;
+			break;
+
+		}
 	}
 
 }
@@ -521,7 +597,7 @@ void GameScene::CheckAllCollisions() {
 			//敵キャラの衝突時コールバックを呼び出す
 			bullet_->OnCollision(true);
 			GenerEffect(goal_.GetWorldPosition(), bullet_->GetFieldLane(),bullet_->GetTexNum());
-
+			hit_++;
 			//衝突時コールバックを呼び出す
 			//goal_->OnCollision();
 		}
@@ -530,7 +606,7 @@ void GameScene::CheckAllCollisions() {
 			//敵キャラの衝突時コールバックを呼び出す
 			bullet_->OnCollision(true);
 			GenerEffect(bullet_->GetWorldPosition(), bullet_->GetFieldLane(), bullet_->GetTexNum());
-
+			hit_++;
 			//衝突時コールバックを呼び出す
 			//goal_->OnCollision();
 		}
