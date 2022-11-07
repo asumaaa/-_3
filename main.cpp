@@ -5,7 +5,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ウィンドウ生成
 	WinApp* win = nullptr;
 	win = WinApp::GetInstance();
-	win->CreateWindow_(L"DirectX");
+	win->CreateWindow_(L"ぱずれーん");
 
 	Masage* masage;	//メッセージ
 	masage = Masage::GetInstance();
